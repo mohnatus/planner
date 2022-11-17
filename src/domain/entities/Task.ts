@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
-import { PeriodUnits, RepeatTypes, Task } from './types';
-import { getToday } from './utils';
+import { PeriodUnits, RepeatTypes, Task } from '../types';
+import { getToday } from '../utils';
 
 export function TaskModel(taskData?: Partial<Task>): Task {
 	const model = Object.assign(
@@ -10,7 +10,7 @@ export function TaskModel(taskData?: Partial<Task>): Task {
 
 			name: '',
 			description: '',
-      createdMoment: getToday(),
+			createdMoment: getToday(),
 
 			repeat: false,
 
@@ -37,6 +37,7 @@ export function TaskModel(taskData?: Partial<Task>): Task {
 			startMoment: getToday(),
 			periodUnit: PeriodUnits.Days,
 			periodValue: 0,
+			checkedMoments: [],
 		},
 		taskData || {}
 	);

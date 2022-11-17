@@ -1,5 +1,5 @@
-import { Day } from './types';
-import { getDate, getDayOfMonth, getDayOfWeek } from './utils';
+import { Day } from '../types';
+import { getDate, getDayOfMonth, getDayOfWeek } from '../utils';
 
 export function DayModel(day: number): Day {
 	const date = getDate(day);

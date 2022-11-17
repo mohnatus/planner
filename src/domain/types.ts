@@ -19,8 +19,6 @@ export enum RepeatTypes {
 	Period,
 }
 
-
-
 export interface ITask {
 	id: string;
 	active: boolean;
@@ -61,6 +59,7 @@ export interface IRepeatTask {
 	startMoment: number;
 	periodUnit: PeriodUnits;
 	periodValue: number;
+	checkedMoments: Array<number>
 };
 
 export type Task = ITask & INoRepeatTask & IRepeatTask;

@@ -1,4 +1,4 @@
-import { DayTaskModel } from './DayTask';
+import { DayTaskModel } from '../entities/DayTask';
 import {
 	TasksList,
 	Task,
@@ -7,14 +7,14 @@ import {
 	RepeatTypes,
 	PeriodUnits,
 	IRepeatTask,
-} from './types';
+} from '../types';
 import {
 	getDate,
 	getDayOfMonth,
 	getDiffInDays,
 	getDiffInMonths,
 	getToday,
-} from './utils';
+} from '../utils';
 
 export function getActiveTasks(tasks: TasksList): TasksList {
 	return tasks.filter((task: Task) => {

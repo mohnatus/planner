@@ -1,13 +1,13 @@
-import { DayModel } from './Day';
+import { DayModel } from '../entities/Day';
 import {
 	isMonthDaysTaskVisibleOnDay,
 	isNoRepeatTaskVisibleOnDay,
 	isPeriodTaskVisibleOnDay,
 	isWeekDaysTaskVisibleOnDay,
 } from './getDayTasks';
-import { TaskModel } from './Task';
-import { Day, PeriodUnits, RepeatTypes, Task, WeekDays } from './types';
-import { cloneDate, getToday, MS_IN_DAY } from './utils';
+import { TaskModel } from '../entities/Task';
+import { Day, PeriodUnits, RepeatTypes, Task, WeekDays } from '../types';
+import { cloneDate, getToday, MS_IN_DAY } from '../utils';
 
 const todayMoment = getToday();
 const yesterdayMoment = todayMoment - MS_IN_DAY;
@@ -257,7 +257,3 @@ describe('Check period task', () => {
 		expect(isPeriodTaskVisibleOnDay(periodTask, day2)).toBe(false);
 	});
 });
-
-describe('Check all tasks', () => {
-
-})
