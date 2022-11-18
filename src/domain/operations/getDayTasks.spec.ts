@@ -6,12 +6,13 @@ import {
 	isWeekDaysTaskVisibleOnDay,
 } from './getDayTasks';
 import { TaskModel } from '../models/Task';
-import { Day, PeriodUnits, RepeatTypes, Task, WeekDays } from '../types';
+import { Day, Moment, PeriodUnits, RepeatTypes, Task, TaskMomentsList, WeekDays } from '../types';
 import { cloneDate, getToday, MS_IN_DAY } from '../utils';
+import { TaskMomentsModel } from '../models/TaskMoments';
 
-const todayMoment = getToday();
-const yesterdayMoment = todayMoment - MS_IN_DAY;
-const tomorrowMoment = todayMoment + MS_IN_DAY;
+const todayMoment: Moment = getToday();
+const yesterdayMoment: Moment = todayMoment - MS_IN_DAY;
+const tomorrowMoment: Moment = todayMoment + MS_IN_DAY;
 
 describe('Check noRepeat task', () => {
 	const today: Day = DayModel(todayMoment);
@@ -23,12 +24,13 @@ describe('Check noRepeat task', () => {
 			createdMoment: yesterdayMoment,
 		});
 		const todayTask: Task = TaskModel({});
+		const taskMomentsList = {};
 
-		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, yesterday)).toBe(true);
-		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, today)).toBe(false);
-		expect(isNoRepeatTaskVisibleOnDay(todayTask, today)).toBe(true);
-		expect(isNoRepeatTaskVisibleOnDay(todayTask, tomorrow)).toBe(false);
-		expect(isNoRepeatTaskVisibleOnDay(todayTask, yesterday)).toBe(false);
+		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, yesterday, taskMomentsList)).toBe(true);
+		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, today, taskMomentsList)).toBe(false);
+		expect(isNoRepeatTaskVisibleOnDay(todayTask, today, taskMomentsList)).toBe(true);
+		expect(isNoRepeatTaskVisibleOnDay(todayTask, tomorrow, taskMomentsList)).toBe(false);
+		expect(isNoRepeatTaskVisibleOnDay(todayTask, yesterday, taskMomentsList)).toBe(false);
 	});
 
 	test('Resheduled task is visible only today', () => {
@@ -40,35 +42,44 @@ describe('Check noRepeat task', () => {
 			resheduleToNextDay: true,
 		});
 
-		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, today)).toBe(true);
-		expect(isNoRepeatTaskVisibleOnDay(todayTask, today)).toBe(true);
-		expect(isNoRepeatTaskVisibleOnDay(todayTask, tomorrow)).toBe(false);
+		const taskMomentsList = {};
+
+		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, today, taskMomentsList)).toBe(true);
+		expect(isNoRepeatTaskVisibleOnDay(todayTask, today, taskMomentsList)).toBe(true);
+		expect(isNoRepeatTaskVisibleOnDay(todayTask, tomorrow, taskMomentsList)).toBe(false);
 	});
 
 	test('Checked task is visible only on the day of check', () => {
 		const yesterdayTask: Task = TaskModel({
 			createdMoment: yesterdayMoment,
-			checkedMoment: yesterdayMoment,
 		});
 
 		const yesterdayResheduledTask: Task = TaskModel({
 			resheduleToNextDay: true,
 			createdMoment: yesterdayMoment,
-			checkedMoment: todayMoment,
 		});
 
-		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, yesterday)).toBe(true);
-		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, today)).toBe(false);
-		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, tomorrow)).toBe(false);
+		const taskMomentsList: TaskMomentsList = {
+			[yesterdayTask.id]: TaskMomentsModel({
+				checks: [yesterdayMoment]
+			}),
+			[yesterdayResheduledTask.id]: TaskMomentsModel({
+				checks: [todayMoment]
+			})
+		}
+
+		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, yesterday, taskMomentsList)).toBe(true);
+		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, today, taskMomentsList)).toBe(false);
+		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, tomorrow, taskMomentsList)).toBe(false);
 
 		expect(
-			isNoRepeatTaskVisibleOnDay(yesterdayResheduledTask, yesterday)
+			isNoRepeatTaskVisibleOnDay(yesterdayResheduledTask, yesterday, taskMomentsList)
 		).toBe(false);
-		expect(isNoRepeatTaskVisibleOnDay(yesterdayResheduledTask, today)).toBe(
+		expect(isNoRepeatTaskVisibleOnDay(yesterdayResheduledTask, today, taskMomentsList)).toBe(
 			true
 		);
 		expect(
-			isNoRepeatTaskVisibleOnDay(yesterdayResheduledTask, tomorrow)
+			isNoRepeatTaskVisibleOnDay(yesterdayResheduledTask, tomorrow, taskMomentsList)
 		).toBe(false);
 	});
 });

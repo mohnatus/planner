@@ -7,7 +7,7 @@ import {
 	RepeatTypes,
 	PeriodUnits,
 	IRepeatTask,
-	TaskExceptionsList,
+	TaskMomentsList,
 } from '../types';
 import {
 	getDate,
@@ -23,13 +23,21 @@ export function getActiveTasks(tasks: TasksList): TasksList {
 	});
 }
 
-export function isNoRepeatTaskVisibleOnDay(task: Task, day: Day): boolean {
+export function isNoRepeatTaskVisibleOnDay(
+	task: Task,
+	day: Day,
+	moments: TaskMomentsList
+): boolean {
 	if (!task.resheduleToNextDay) {
 		return task.createdMoment === day.moment;
 	}
 
-	if (task.checkedMoment) {
-		return task.checkedMoment === day.moment;
+	const taskMoments = moments[task.id];
+	if (taskMoments) {
+		const [checkMoment] = taskMoments.checks;
+		if (checkMoment) {
+			return checkMoment === day.moment;
+		}
 	}
 
 	const today = getToday();
@@ -75,31 +83,37 @@ export function isPeriodTaskVisibleOnDay(task: IRepeatTask, day: Day): boolean {
 export function isTaskVisibleOnDay(
 	task: Task,
 	day: Day,
-	exceptions: TaskExceptionsList
+	moments: TaskMomentsList
 ): boolean {
-	const taskExceptions = exceptions[task.id];
+	// task was created later
+	if (task.createdMoment > day.moment) return false;
 
-	if (taskExceptions) {
-		const { include, exclude } = taskExceptions;
+	// if task has custom moments
+	const taskMoments = moments[task.id];
+
+	if (taskMoments) {
+		const { include, exclude } = taskMoments;
 		// includes
-		if (include.moments.includes(day.id)) return true;
+		if (include.includes(day.moment)) return true;
 
 		// excludes
-		if (exclude.moments.includes(day.id)) return false;
-		if (exclude.weekDays.includes(day.weekDay)) return false;
-		if (exclude.monthDays.includes(day.monthDay)) return false;
+		if (exclude.includes(day.moment)) return false;
 	}
 
-	// no-repeat
-	if (!task.repeat) {
-		return isNoRepeatTaskVisibleOnDay(task, day);
-	}
+	// base exclude settings
+	const { exclude, repeat, repeatType } = task;
 
-	// repeat
-	if (task.repeatType === RepeatTypes.WeekDays) {
+	if (exclude.weekDays.includes(day.weekDay)) return false;
+	if (exclude.monthDays.includes(day.monthDay)) return false;
+
+	// repeat settings
+	if (!repeat) {
+		return isNoRepeatTaskVisibleOnDay(task, day, moments);
+	}
+	if (repeatType === RepeatTypes.WeekDays) {
 		return isWeekDaysTaskVisibleOnDay(task, day);
 	}
-	if (task.repeatType === RepeatTypes.MonthDays) {
+	if (repeatType === RepeatTypes.MonthDays) {
 		return isMonthDaysTaskVisibleOnDay(task, day);
 	}
 	return isPeriodTaskVisibleOnDay(task, day);
@@ -108,12 +122,12 @@ export function isTaskVisibleOnDay(
 export function getDayTasks(
 	tasks: TasksList,
 	day: Day,
-	exceptions: TaskExceptionsList
+	moments: TaskMomentsList
 ): DayTasksList {
 	const activeTasks = getActiveTasks(tasks);
 
 	const dayTasks = activeTasks.filter((task: Task) => {
-		return isTaskVisibleOnDay(task, day, exceptions);
+		return isTaskVisibleOnDay(task, day, moments);
 	});
 
 	const dayTasksList: DayTasksList = [];
@@ -121,11 +135,11 @@ export function getDayTasks(
 	dayTasks.forEach((task: Task) => {
 		let timeList: Array<number | null> = [...task.defaultTime];
 
-		const taskExceptions = exceptions[task.id];
+		const taskMoments = moments[task.id];
 
-		if (taskExceptions) {
-			if (taskExceptions.time[day.id]) {
-				timeList = taskExceptions.time[day.id];
+		if (taskMoments) {
+			if (taskMoments.time[day.moment]) {
+				timeList = taskMoments.time[day.moment];
 			}
 		}
 
