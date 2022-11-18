@@ -1,3 +1,4 @@
+import { DayModel } from '../models/Day';
 import { DayTaskModel } from '../models/DayTask';
 import {
 	TasksList,
@@ -9,6 +10,7 @@ import {
 	IRepeatTask,
 	TaskMomentsList,
 	TaskCheck,
+	Moment,
 } from '../types';
 import {
 	getDate,
@@ -122,9 +124,11 @@ export function isTaskVisibleOnDay(
 
 export function getDayTasks(
 	tasks: TasksList,
-	day: Day,
+	dayMoment: Moment,
 	moments: TaskMomentsList
 ): DayTasksList {
+	const day = DayModel(dayMoment);
+
 	const activeTasks = getActiveTasks(tasks);
 
 	const dayTasks = activeTasks.filter((task: Task) => {
