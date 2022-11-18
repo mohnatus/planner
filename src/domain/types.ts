@@ -65,6 +65,11 @@ export type Task = ITask & INoRepeatTask & IRepeatTask;
 
 export type TasksList = Array<Task>;
 
+export type TaskCheck = {
+	moment: Moment,
+	time?: Time
+}
+
 /**
  * Task Moments
  * настройки видимости таска для конкретных дней
@@ -79,7 +84,7 @@ export type TaskMoments = {
 		[key: Moment]: Array<Moment>;
 	};
 
-	checks: Array<Moment>;
+	checks: Array<TaskCheck>;
 };
 
 export type TaskMomentsList = {

@@ -6,7 +6,15 @@ import {
 	isWeekDaysTaskVisibleOnDay,
 } from './getDayTasks';
 import { TaskModel } from '../models/Task';
-import { Day, Moment, PeriodUnits, RepeatTypes, Task, TaskMomentsList, WeekDays } from '../types';
+import {
+	Day,
+	Moment,
+	PeriodUnits,
+	RepeatTypes,
+	Task,
+	TaskMomentsList,
+	WeekDays,
+} from '../types';
 import { cloneDate, getToday, MS_IN_DAY } from '../utils';
 import { TaskMomentsModel } from '../models/TaskMoments';
 
@@ -26,11 +34,25 @@ describe('Check noRepeat task', () => {
 		const todayTask: Task = TaskModel({});
 		const taskMomentsList = {};
 
-		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, yesterday, taskMomentsList)).toBe(true);
-		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, today, taskMomentsList)).toBe(false);
-		expect(isNoRepeatTaskVisibleOnDay(todayTask, today, taskMomentsList)).toBe(true);
-		expect(isNoRepeatTaskVisibleOnDay(todayTask, tomorrow, taskMomentsList)).toBe(false);
-		expect(isNoRepeatTaskVisibleOnDay(todayTask, yesterday, taskMomentsList)).toBe(false);
+		expect(
+			isNoRepeatTaskVisibleOnDay(
+				yesterdayTask,
+				yesterday,
+				taskMomentsList
+			)
+		).toBe(true);
+		expect(
+			isNoRepeatTaskVisibleOnDay(yesterdayTask, today, taskMomentsList)
+		).toBe(false);
+		expect(
+			isNoRepeatTaskVisibleOnDay(todayTask, today, taskMomentsList)
+		).toBe(true);
+		expect(
+			isNoRepeatTaskVisibleOnDay(todayTask, tomorrow, taskMomentsList)
+		).toBe(false);
+		expect(
+			isNoRepeatTaskVisibleOnDay(todayTask, yesterday, taskMomentsList)
+		).toBe(false);
 	});
 
 	test('Resheduled task is visible only today', () => {
@@ -44,12 +66,18 @@ describe('Check noRepeat task', () => {
 
 		const taskMomentsList = {};
 
-		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, today, taskMomentsList)).toBe(true);
-		expect(isNoRepeatTaskVisibleOnDay(todayTask, today, taskMomentsList)).toBe(true);
-		expect(isNoRepeatTaskVisibleOnDay(todayTask, tomorrow, taskMomentsList)).toBe(false);
+		expect(
+			isNoRepeatTaskVisibleOnDay(yesterdayTask, today, taskMomentsList)
+		).toBe(true);
+		expect(
+			isNoRepeatTaskVisibleOnDay(todayTask, today, taskMomentsList)
+		).toBe(true);
+		expect(
+			isNoRepeatTaskVisibleOnDay(todayTask, tomorrow, taskMomentsList)
+		).toBe(false);
 	});
 
-	test('Checked task is visible only on the day of check', () => {
+	test('Checked task is visible on the days of check', () => {
 		const yesterdayTask: Task = TaskModel({
 			createdMoment: yesterdayMoment,
 		});
@@ -61,25 +89,47 @@ describe('Check noRepeat task', () => {
 
 		const taskMomentsList: TaskMomentsList = {
 			[yesterdayTask.id]: TaskMomentsModel({
-				checks: [yesterdayMoment]
+				checks: [{ moment: yesterdayMoment }],
 			}),
 			[yesterdayResheduledTask.id]: TaskMomentsModel({
-				checks: [todayMoment]
-			})
-		}
-
-		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, yesterday, taskMomentsList)).toBe(true);
-		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, today, taskMomentsList)).toBe(false);
-		expect(isNoRepeatTaskVisibleOnDay(yesterdayTask, tomorrow, taskMomentsList)).toBe(false);
+				checks: [{ moment: todayMoment }],
+			}),
+		};
 
 		expect(
-			isNoRepeatTaskVisibleOnDay(yesterdayResheduledTask, yesterday, taskMomentsList)
+			isNoRepeatTaskVisibleOnDay(
+				yesterdayTask,
+				yesterday,
+				taskMomentsList
+			)
+		).toBe(true);
+		expect(
+			isNoRepeatTaskVisibleOnDay(yesterdayTask, today, taskMomentsList)
 		).toBe(false);
-		expect(isNoRepeatTaskVisibleOnDay(yesterdayResheduledTask, today, taskMomentsList)).toBe(
-			true
-		);
 		expect(
-			isNoRepeatTaskVisibleOnDay(yesterdayResheduledTask, tomorrow, taskMomentsList)
+			isNoRepeatTaskVisibleOnDay(yesterdayTask, tomorrow, taskMomentsList)
+		).toBe(false);
+
+		expect(
+			isNoRepeatTaskVisibleOnDay(
+				yesterdayResheduledTask,
+				yesterday,
+				taskMomentsList
+			)
+		).toBe(false);
+		expect(
+			isNoRepeatTaskVisibleOnDay(
+				yesterdayResheduledTask,
+				today,
+				taskMomentsList
+			)
+		).toBe(true);
+		expect(
+			isNoRepeatTaskVisibleOnDay(
+				yesterdayResheduledTask,
+				tomorrow,
+				taskMomentsList
+			)
 		).toBe(false);
 	});
 });
@@ -195,7 +245,7 @@ describe('Check period task', () => {
 
 	test('10 days period task is visible after 0, 10, 50 days', () => {
 		const startDate = new Date(2022, 4, 8);
-    const startMoment = +startDate;
+		const startMoment = +startDate;
 
 		const periodTask = TaskModel({
 			repeat: true,

@@ -8,6 +8,7 @@ import {
 	PeriodUnits,
 	IRepeatTask,
 	TaskMomentsList,
+	TaskCheck,
 } from '../types';
 import {
 	getDate,
@@ -34,10 +35,10 @@ export function isNoRepeatTaskVisibleOnDay(
 
 	const taskMoments = moments[task.id];
 	if (taskMoments) {
-		const [checkMoment] = taskMoments.checks;
-		if (checkMoment) {
-			return checkMoment === day.moment;
-		}
+		const { checks } = taskMoments;
+		if (checks.some((check: TaskCheck) => {
+			return check.moment === day.moment;
+		})) return true;
 	}
 
 	const today = getToday();
