@@ -6,13 +6,16 @@ import {
 } from './tasksSlice';
 import styles from './Tasks.module.css';
 import { Task } from '../../domain/types';
+import { Link } from 'react-router-dom';
 
 export interface TaskProps {
   task: Task
 }
 
 export function TaskPreview({ task }: TaskProps) {
-  return <div>{ task.name }</div>
+  return <div>{ task.name }
+      <Link to={`/task/${task.id}`}>Редактировать</Link>
+  </div>
 }
 
 export function TasksList() {
@@ -23,7 +26,7 @@ export function TasksList() {
   return (
     <div>
       <h1>Список задач</h1>
-      
+
       {tasks.map((task: Task) => (<TaskPreview key={task.id} task={task} />))}
     </div>
   );

@@ -1,12 +1,9 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { stringify } from 'querystring';
 import { Selector } from 'react-redux';
 import { RootState, AppThunk } from '../../app/store';
-import { DayModel } from '../../domain/models/Day';
 import { TaskModel } from '../../domain/models/Task';
 import { getDayTasks } from '../../domain/operations/getDayTasks';
 import {
-	Day,
 	DaysConfiguration,
 	DayTasksList,
 	Moment,
@@ -40,7 +37,7 @@ export const tasksSlice = createSlice({
 	initialState,
 	reducers: {
 		addTask: (state, action: PayloadAction<Partial<Task>>) => {
-      console.log('add task', action)
+			console.log('add task', action);
 			const newTask = TaskModel(action.payload);
 			state.list = [...state.list, newTask];
 		},
@@ -74,6 +71,26 @@ export const selectTasks = (state: RootState) => state.tasks.list;
 export const selectDays = (state: RootState) => state.tasks.days;
 export const selectMoments = (state: RootState) => state.tasks.moments;
 
+const tasksCache: {
+	[key: string]: Selector<RootState, Task | undefined>;
+} = {};
+
+export const selectTask = (id: string = '') => {
+  if (!id) return () => undefined;
+
+	if (tasksCache[id]) return tasksCache[id];
+
+	const selector = createSelector(
+		selectTasks,
+		(tasks) => {
+			return tasks.find((task: Task) => task.id === id);
+		}
+	);
+  console.log({ selector })
+	tasksCache[id] = selector;
+	return selector;
+};
+
 const daySelectorsCache: {
 	[key: Moment]: Selector<RootState, DayTasksList>;
 } = {};
@@ -91,7 +108,6 @@ export const selectDayTasks = (dayMoment: Moment) => {
 	daySelectorsCache[dayMoment] = selector;
 	return selector;
 };
-
 
 // export const incrementIfOdd =
 // 	(amount: number): AppThunk =>

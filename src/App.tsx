@@ -12,6 +12,7 @@ function App() {
 			<Routes>
 				<Route path='/tasks' element={<TasksList />} />
         <Route path="/task/new" element={<TaskForm />} />
+        <Route path="/task/:id" element={<TaskForm />} />
 			</Routes>
 
       <Footer></Footer>
