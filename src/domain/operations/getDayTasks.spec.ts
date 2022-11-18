@@ -1,11 +1,11 @@
-import { DayModel } from '../entities/Day';
+import { DayModel } from '../models/Day';
 import {
 	isMonthDaysTaskVisibleOnDay,
 	isNoRepeatTaskVisibleOnDay,
 	isPeriodTaskVisibleOnDay,
 	isWeekDaysTaskVisibleOnDay,
 } from './getDayTasks';
-import { TaskModel } from '../entities/Task';
+import { TaskModel } from '../models/Task';
 import { Day, PeriodUnits, RepeatTypes, Task, WeekDays } from '../types';
 import { cloneDate, getToday, MS_IN_DAY } from '../utils';
 

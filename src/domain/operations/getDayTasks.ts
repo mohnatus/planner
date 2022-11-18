@@ -1,4 +1,4 @@
-import { DayTaskModel } from '../entities/DayTask';
+import { DayTaskModel } from '../models/DayTask';
 import {
 	TasksList,
 	Task,
