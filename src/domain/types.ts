@@ -31,7 +31,28 @@ export interface ITask {
 	repeat: boolean;
 
 	defaultTime: Array<number>;
+}
 
+export interface INoRepeatTask {
+	resheduleToNextDay: boolean;
+	checkedMoment: number | null;
+}
+
+export interface IRepeatTask {
+	repeatType: RepeatTypes;
+	weekDays: Array<WeekDays>;
+	monthDays: Array<number>;
+	startMoment: number;
+	periodUnit: PeriodUnits;
+	periodValue: number;
+	checkedMoments: Array<number>;
+}
+
+export type Task = ITask & INoRepeatTask & IRepeatTask;
+
+export type TasksList = Array<Task>;
+
+export type TaskExceptions = {
 	exclude: {
 		weekDays: Array<WeekDays>;
 		monthDays: Array<number>;
@@ -47,24 +68,9 @@ export interface ITask {
 	};
 };
 
-export interface INoRepeatTask {
-	resheduleToNextDay: boolean;
-	checkedMoment: number|null;
-};
-
-export interface IRepeatTask {
-	repeatType: RepeatTypes;
-	weekDays: Array<WeekDays>;
-	monthDays: Array<number>;
-	startMoment: number;
-	periodUnit: PeriodUnits;
-	periodValue: number;
-	checkedMoments: Array<number>
-};
-
-export type Task = ITask & INoRepeatTask & IRepeatTask;
-
-export type TasksList = Array<Task>;
+export type TaskExceptionsList = {
+	[key: string]: TaskExceptions
+}
 
 export type DayTask = {
 	id: string;

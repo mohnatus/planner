@@ -7,6 +7,7 @@ import {
 	RepeatTypes,
 	PeriodUnits,
 	IRepeatTask,
+	TaskExceptionsList,
 } from '../types';
 import {
 	getDate,
@@ -71,17 +72,23 @@ export function isPeriodTaskVisibleOnDay(task: IRepeatTask, day: Day): boolean {
 	return false;
 }
 
-export function isTaskVisibleOnDay(task: Task, day: Day): boolean {
-	// create time
-	if (task.createdMoment > day.moment) return false;
+export function isTaskVisibleOnDay(
+	task: Task,
+	day: Day,
+	exceptions: TaskExceptionsList
+): boolean {
+	const taskExceptions = exceptions[task.id];
 
-	// includes
-	if (task.include.moments.includes(day.id)) return true;
+	if (taskExceptions) {
+		const { include, exclude } = taskExceptions;
+		// includes
+		if (include.moments.includes(day.id)) return true;
 
-	// excludes
-	if (task.exclude.moments.includes(day.id)) return false;
-	if (task.exclude.weekDays.includes(day.weekDay)) return false;
-	if (task.exclude.monthDays.includes(day.monthDay)) return false;
+		// excludes
+		if (exclude.moments.includes(day.id)) return false;
+		if (exclude.weekDays.includes(day.weekDay)) return false;
+		if (exclude.monthDays.includes(day.monthDay)) return false;
+	}
 
 	// no-repeat
 	if (!task.repeat) {
@@ -98,11 +105,15 @@ export function isTaskVisibleOnDay(task: Task, day: Day): boolean {
 	return isPeriodTaskVisibleOnDay(task, day);
 }
 
-export function getDayTasks(tasks: TasksList, day: Day): DayTasksList {
+export function getDayTasks(
+	tasks: TasksList,
+	day: Day,
+	exceptions: TaskExceptionsList
+): DayTasksList {
 	const activeTasks = getActiveTasks(tasks);
 
 	const dayTasks = activeTasks.filter((task: Task) => {
-		return isTaskVisibleOnDay(task, day);
+		return isTaskVisibleOnDay(task, day, exceptions);
 	});
 
 	const dayTasksList: DayTasksList = [];
@@ -110,8 +121,12 @@ export function getDayTasks(tasks: TasksList, day: Day): DayTasksList {
 	dayTasks.forEach((task: Task) => {
 		let timeList: Array<number | null> = [...task.defaultTime];
 
-		if (task.time[day.id]) {
-			timeList = task.time[day.id];
+		const taskExceptions = exceptions[task.id];
+
+		if (taskExceptions) {
+			if (taskExceptions.time[day.id]) {
+				timeList = taskExceptions.time[day.id];
+			}
 		}
 
 		if (!timeList.length) {

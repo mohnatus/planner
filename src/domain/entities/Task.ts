@@ -16,18 +16,6 @@ export function TaskModel(taskData?: Partial<Task>): Task {
 
 			defaultTime: [],
 
-			exclude: {
-				weekDays: [],
-				monthDays: [],
-				moments: [],
-			},
-
-			include: {
-				moments: [],
-			},
-
-			time: {},
-
 			resheduleToNextDay: false,
 			checkedMoment: null,
 
