@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { addTask, editTask, selectTask } from './tasksSlice';
@@ -6,6 +6,7 @@ import { FormGroup } from '../../components/FormGroup';
 import { Input } from '../../components/Input';
 import { Textarea } from '../../components/Textarea';
 import { Toggler } from '../../components/Toggler';
+import { CalendarModal } from '../../components/CalendarModal';
 import { RepeatTypes } from '../../domain/types';
 
 const NO_REPEAT = 'no-repeat';
@@ -32,6 +33,11 @@ export function TaskForm() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const [repeat, setRepeat] = useState(NO_REPEAT);
+
+  const [showCalendar, setShowCalendar] = useState(false);
+  const closeCalendar = useCallback(() => {
+    setShowCalendar(false)
+  }, [setShowCalendar])
 
 	const updateValue = (
 		e: FormEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -104,7 +110,12 @@ export function TaskForm() {
 				onChange={setRepeat}
 			></Toggler>
 
+
+
 			<button type='submit'>Сохранить</button>
+			<button type='button' onClick={() => setShowCalendar(true)}>Открыть календарь</button>
+
+      <CalendarModal show={showCalendar} onClose={closeCalendar}></CalendarModal>
 		</form>
 	);
 }
