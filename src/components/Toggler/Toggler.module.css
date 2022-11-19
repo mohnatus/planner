@@ -1,0 +1,15 @@
+.Toggler {
+
+}
+
+.Wrapper {
+  display: flex;
+}
+
+.TogglerItem {
+
+}
+
+.Active {
+  font-weight: bold;
+}
