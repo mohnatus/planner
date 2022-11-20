@@ -1,13 +1,14 @@
-import { Day, Moment } from '../types';
-import { getDate, getDayOfMonth, getDayOfWeek } from '../utils';
+import { Day } from '../types';
+import { getDayOfMonth, getDayOfWeek } from '../../utils/date';
+import { Moment } from '../../types';
 
-export function DayModel(day: Moment): Day {
-	const date = getDate(day);
-	const weekDay = getDayOfWeek(date);
-	const monthDay = getDayOfMonth(date);
+export function DayModel(moment: Moment): Day {
+
+	const weekDay = getDayOfWeek(moment);
+	const monthDay = getDayOfMonth(moment);
 
 	return {
-		moment: day,
+		moment,
 		weekDay,
 		monthDay,
 	};

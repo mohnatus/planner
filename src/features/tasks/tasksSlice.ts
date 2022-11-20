@@ -1,12 +1,12 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Selector } from 'react-redux';
-import { RootState, AppThunk } from '../../app/store';
+import { RootState } from '../../app/store';
 import { TaskModel } from '../../domain/models/Task';
 import { getDayTasks } from '../../domain/operations/getDayTasks';
+import { Moment } from '../../types';
 import {
 	DaysConfiguration,
 	DayTasksList,
-	Moment,
 	Task,
 	TaskMomentsList,
 } from '../../domain/types';

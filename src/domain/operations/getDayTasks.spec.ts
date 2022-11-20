@@ -6,19 +6,12 @@ import {
 	isWeekDaysTaskVisibleOnDay,
 } from './getDayTasks';
 import { TaskModel } from '../models/Task';
-import {
-	Day,
-	Moment,
-	PeriodUnits,
-	RepeatTypes,
-	Task,
-	TaskMomentsList,
-	WeekDays,
-} from '../types';
-import { cloneDate, getToday, MS_IN_DAY } from '../utils';
+import { Day, PeriodUnits, RepeatTypes, Task, TaskMomentsList } from '../types';
+import { Moment, WeekDays } from '../../types';
+import { cloneDate, getTodayMoment, MS_IN_DAY } from '../../utils/date';
 import { TaskMomentsModel } from '../models/TaskMoments';
 
-const todayMoment: Moment = getToday();
+const todayMoment: Moment = getTodayMoment();
 const yesterdayMoment: Moment = todayMoment - MS_IN_DAY;
 const tomorrowMoment: Moment = todayMoment + MS_IN_DAY;
 
@@ -204,7 +197,7 @@ describe('Check monthDays task', () => {
 	});
 
 	test('2th & 11th task is visible only on 2th & 11th dates', () => {
-		const secondEleventDayTask = TaskModel({
+		const secondEleventhDayTask = TaskModel({
 			repeat: true,
 			repeatType: RepeatTypes.MonthDays,
 			monthDays: [2, 11],
@@ -212,13 +205,13 @@ describe('Check monthDays task', () => {
 		});
 
 		expect(
-			isMonthDaysTaskVisibleOnDay(secondEleventDayTask, secondDay2)
+			isMonthDaysTaskVisibleOnDay(secondEleventhDayTask, secondDay2)
 		).toBe(true);
 		expect(
-			isMonthDaysTaskVisibleOnDay(secondEleventDayTask, eleventhDay)
+			isMonthDaysTaskVisibleOnDay(secondEleventhDayTask, eleventhDay)
 		).toBe(true);
 		expect(
-			isMonthDaysTaskVisibleOnDay(secondEleventDayTask, thirdDay)
+			isMonthDaysTaskVisibleOnDay(secondEleventhDayTask, thirdDay)
 		).toBe(false);
 	});
 });

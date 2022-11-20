@@ -1,5 +1,6 @@
 import { DayModel } from '../models/Day';
 import { DayTaskModel } from '../models/DayTask';
+import { Moment } from '../../types';
 import {
 	TasksList,
 	Task,
@@ -10,7 +11,6 @@ import {
 	IRepeatTask,
 	TaskMomentsList,
 	TaskCheck,
-	Moment,
 } from '../types';
 import {
 	getDate,
@@ -18,7 +18,8 @@ import {
 	getDiffInDays,
 	getDiffInMonths,
 	getToday,
-} from '../utils';
+	getTodayMoment,
+} from '../../utils/date';
 
 export function getActiveTasks(tasks: TasksList): TasksList {
 	return tasks.filter((task: Task) => {
@@ -43,7 +44,7 @@ export function isNoRepeatTaskVisibleOnDay(
 		})) return true;
 	}
 
-	const today = getToday();
+	const today = getTodayMoment();
 
 	return today === day.moment;
 }
@@ -60,23 +61,19 @@ export function isPeriodTaskVisibleOnDay(task: IRepeatTask, day: Day): boolean {
 	const startMoment = task.startMoment;
 	if (startMoment > day.moment) return false;
 
-	const dayDate = new Date(day.moment);
-	const startDate = new Date(startMoment);
-
 	if (task.periodUnit === PeriodUnits.Months) {
-		const startDate = getDate(startMoment);
-		const startDateMonthDay = getDayOfMonth(startDate);
+		const startDateMonthDay = getDayOfMonth(startMoment);
 
 		if (startDateMonthDay !== day.monthDay) {
 			return false;
 		}
 
-		const diffInMonths = getDiffInMonths(startDate, dayDate);
+		const diffInMonths = getDiffInMonths(startMoment, day.moment);
 
 		if (diffInMonths % task.periodValue === 0) return true;
 	}
 
-	const diffInDays = getDiffInDays(dayDate, startDate);
+	const diffInDays = getDiffInDays(startMoment, day.moment);
 
 	if (diffInDays % task.periodValue === 0) return true;
 

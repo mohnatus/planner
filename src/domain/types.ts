@@ -1,16 +1,4 @@
-export type Moment = number;
-export type MonthDay = number;
-export type Time = number;
-
-export enum WeekDays {
-	Monday,
-	Tuesday,
-	Wednesday,
-	Thursday,
-	Friday,
-	Saturday,
-	Sunday,
-}
+import { Moment, MonthDay, Time, WeekDays } from "../types";
 
 export enum PeriodUnits {
 	Days,
@@ -66,9 +54,9 @@ export type Task = ITask & INoRepeatTask & IRepeatTask;
 export type TasksList = Array<Task>;
 
 export type TaskCheck = {
-	moment: Moment,
-	time?: Time
-}
+	moment: Moment;
+	time?: Time;
+};
 
 /**
  * Task Moments
@@ -76,7 +64,7 @@ export type TaskCheck = {
  */
 
 export type TaskMoments = {
-	exclude:  Array<Moment>;
+	exclude: Array<Moment>;
 
 	include: Array<Moment>;
 
@@ -119,7 +107,6 @@ export type Day = {
 export type DaysList = {
 	[key: Moment]: Day;
 };
-
 
 /** Day Task - отдельный таск в конкретный день */
 
