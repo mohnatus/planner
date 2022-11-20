@@ -1,4 +1,4 @@
-import { Moment, MonthDay, WeekDays } from '../types';
+import { Moment, MonthDay, Months, WeekDays } from '../types';
 
 type DateVariants = Moment | Date | string;
 
@@ -52,6 +52,10 @@ export function isWeekend(date: DateVariants): boolean {
 
 export function getDayOfMonth(date: DateVariants): MonthDay {
 	return getDate(date).getDate();
+}
+
+export function getMonth(date: DateVariants): Months {
+	return getDate(date).getMonth();
 }
 
 /** Today */

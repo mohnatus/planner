@@ -8,6 +8,9 @@ import { Textarea } from '../../components/Textarea';
 import { Toggler } from '../../components/Toggler';
 import { CalendarModal } from '../../components/CalendarModal';
 import { RepeatTypes } from '../../domain/types';
+import { CalendarInput } from '../../components/CalendarInput';
+import { getTodayMoment } from '../../utils/date';
+import { Moment } from '../../types';
 
 const NO_REPEAT = 'no-repeat';
 const REPEAT = 'repeat';
@@ -33,11 +36,8 @@ export function TaskForm() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const [repeat, setRepeat] = useState(NO_REPEAT);
+  const [date, setDate] = useState(getTodayMoment());
 
-  const [showCalendar, setShowCalendar] = useState(false);
-  const closeCalendar = useCallback(() => {
-    setShowCalendar(false)
-  }, [setShowCalendar])
 
 	const updateValue = (
 		e: FormEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -54,6 +54,10 @@ export function TaskForm() {
 				break;
 		}
 	};
+
+  const updateDate = (newValue: Moment) => {
+    setDate(newValue);
+  }
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -110,12 +114,13 @@ export function TaskForm() {
 				onChange={setRepeat}
 			></Toggler>
 
+      <CalendarInput value={date} onChange={updateDate}></CalendarInput>
+
 
 
 			<button type='submit'>Сохранить</button>
-			<button type='button' onClick={() => setShowCalendar(true)}>Открыть календарь</button>
 
-      <CalendarModal show={showCalendar} onClose={closeCalendar}></CalendarModal>
+
 		</form>
 	);
 }

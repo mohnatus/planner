@@ -1,0 +1,23 @@
+.Days {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.Day {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.Inactive {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.Selected {
+  background: blue;
+  color: white;
+}
