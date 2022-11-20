@@ -1,4 +1,4 @@
-import { Moment, MonthDay, Months, WeekDays } from '../types';
+import { DateComponents, Moment, MonthDay, Months, WeekDays } from '../types';
 
 type DateVariants = Moment | Date | string;
 
@@ -58,6 +58,32 @@ export function getMonth(date: DateVariants): Months {
 	return getDate(date).getMonth();
 }
 
+export function getYear(date: DateVariants): number {
+	return getDate(date).getFullYear();
+}
+
+export function getDateComponents(date: DateVariants): DateComponents {
+	const _date = getDate(date);
+	const _dayOfMonth = _date.getDate();
+	const _month = _date.getMonth();
+	const _year = _date.getFullYear();
+
+	return {
+		_dayOfMonth,
+		_month,
+		_year,
+
+		dayOfMonth: `${_dayOfMonth}`.padStart(2, '0'),
+		month: `${_month + 1}`.padStart(2, '0'),
+		year: `${_year}`,
+	};
+}
+
+export function formatDate(date: DateVariants): string {
+	const { dayOfMonth, month, year } = getDateComponents(date);
+	return `${dayOfMonth}.${month}.${year}`;
+}
+
 /** Today */
 
 export function getToday(): Date {
@@ -103,7 +129,7 @@ export function addDays(date: DateVariants, count: number = 1): Date {
 }
 
 export function subtractDays(date: DateVariants, count: number = 1): Date {
-const _date = cloneDate(date);
+	const _date = cloneDate(date);
 	_date.setDate(_date.getDate() - count);
 	return getDayStart(_date);
 }
@@ -143,7 +169,10 @@ export function getWeekEnd(date: DateVariants): Date {
 
 /** Periods */
 
-export function getPeriodDays(from: DateVariants, to: DateVariants): Array<Date> {
+export function getPeriodDays(
+	from: DateVariants,
+	to: DateVariants
+): Array<Date> {
 	const days = [];
 
 	const fromDate = getDayStart(from);
@@ -151,7 +180,7 @@ export function getPeriodDays(from: DateVariants, to: DateVariants): Array<Date>
 
 	let currentDate = fromDate;
 
-	while(currentDate <= toDate) {
+	while (currentDate <= toDate) {
 		days.push(cloneDate(currentDate));
 		currentDate = addDays(currentDate, 1);
 	}

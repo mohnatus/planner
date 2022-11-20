@@ -1,4 +1,11 @@
-import { FormEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {
+	FormEvent,
+	useCallback,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { addTask, editTask, selectTask } from './tasksSlice';
@@ -6,9 +13,9 @@ import { FormGroup } from '../../components/FormGroup';
 import { Input } from '../../components/Input';
 import { Textarea } from '../../components/Textarea';
 import { Toggler } from '../../components/Toggler';
-import { CalendarModal } from '../../components/CalendarModal';
+
 import { RepeatTypes } from '../../domain/types';
-import { CalendarInput } from '../../components/CalendarInput';
+import { DateInput } from '../../components/DateInput';
 import { getTodayMoment } from '../../utils/date';
 import { Moment } from '../../types';
 
@@ -36,8 +43,7 @@ export function TaskForm() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const [repeat, setRepeat] = useState(NO_REPEAT);
-  const [date, setDate] = useState(getTodayMoment());
-
+	const [startMoment, setStartMoment] = useState(getTodayMoment());
 
 	const updateValue = (
 		e: FormEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -55,9 +61,9 @@ export function TaskForm() {
 		}
 	};
 
-  const updateDate = (newValue: Moment) => {
-    setDate(newValue);
-  }
+	const updateStartMoment = (newValue: Moment) => {
+		setStartMoment(newValue);
+	};
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -65,7 +71,8 @@ export function TaskForm() {
 		const taskParams = {
 			name,
 			description,
-      repeat: repeat === REPEAT
+			repeat: repeat === REPEAT,
+			startMoment,
 		};
 
 		if (!taskId) {
@@ -83,7 +90,8 @@ export function TaskForm() {
 	useEffect(() => {
 		setName(task?.name || '');
 		setDescription(task?.description || '');
-    setRepeat(task?.repeat ? REPEAT : NO_REPEAT);
+		setRepeat(task?.repeat ? REPEAT : NO_REPEAT);
+		setStartMoment(task?.startMoment ? task.startMoment : getTodayMoment());
 	}, [task]);
 
 	return (
@@ -114,13 +122,17 @@ export function TaskForm() {
 				onChange={setRepeat}
 			></Toggler>
 
-      <CalendarInput value={date} onChange={updateDate}></CalendarInput>
-
-
+			{repeat === NO_REPEAT && (
+				<div>
+					Начиная с{' '}
+					<DateInput
+						value={startMoment}
+						onChange={updateStartMoment}
+					></DateInput>
+				</div>
+			)}
 
 			<button type='submit'>Сохранить</button>
-
-
 		</form>
 	);
 }

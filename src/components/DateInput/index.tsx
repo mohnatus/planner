@@ -1,22 +1,23 @@
 import { useCallback, useState } from "react";
 import { Moment } from "../../types";
+import { formatDate } from "../../utils/date";
 import { CalendarModal } from "../CalendarModal";
 
-export interface CalendarInputProps {
+export interface DateInputProps {
   value: Moment,
   onChange: (newValue: Moment) => void
 }
 
-interface CalendarInputViewProps {
+interface DateInputViewProps {
   value: Moment,
   onClick: () => void
 }
 
-function CalendarInputView({ value, onClick }: CalendarInputViewProps) {
-  return <div onClick={onClick}>{ value }</div>
+function DateInputView({ value, onClick }: DateInputViewProps) {
+  return <div onClick={onClick}>{ formatDate(value) }</div>
 }
 
-export function CalendarInput({ value, onChange }: CalendarInputProps) {
+export function DateInput({ value, onChange }: DateInputProps) {
   const [showModal, setShowModal] = useState(false)
 
   const openModal = useCallback(() => {
@@ -33,7 +34,7 @@ export function CalendarInput({ value, onChange }: CalendarInputProps) {
 
 
   return <div>
-    <CalendarInputView value={value} onClick={openModal} />
+    <DateInputView value={value} onClick={openModal} />
     <CalendarModal show={showModal} onClose={closeModal} value={value} onChange={onDayChange}></CalendarModal>
   </div>
 }

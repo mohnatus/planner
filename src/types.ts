@@ -26,3 +26,13 @@ export enum Months {
   November,
   December
 }
+
+export type DateComponents = {
+  _dayOfMonth: MonthDay,
+  _month: Months,
+  _year: number,
+
+  dayOfMonth: string,
+  month: string,
+  year: string,
+}

@@ -38,6 +38,7 @@ export interface ITask {
 
 export interface INoRepeatTask {
 	resheduleToNextDay: boolean;
+	startMoment: Moment;
 }
 
 export interface IRepeatTask {
