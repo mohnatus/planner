@@ -1,6 +1,10 @@
 import { PeriodUnits, RepeatTypes } from '../../domain/types';
 import { Moment, MonthDay, WeekDays } from '../../types';
+import { DateInput } from '../DateInput';
+import { Input } from '../Input';
 import { MonthDaysInput } from '../MonthDaysInput';
+import { NumberInput } from '../NumberInput';
+import { Toggler, TogglerOption } from '../Toggler';
 import { WeekDaysInput } from '../WeekDaysInput';
 
 export interface RepeatParams {
@@ -34,6 +38,17 @@ export function RepeatTypeToggler({
 	const handleChange = (params: Partial<RepeatParams>) => {
 		onChange(params);
 	};
+
+	const periodUnits: Array<TogglerOption<PeriodUnits>> = [
+		{
+			id: PeriodUnits.Days,
+			name: periodValue > 2 ? 'дней' : 'дня',
+		},
+		{
+			id: PeriodUnits.Months,
+			name: periodValue > 2 ? 'месяцев' : 'месяца',
+		},
+	];
 
 	return (
 		<div>
@@ -90,6 +105,34 @@ export function RepeatTypeToggler({
 						Период {repeatType === RepeatTypes.Period && '(active)'}
 					</button>
 				</div>
+
+				{repeatType === RepeatTypes.Period && (
+					<div>
+						<div>Один раз в</div>
+						<NumberInput
+							value={periodValue}
+							onChange={(newValue) => {
+								handleChange({ periodValue: newValue });
+							}}
+						></NumberInput>
+						<Toggler
+							value={periodUnit}
+							options={periodUnits}
+							onChange={(newValue) => {
+								handleChange({ periodUnit: newValue });
+							}}
+						></Toggler>
+						<div>
+							Начиная с{' '}
+							<DateInput
+								value={startMoment}
+								onChange={(newValue) => {
+									handleChange({ startMoment: newValue });
+								}}
+							></DateInput>
+						</div>
+					</div>
+				)}
 			</div>
 		</div>
 	);

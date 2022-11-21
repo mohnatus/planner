@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import { WEEK_DAYS } from '../../texts/Date';
-import { Moment, MonthDay, WeekDays } from '../../types';
-import { week } from '../../utils/date';
-import { Calendar } from '../Calendar';
+import { MonthDay, WeekDays } from '../../types';
 import { Checkbox } from '../Checkbox';
 import { Modal } from '../Modal';
 
-
-const MONTH: MonthDay[] = Array(31).fill(null).map((_, i) => i + 1);
+const MONTH: MonthDay[] = Array(31)
+	.fill(null)
+	.map((_, i) => i + 1);
 
 export interface MonthDaysModalProps {
 	show: boolean;
@@ -25,14 +23,14 @@ export function MonthDaysModal({
 	const [selected, setSelected] = useState(value);
 
 	const toggleDay = (day: MonthDay, checked: boolean) => {
-		setSelected(prev => {
-			const newValue = prev.filter(d => d !== day);
+		setSelected((prev) => {
+			const newValue = prev.filter((d) => d !== day);
 			if (checked) {
 				newValue.push(day);
 			}
 			return newValue;
 		});
-	}
+	};
 
 	const onSubmit = () => {
 		onChange(selected);
@@ -41,12 +39,17 @@ export function MonthDaysModal({
 
 	return (
 		<Modal show={show} onClose={onClose}>
-
-			{MONTH.map((day: WeekDays) => (<div key={day}>
-				<Checkbox label={`${day}`} checked={selected.includes(day)} onChange={(checked) => {
-					toggleDay(day, checked)
-				}} />
-			</div>))}
+			{MONTH.map((day: WeekDays) => (
+				<div key={day}>
+					<Checkbox
+						label={`${day}`}
+						checked={selected.includes(day)}
+						onChange={(checked) => {
+							toggleDay(day, checked);
+						}}
+					/>
+				</div>
+			))}
 
 			<button onClick={onSubmit}>Сохранить</button>
 		</Modal>

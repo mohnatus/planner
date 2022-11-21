@@ -5,23 +5,22 @@ import { addTask, editTask, selectTask } from './tasksSlice';
 import { FormGroup } from '../../components/FormGroup';
 import { Input } from '../../components/Input';
 import { Textarea } from '../../components/Textarea';
-import { Toggler } from '../../components/Toggler';
+import { Toggler, TogglerOption } from '../../components/Toggler';
 
 import { PeriodUnits, RepeatTypes } from '../../domain/types';
 import { DateInput } from '../../components/DateInput';
 import { getTodayMoment } from '../../utils/date';
-import { Moment, MonthDay, WeekDays } from '../../types';
+import {  MonthDay, WeekDays } from '../../types';
 import { Checkbox } from '../../components/Checkbox';
 import {
 	RepeatParams,
 	RepeatTypeToggler,
 } from '../../components/RepeatTypeToggler';
-import { WeekDaysInput } from '../../components/WeekDaysInput';
 
 const NO_REPEAT = 'no-repeat';
 const REPEAT = 'repeat';
 
-const REPEAT_OPTIONS = [
+const REPEAT_OPTIONS: Array<TogglerOption<string>> = [
 	{
 		id: NO_REPEAT,
 		name: 'Не повторять',

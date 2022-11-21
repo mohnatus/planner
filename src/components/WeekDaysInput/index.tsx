@@ -21,11 +21,15 @@ export function WeekDaysInput({ value, onChange }: WeekDaysInputProps) {
 
 	return (
 		<div>
-			<button type="button" onClick={openModal}>Выбрать дни недели</button>
+			<button type='button' onClick={openModal}>
+				Выбрать дни недели
+			</button>
 
-      <div>
-        {value.map(day => (<span key={day}>{WEEK_DAYS[day]}</span>))}
-      </div>
+			<div>
+				{value.map((day) => (
+					<span key={day}>{WEEK_DAYS[day]}</span>
+				))}
+			</div>
 
 			<WeekDaysModal
 				show={showModal}

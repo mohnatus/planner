@@ -37,7 +37,6 @@ export const tasksSlice = createSlice({
 	initialState,
 	reducers: {
 		addTask: (state, action: PayloadAction<Partial<Task>>) => {
-
 			const newTask = TaskModel(action.payload);
 			console.log('add task', action, newTask);
 			state.list = [...state.list, newTask];
@@ -77,17 +76,14 @@ const tasksCache: {
 } = {};
 
 export const selectTask = (id: string = '') => {
-  if (!id) return () => undefined;
+	if (!id) return () => undefined;
 
 	if (tasksCache[id]) return tasksCache[id];
 
-	const selector = createSelector(
-		selectTasks,
-		(tasks) => {
-			return tasks.find((task: Task) => task.id === id);
-		}
-	);
-  console.log({ selector })
+	const selector = createSelector(selectTasks, (tasks) => {
+		return tasks.find((task: Task) => task.id === id);
+	});
+	console.log({ selector });
 	tasksCache[id] = selector;
 	return selector;
 };

@@ -17,12 +17,7 @@ export function Textarea({ ref, value, onChange, id }: TextareaProps) {
 
 	return (
 		<div>
-			<textarea
-				ref={ref}
-				id={id}
-				value={value}
-				onChange={handleChange}
-			/>
+			<textarea ref={ref} id={id} value={value} onChange={handleChange} />
 		</div>
 	);
 }

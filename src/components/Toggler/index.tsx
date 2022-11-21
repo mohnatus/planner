@@ -1,23 +1,23 @@
 import { useCallback } from 'react';
 import styles from './Toggler.module.css';
 
-export type TogglerOption = {
-	id: string;
+export type TogglerOption<T> = {
+	id: T;
 	name: string;
 };
-interface TogglerOptionProps {
-	option: TogglerOption;
+interface TogglerOptionProps<T> {
+	option: TogglerOption<T>;
 	active: boolean;
-	onClick: (id: string) => void;
+	onClick: (id: T) => void;
 }
 
-export interface TogglerProps {
-	options: Array<TogglerOption>;
-	value: string;
-	onChange: (newValue: string) => void;
+export interface TogglerProps<T> {
+	options: Array<TogglerOption<T>>;
+	value: T;
+	onChange: (newValue: T) => void;
 }
 
-function TogglerItem({ option, active, onClick }: TogglerOptionProps) {
+function TogglerItem<T>({ option, active, onClick }: TogglerOptionProps<T>) {
 	const classes = [styles.TogglerItem, active && styles.Active].filter(Boolean);
 	const handleClick = useCallback(() => {
 		onClick(option.id);
@@ -29,17 +29,18 @@ function TogglerItem({ option, active, onClick }: TogglerOptionProps) {
 	);
 }
 
-export function Toggler({ options, value, onChange }: TogglerProps) {
-	const onOptionClick = (id: string) => {
+export function Toggler<T>({ options, value, onChange }: TogglerProps<T>) {
+	console.log('toggler', options, onChange)
+	const onOptionClick = (id: T) => {
 		onChange(id);
 	};
 
 	return (
 		<div className={styles.Toggler}>
 			<div className={styles.Wrapper}>
-				{options.map((option: TogglerOption) => (
+				{options.map((option: TogglerOption<T>) => (
 					<TogglerItem
-						key={option.id}
+						key={`${option.id}`}
 						option={option}
 						active={option.id === value}
 						onClick={onOptionClick}
