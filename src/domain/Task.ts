@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { PeriodUnits, RepeatTypes, Task } from './types';
-import { getToday, getTodayMoment } from '../utils/date';
+import { getToday, getTodayMoment } from '../utils/date/today';
 
 export function TaskModel(taskData?: Partial<Task>): Task {
 	const model = Object.assign(

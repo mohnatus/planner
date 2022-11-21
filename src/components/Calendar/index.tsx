@@ -1,9 +1,9 @@
 import { Moment } from '../../types';
-import { getDate, getDayOfMonth, getTodayMoment } from '../../utils/date';
 import { getCalendarMonth } from './calendar';
 import { CalendarDay } from './calendar.types';
 
 import styles from './Calendar.module.css';
+import { getTodayMoment } from '../../utils/date/today';
 
 export interface CalendarProps {
 	value: Moment;
@@ -16,15 +16,13 @@ export interface CalendarMonthDayProps {
 	onSelect: (moment: Moment) => void;
 }
 
-
-
 function CalendarMonthDay({ day, selected, onSelect }: CalendarMonthDayProps) {
 	const classes = [
 		styles.Day,
 		day.isToday && 'today',
 		day.isWeekend && 'weekend',
 		!day.active && styles.Inactive,
-		selected && styles.Selected
+		selected && styles.Selected,
 	].filter(Boolean);
 
 	const onClick = () => onSelect(day.moment);

@@ -8,8 +8,10 @@ import {
 import { TaskModel } from '../models/Task';
 import { Day, PeriodUnits, RepeatTypes, Task, TaskMomentsList } from '../types';
 import { Moment, WeekDays } from '../../types';
-import { cloneDate, getTodayMoment, MS_IN_DAY } from '../../utils/date';
+import { cloneDate } from '../../utils/date';
 import { TaskMomentsModel } from '../models/TaskMoments';
+import { getTodayMoment } from '../../utils/date/today';
+import { MS_IN_DAY } from '../../utils/date/constants';
 
 const todayMoment: Moment = getTodayMoment();
 const yesterdayMoment: Moment = todayMoment - MS_IN_DAY;

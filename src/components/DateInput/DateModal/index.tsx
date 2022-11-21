@@ -1,21 +1,21 @@
 import { useState } from 'react';
-import { Moment } from '../../types';
-import { Calendar } from '../Calendar';
-import { Modal } from '../Modal';
+import { Moment } from '../../../types';
+import { Calendar } from '../../Calendar';
+import { Modal } from '../../Modal';
 
-export interface CalendarModalProps {
+export interface DateModalProps {
 	show: boolean;
 	onClose: () => void;
 	onChange: (newValue: Moment) => void;
 	value: Moment;
 }
 
-export function CalendarModal({
+export function DateModal({
 	show,
 	onClose,
 	value,
 	onChange,
-}: CalendarModalProps) {
+}: DateModalProps) {
 	const [selected, setSelected] = useState(value);
 
 	const onDayChange = (moment: Moment) => {

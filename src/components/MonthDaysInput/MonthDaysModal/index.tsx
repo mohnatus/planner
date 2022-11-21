@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { MonthDay, WeekDays } from '../../types';
-import { Checkbox } from '../Checkbox';
-import { Modal } from '../Modal';
+import { MonthDay, WeekDays } from '../../../types';
+import { Checkbox } from '../../Checkbox';
+import { Modal } from '../../Modal';
 
 const MONTH: MonthDay[] = Array(31)
 	.fill(null)

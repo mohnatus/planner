@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { WEEK_DAYS } from '../../texts/Date';
-import { WeekDays } from '../../types';
-import { Checkbox } from '../Checkbox';
-import { Modal } from '../Modal';
+import { WEEK_DAYS } from '../../../texts/Date';
+import { WeekDays } from '../../../types';
+import { Checkbox } from '../../Checkbox';
+import { Modal } from '../../Modal';
 
 const WEEK: WeekDays[] = [
 	WeekDays.Monday,

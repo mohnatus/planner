@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { PeriodUnits, RepeatTypes, Task } from '../types';
-import { getTodayMoment } from '../../utils/date';
+import { getTodayMoment } from '../../utils/date/today';
 
 export function TaskModel(taskData?: Partial<Task>): Task {
 	const model = Object.assign(
@@ -27,7 +27,7 @@ export function TaskModel(taskData?: Partial<Task>): Task {
 
 			exclude: {
 				weekDays: [],
-				monthDays: []
+				monthDays: [],
 			},
 		},
 		taskData || {}

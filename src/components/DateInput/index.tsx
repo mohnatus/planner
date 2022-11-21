@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Moment } from '../../types';
-import { formatDate } from '../../utils/date';
-import { CalendarModal } from '../CalendarModal';
+import { formatDate } from '../../utils/date/format';
+import { DateModal } from './DateModal';
 
 export interface DateInputProps {
 	value: Moment;
@@ -39,12 +39,12 @@ export function DateInput({ value, onChange }: DateInputProps) {
 		<div>
 			<DateInputView value={value} onClick={openModal} />
 
-			<CalendarModal
+			<DateModal
 				show={showModal}
 				onClose={closeModal}
 				value={value}
 				onChange={onDayChange}
-			></CalendarModal>
+			></DateModal>
 		</div>
 	);
 }

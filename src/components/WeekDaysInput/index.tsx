@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { WEEK_DAYS } from '../../texts/Date';
 import { WeekDays } from '../../types';
-import { WeekDaysModal } from '../WeekDaysModal';
+import { WeekDaysModal } from './WeekDaysModal';
 
 export interface WeekDaysInputProps {
 	value: Array<WeekDays>;

@@ -9,7 +9,7 @@ import { Toggler, TogglerOption } from '../../components/Toggler';
 
 import { PeriodUnits, RepeatTypes } from '../../domain/types';
 import { DateInput } from '../../components/DateInput';
-import { getTodayMoment } from '../../utils/date';
+import { getTodayMoment } from '../../utils/date/today';
 import {  MonthDay, WeekDays } from '../../types';
 import { Checkbox } from '../../components/Checkbox';
 import {

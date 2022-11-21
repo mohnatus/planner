@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { WeekDays } from '../../types';
-import { MonthDaysModal } from '../MonthDaysModal';
+import { MonthDaysModal } from './MonthDaysModal';
 
 export interface MonthDaysInputProps {
 	value: Array<WeekDays>;

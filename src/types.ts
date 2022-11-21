@@ -36,3 +36,10 @@ export type DateComponents = {
   month: string,
   year: string,
 }
+
+export type TimeComponents = {
+  _hours: number,
+  _minutes: number,
+  hours: string;
+  minutes: string;
+}

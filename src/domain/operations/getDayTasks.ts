@@ -13,13 +13,10 @@ import {
 	TaskCheck,
 } from '../types';
 import {
-	getDate,
 	getDayOfMonth,
-	getDiffInDays,
-	getDiffInMonths,
-	getToday,
-	getTodayMoment,
 } from '../../utils/date';
+import { getTodayMoment } from '../../utils/date/today';
+import { getDiffInDays, getDiffInMonths } from '../../utils/date/diff';
 
 export function getActiveTasks(tasks: TasksList): TasksList {
 	return tasks.filter((task: Task) => {
