@@ -7,11 +7,12 @@ import { Input } from '../../components/Input';
 import { Textarea } from '../../components/Textarea';
 import { Toggler } from '../../components/Toggler';
 
-import { RepeatTypes } from '../../domain/types';
+import { PeriodUnits, RepeatTypes } from '../../domain/types';
 import { DateInput } from '../../components/DateInput';
 import { getTodayMoment } from '../../utils/date';
 import { Moment } from '../../types';
 import { Checkbox } from '../../components/Checkbox';
+import { RepeatParams, RepeatTypeToggler } from '../../components/RepeatTypeToggler';
 
 const NO_REPEAT = 'no-repeat';
 const REPEAT = 'repeat';
@@ -39,6 +40,17 @@ export function TaskForm() {
 	const [repeat, setRepeat] = useState(NO_REPEAT);
 	const [startMoment, setStartMoment] = useState(getTodayMoment());
 	const [resheduleToNextDay, setResheduleToNextDay] = useState(false);
+	const [repeatType, setRepeatType] = useState(RepeatTypes.WeekDays);
+	const [weekDays, setWeekDays] = useState([]);
+	const [monthDays, setMontsDays] = useState([]);
+	const [periodValue, setPeriodValue] = useState(1);
+	const [periodUnit, setPeriodUnit] = useState(PeriodUnits.Days);
+
+	const onChangeRepeatParams = (newParams: Partial<RepeatParams>) => {
+		if ('repeatType' in newParams) {
+			setRepeatType(newParams.repeatType || RepeatTypes.WeekDays);
+		}
+	};
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -49,6 +61,11 @@ export function TaskForm() {
 			repeat: repeat === REPEAT,
 			startMoment,
 			resheduleToNextDay,
+			repeatType,
+			weekDays,
+			monthDays,
+			periodUnit,
+			periodValue
 		};
 
 		if (!taskId) {
@@ -70,6 +87,7 @@ export function TaskForm() {
 		setRepeat(task?.repeat ? REPEAT : NO_REPEAT);
 		setStartMoment(task?.startMoment ? task.startMoment : getTodayMoment());
 		setResheduleToNextDay(task?.resheduleToNextDay || false);
+		setRepeatType(task?.repeatType || RepeatTypes.WeekDays)
 	}, [task]);
 
 	return (
@@ -114,7 +132,19 @@ export function TaskForm() {
 				</div>
 			)}
 
-			{repeat === REPEAT && <div></div>}
+			{repeat === REPEAT && (
+				<div>
+					<RepeatTypeToggler
+						repeatType={repeatType}
+						weekDays={weekDays}
+						monthDays={monthDays}
+						startMoment={startMoment}
+						periodUnit={periodUnit}
+						periodValue={periodValue}
+						onChange={onChangeRepeatParams}
+					/>
+				</div>
+			)}
 
 			<button type='submit'>Сохранить</button>
 		</form>
