@@ -1,12 +1,5 @@
-import {
-	FormEvent,
-	useCallback,
-	useEffect,
-	useLayoutEffect,
-	useRef,
-	useState,
-} from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { addTask, editTask, selectTask } from './tasksSlice';
 import { FormGroup } from '../../components/FormGroup';
@@ -18,6 +11,7 @@ import { RepeatTypes } from '../../domain/types';
 import { DateInput } from '../../components/DateInput';
 import { getTodayMoment } from '../../utils/date';
 import { Moment } from '../../types';
+import { Checkbox } from '../../components/Checkbox';
 
 const NO_REPEAT = 'no-repeat';
 const REPEAT = 'repeat';
@@ -44,35 +38,17 @@ export function TaskForm() {
 	const [description, setDescription] = useState('');
 	const [repeat, setRepeat] = useState(NO_REPEAT);
 	const [startMoment, setStartMoment] = useState(getTodayMoment());
-
-	const updateValue = (
-		e: FormEvent<HTMLInputElement | HTMLTextAreaElement>
-	) => {
-		const id = e.currentTarget.id;
-		const value = e.currentTarget.value;
-
-		switch (id) {
-			case 'task-name':
-				setName(value);
-				break;
-			case 'task-description':
-				setDescription(value);
-				break;
-		}
-	};
-
-	const updateStartMoment = (newValue: Moment) => {
-		setStartMoment(newValue);
-	};
+	const [resheduleToNextDay, setResheduleToNextDay] = useState(false);
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		const taskParams = {
-			name,
-			description,
+			name: name,
+			description: description,
 			repeat: repeat === REPEAT,
 			startMoment,
+			resheduleToNextDay,
 		};
 
 		if (!taskId) {
@@ -88,10 +64,12 @@ export function TaskForm() {
 	};
 
 	useEffect(() => {
+		console.log({ task });
 		setName(task?.name || '');
 		setDescription(task?.description || '');
 		setRepeat(task?.repeat ? REPEAT : NO_REPEAT);
 		setStartMoment(task?.startMoment ? task.startMoment : getTodayMoment());
+		setResheduleToNextDay(task?.resheduleToNextDay || false);
 	}, [task]);
 
 	return (
@@ -101,18 +79,14 @@ export function TaskForm() {
 			{taskId && !task && `Задача с id ${taskId} не существует`}
 
 			<FormGroup id='task-name' label='Название'>
-				<Input
-					id='task-name'
-					value={name}
-					onChange={updateValue}
-				></Input>
+				<Input id='task-name' value={name} onChange={setName}></Input>
 			</FormGroup>
 
 			<FormGroup id='task-description' label='Описание'>
 				<Textarea
 					id='task-description'
 					value={description}
-					onChange={updateValue}
+					onChange={setDescription}
 				></Textarea>
 			</FormGroup>
 
@@ -124,13 +98,23 @@ export function TaskForm() {
 
 			{repeat === NO_REPEAT && (
 				<div>
-					Начиная с{' '}
-					<DateInput
-						value={startMoment}
-						onChange={updateStartMoment}
-					></DateInput>
+					<div>
+						Начиная с{' '}
+						<DateInput
+							value={startMoment}
+							onChange={setStartMoment}
+						></DateInput>
+					</div>
+
+					<Checkbox
+						label='Переносить на следующий день'
+						checked={resheduleToNextDay}
+						onChange={setResheduleToNextDay}
+					/>
 				</div>
 			)}
+
+			{repeat === REPEAT && <div></div>}
 
 			<button type='submit'>Сохранить</button>
 		</form>

@@ -1,14 +1,34 @@
-import { FormEvent, InputHTMLAttributes } from 'react';
+import {
+	FormEvent,
+	RefObject,
+	useCallback,
+} from 'react';
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps {
+	ref?: RefObject<HTMLInputElement>;
+	id?: string;
+	type?: string;
 	value: string;
-	onChange: (e: FormEvent<HTMLInputElement>) => void;
+	onChange: (newValue: string) => void;
 }
 
-export function Input({ value, onChange, id, type = 'text' }: InputProps) {
+export function Input({ ref, value, onChange, id, type = 'text' }: InputProps) {
+	const handleChange = useCallback(
+		(e: FormEvent<HTMLInputElement>) => {
+			if (typeof onChange === 'function') onChange(e.currentTarget.value);
+		},
+		[onChange]
+	);
+
 	return (
 		<div>
-			<input type={type} id={id} value={value} onChange={onChange} />
+			<input
+				ref={ref}
+				type={type}
+				id={id}
+				value={value}
+				onChange={handleChange}
+			/>
 		</div>
 	);
 }

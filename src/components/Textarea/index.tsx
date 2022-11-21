@@ -1,14 +1,28 @@
-import { FormEvent, TextareaHTMLAttributes } from 'react';
+import { FormEvent, RefObject, useCallback } from 'react';
 
-export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextareaProps {
+	ref?: RefObject<HTMLTextAreaElement>;
+	id?: string;
 	value: string;
-	onChange: (e: FormEvent<HTMLTextAreaElement>) => void;
+	onChange?: (newValue: string) => void;
 }
 
-export function Textarea({ value, onChange, id }: TextareaProps) {
+export function Textarea({ ref, value, onChange, id }: TextareaProps) {
+	const handleChange = useCallback(
+		(e: FormEvent<HTMLTextAreaElement>) => {
+			if (typeof onChange === 'function') onChange(e.currentTarget.value);
+		},
+		[onChange]
+	);
+
 	return (
 		<div>
-			<textarea  id={id} value={value} onChange={onChange} />
+			<textarea
+				ref={ref}
+				id={id}
+				value={value}
+				onChange={handleChange}
+			/>
 		</div>
 	);
 }

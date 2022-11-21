@@ -37,8 +37,9 @@ export const tasksSlice = createSlice({
 	initialState,
 	reducers: {
 		addTask: (state, action: PayloadAction<Partial<Task>>) => {
-			console.log('add task', action);
+
 			const newTask = TaskModel(action.payload);
+			console.log('add task', action, newTask);
 			state.list = [...state.list, newTask];
 		},
 		removeTask: (state, action: PayloadAction<string>) => {
