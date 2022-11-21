@@ -10,9 +10,13 @@ import { Toggler } from '../../components/Toggler';
 import { PeriodUnits, RepeatTypes } from '../../domain/types';
 import { DateInput } from '../../components/DateInput';
 import { getTodayMoment } from '../../utils/date';
-import { Moment } from '../../types';
+import { Moment, MonthDay, WeekDays } from '../../types';
 import { Checkbox } from '../../components/Checkbox';
-import { RepeatParams, RepeatTypeToggler } from '../../components/RepeatTypeToggler';
+import {
+	RepeatParams,
+	RepeatTypeToggler,
+} from '../../components/RepeatTypeToggler';
+import { WeekDaysInput } from '../../components/WeekDaysInput';
 
 const NO_REPEAT = 'no-repeat';
 const REPEAT = 'repeat';
@@ -41,14 +45,30 @@ export function TaskForm() {
 	const [startMoment, setStartMoment] = useState(getTodayMoment());
 	const [resheduleToNextDay, setResheduleToNextDay] = useState(false);
 	const [repeatType, setRepeatType] = useState(RepeatTypes.WeekDays);
-	const [weekDays, setWeekDays] = useState([]);
-	const [monthDays, setMontsDays] = useState([]);
+	const [weekDays, setWeekDays] = useState<WeekDays[]>([]);
+	const [monthDays, setMonthDays] = useState<MonthDay[]>([]);
 	const [periodValue, setPeriodValue] = useState(1);
 	const [periodUnit, setPeriodUnit] = useState(PeriodUnits.Days);
 
 	const onChangeRepeatParams = (newParams: Partial<RepeatParams>) => {
+		console.log({ newParams });
 		if ('repeatType' in newParams) {
 			setRepeatType(newParams.repeatType || RepeatTypes.WeekDays);
+		}
+		if ('weekDays' in newParams) {
+			setWeekDays(newParams.weekDays || []);
+		}
+		if ('monthDays' in newParams) {
+			setMonthDays(newParams.monthDays || []);
+		}
+		if ('periodUnit' in newParams) {
+			setPeriodUnit(newParams.periodUnit || PeriodUnits.Days);
+		}
+		if ('periodValue' in newParams) {
+			setPeriodValue(newParams.periodValue || 1);
+		}
+		if ('startMoment' in newParams) {
+			setStartMoment(newParams.startMoment || getTodayMoment());
 		}
 	};
 
@@ -65,8 +85,10 @@ export function TaskForm() {
 			weekDays,
 			monthDays,
 			periodUnit,
-			periodValue
+			periodValue,
 		};
+
+		console.log('handle submit', { taskParams })
 
 		if (!taskId) {
 			dispatch(addTask(taskParams));
@@ -87,7 +109,11 @@ export function TaskForm() {
 		setRepeat(task?.repeat ? REPEAT : NO_REPEAT);
 		setStartMoment(task?.startMoment ? task.startMoment : getTodayMoment());
 		setResheduleToNextDay(task?.resheduleToNextDay || false);
-		setRepeatType(task?.repeatType || RepeatTypes.WeekDays)
+		setRepeatType(task?.repeatType || RepeatTypes.WeekDays);
+		setWeekDays(task?.weekDays || []);
+		setMonthDays(task?.monthDays || []);
+		setPeriodUnit(task?.periodUnit || PeriodUnits.Days);
+		setPeriodValue(task?.periodValue || 1);
 	}, [task]);
 
 	return (

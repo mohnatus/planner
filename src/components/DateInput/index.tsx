@@ -35,6 +35,7 @@ export function DateInput({ value, onChange }: DateInputProps) {
 
   return <div>
     <DateInputView value={value} onClick={openModal} />
+
     <CalendarModal show={showModal} onClose={closeModal} value={value} onChange={onDayChange}></CalendarModal>
   </div>
 }

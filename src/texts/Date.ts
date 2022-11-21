@@ -13,9 +13,12 @@ export const MONTHS = [
 	'Декабрь',
 ];
 
-export const WEEK_DAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+
+
+export const WEEK_DAYS = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
+export const WEEK_DAYS_SHORT = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
 
 export const DateTexts = {
 	months: MONTHS,
-	weekDays: WEEK_DAYS,
+	weekDaysShort: WEEK_DAYS,
 };

@@ -1,5 +1,7 @@
 import { PeriodUnits, RepeatTypes } from '../../domain/types';
 import { Moment, MonthDay, WeekDays } from '../../types';
+import { MonthDaysInput } from '../MonthDaysInput';
+import { WeekDaysInput } from '../WeekDaysInput';
 
 export interface RepeatParams {
 	repeatType: RepeatTypes;
@@ -36,33 +38,58 @@ export function RepeatTypeToggler({
 	return (
 		<div>
 			<div>
-				<button
-					onClick={() =>
-						handleChange({ repeatType: RepeatTypes.WeekDays })
-					}
-				>
-					Дни недели{' '}
-					{repeatType === RepeatTypes.WeekDays && '(active)'}
-				</button>
+				<div>
+					<button
+						type='button'
+						onClick={() =>
+							handleChange({ repeatType: RepeatTypes.WeekDays })
+						}
+					>
+						Дни недели{' '}
+						{repeatType === RepeatTypes.WeekDays && '(active)'}
+					</button>
+				</div>
 
+				{repeatType === RepeatTypes.WeekDays && (
+					<WeekDaysInput
+						value={weekDays}
+						onChange={(newValue) => {
+							handleChange({ weekDays: newValue });
+						}}
+					/>
+				)}
 
-        <button
-					onClick={() =>
-						handleChange({ repeatType: RepeatTypes.MonthDays })
-					}
-				>
-					Дни месяца{' '}
-					{repeatType === RepeatTypes.MonthDays && '(active)'}
-				</button>
+				<div>
+					<button
+						type='button'
+						onClick={() =>
+							handleChange({ repeatType: RepeatTypes.MonthDays })
+						}
+					>
+						Дни месяца{' '}
+						{repeatType === RepeatTypes.MonthDays && '(active)'}
+					</button>
+				</div>
 
-        <button
-					onClick={() =>
-						handleChange({ repeatType: RepeatTypes.Period })
-					}
-				>
-					Период{' '}
-					{repeatType === RepeatTypes.Period && '(active)'}
-				</button>
+				{repeatType === RepeatTypes.MonthDays && (
+					<MonthDaysInput
+						value={monthDays}
+						onChange={(newValue) => {
+							handleChange({ monthDays: newValue });
+						}}
+					/>
+				)}
+
+				<div>
+					<button
+						type='button'
+						onClick={() =>
+							handleChange({ repeatType: RepeatTypes.Period })
+						}
+					>
+						Период {repeatType === RepeatTypes.Period && '(active)'}
+					</button>
+				</div>
 			</div>
 		</div>
 	);

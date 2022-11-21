@@ -17,6 +17,10 @@ export const daysOfWeek = [
 	WeekDays.Saturday,
 ];
 
+export const week = [
+	WeekDays.Monday, WeekDays
+]
+
 /** Base */
 
 export function getDate(date: DateVariants) {
