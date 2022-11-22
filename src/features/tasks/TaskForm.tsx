@@ -10,12 +10,13 @@ import { Toggler, TogglerOption } from '../../components/Toggler';
 import { PeriodUnits, RepeatTypes } from '../../domain/types';
 import { DateInput } from '../../components/DateInput';
 import { getTodayMoment } from '../../utils/date/today';
-import {  MonthDay, WeekDays } from '../../types';
+import {  MonthDay, Time, WeekDays } from '../../types';
 import { Checkbox } from '../../components/Checkbox';
 import {
 	RepeatParams,
 	RepeatTypeToggler,
 } from '../../components/RepeatTypeToggler';
+import { TimeInput } from '../../components/TimeInput';
 
 const NO_REPEAT = 'no-repeat';
 const REPEAT = 'repeat';
@@ -48,9 +49,9 @@ export function TaskForm() {
 	const [monthDays, setMonthDays] = useState<MonthDay[]>([]);
 	const [periodValue, setPeriodValue] = useState(1);
 	const [periodUnit, setPeriodUnit] = useState(PeriodUnits.Days);
+	const [defaultTime, setDefaultTime] = useState<Time[]>([]);
 
 	const onChangeRepeatParams = (newParams: Partial<RepeatParams>) => {
-		console.log({ newParams });
 		if ('repeatType' in newParams) {
 			setRepeatType(newParams.repeatType || RepeatTypes.WeekDays);
 		}
@@ -85,6 +86,7 @@ export function TaskForm() {
 			monthDays,
 			periodUnit,
 			periodValue,
+			defaultTime
 		};
 
 		console.log('handle submit', { taskParams })
@@ -113,6 +115,7 @@ export function TaskForm() {
 		setMonthDays(task?.monthDays || []);
 		setPeriodUnit(task?.periodUnit || PeriodUnits.Days);
 		setPeriodValue(task?.periodValue || 1);
+		setDefaultTime(task?.defaultTime || []);
 	}, [task]);
 
 	return (
@@ -170,6 +173,10 @@ export function TaskForm() {
 					/>
 				</div>
 			)}
+
+			<hr />
+
+			<TimeInput values={defaultTime} onChange={setDefaultTime} />
 
 			<button type='submit'>Сохранить</button>
 		</form>

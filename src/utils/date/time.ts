@@ -2,7 +2,6 @@ import { Time, TimeComponents } from "../../types";
 import { MS_IN_HOUR, MS_IN_MIN } from "./constants";
 import { getDate} from ".";
 import { DateVariants } from "./date.types";
-import { getToday } from "./today";
 
 export function getTime(date: DateVariants): Time {
 	const _date = getDate(date);
@@ -10,7 +9,7 @@ export function getTime(date: DateVariants): Time {
 }
 
 export function getCurrentTime(): Time {
-  return getTime(getToday());
+  return getTime(new Date());
 }
 
 export function getTimeComponents(time: Time): TimeComponents {
