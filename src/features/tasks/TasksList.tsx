@@ -8,13 +8,15 @@ import styles from './Tasks.module.css';
 import { RepeatTypes, Task } from '../../domain/types';
 import { Link } from 'react-router-dom';
 import { WEEK_DAYS } from '../../texts/Date';
+import { formatTime } from '../../utils/date/time';
 
 export interface TaskProps {
   task: Task
 }
 
 export function TaskPreview({ task }: TaskProps) {
-  let repeatBlock: ReactNode = '';
+  let repeatBlock: ReactNode = null;
+  let excludeBlock: ReactNode = null;
 
   if (task.repeat) {
     let days = '';
@@ -34,11 +36,25 @@ export function TaskPreview({ task }: TaskProps) {
     repeatBlock = <div>Не повторять</div>
   }
 
+  const { weekDays, monthDays } = task.exclude;
+  if (weekDays.length || monthDays.length) {
+    excludeBlock = <div>Кроме:
+      <div>
+        {weekDays.map(d => WEEK_DAYS[d]).join(', ')}
+      </div>
+      <div>
+        {monthDays.join(', ')}
+      </div>
+    </div>
+  }
+
 
   return <div>
     <div>{ task.name }</div>
     <div>{task.description}</div>
     <div>{repeatBlock}</div>
+    <div>{excludeBlock}</div>
+    <div>Время: {task.defaultTime.map(time => formatTime(time)).join(', ') }</div>
       <Link to={`/task/${task.id}`}>Редактировать</Link>
   </div>
 }
