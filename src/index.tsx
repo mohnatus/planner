@@ -8,14 +8,14 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
-import { getPlannerData } from './db';
+import * as db from './db/getData';
 import { init } from './features/tasks/tasksSlice';
 import { PlannerData } from './types';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
-getPlannerData().then((data: PlannerData) => {
+db.getPlannerData().then((data: PlannerData) => {
     store.dispatch(init(data))
 
     root.render(

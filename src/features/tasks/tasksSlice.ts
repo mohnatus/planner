@@ -10,7 +10,7 @@ import {
 	Task,
 	TaskMomentsList,
 } from '../../types';
-import { addTask as addTaskToDb } from '../../db/tasks';
+import * as db from '../../db';
 
 export enum Statuses {
 	Loading,
@@ -41,28 +41,25 @@ export const tasksSlice = createSlice({
 			state.moments = moments;
 			state.status = Statuses.Idle;
 		},
-		addTaskToList: (state, action: PayloadAction<Task>) => {
+		addTaskToStore: (state, action: PayloadAction<Task>) => {
 			const newTask = action.payload;
 			console.log('add task to list', action, newTask);
 			state.list = [...state.list, newTask];
 		},
-		removeTask: (state, action: PayloadAction<string>) => {
+		removeTaskFromStore: (state, action: PayloadAction<string>) => {
 			state.list = state.list.filter(
 				(task) => task.id !== action.payload
 			);
 		},
-		editTask: (
+		editTaskInStore: (
 			state,
-			action: PayloadAction<{ taskId: string; data: Partial<Task> }>
+			action: PayloadAction<Task>
 		) => {
-			const { taskId, data } = action.payload;
+			const updatedTask = action.payload;
 
 			state.list = state.list.map((task: Task) => {
-				if (task.id === taskId) {
-					return {
-						...task,
-						...data,
-					};
+				if (task.id === updatedTask.id) {
+					return updatedTask;
 				}
 				return task;
 			});
@@ -70,7 +67,7 @@ export const tasksSlice = createSlice({
 	},
 });
 
-export const { init, addTaskToList, removeTask, editTask } = tasksSlice.actions;
+export const { init, addTaskToStore, removeTaskFromStore, editTaskInStore } = tasksSlice.actions;
 
 export const selectTasks = (state: RootState) => state.tasks.list;
 export const selectDays = (state: RootState) => state.tasks.days;
@@ -116,8 +113,28 @@ export const addTask =
 	(dispatch, getState) => {
 		const newTask = TaskModel(task);
 		console.log('add task', newTask);
-		addTaskToDb(newTask).then(() => {
-			dispatch(addTaskToList(newTask));
+		db.addTask(newTask).then(() => {
+			dispatch(addTaskToStore(newTask));
+		})
+
+	};
+
+export const editTask =
+	(taskId: string, data: Partial<Task>): AppThunk =>
+	(dispatch, getState) => {
+		const {tasks} = getState();
+		const originalTask = tasks.list.find((task: Task) => task.id === taskId);
+
+		if (!originalTask) return;
+
+		const updatedTask = TaskModel({
+			...originalTask,
+			...data
+		});
+
+		console.log('edit task', updatedTask);
+		db.updateTask(updatedTask).then(() => {
+			dispatch(editTaskInStore(updatedTask));
 		})
 
 	};

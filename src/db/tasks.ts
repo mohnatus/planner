@@ -9,6 +9,9 @@ export async function getTasksTransaction(db: IDBPDatabase<PlannerDB>) {
 	const store = transaction.objectStore(STORE_TASKS);
 	const list = (await store.getAll()) || [];
 	await transaction.done;
+  list.sort((a, b) => {
+    return a.createdMoment - b.createdMoment;
+  });
 	return list;
 }
 

@@ -122,10 +122,10 @@ export function TaskForm() {
 			dispatch(addTask(taskParams));
 		} else {
 			dispatch(
-				editTask({
+				editTask(
 					taskId,
-					data: taskParams,
-				})
+					taskParams,
+				)
 			);
 		}
 	};

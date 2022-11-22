@@ -30,7 +30,6 @@ function TogglerItem<T>({ option, active, onClick }: TogglerOptionProps<T>) {
 }
 
 export function Toggler<T>({ options, value, onChange }: TogglerProps<T>) {
-	console.log('toggler', options, onChange)
 	const onOptionClick = (id: T) => {
 		onChange(id);
 	};
