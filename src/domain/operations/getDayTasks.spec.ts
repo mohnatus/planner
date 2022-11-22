@@ -6,8 +6,7 @@ import {
 	isWeekDaysTaskVisibleOnDay,
 } from './getDayTasks';
 import { TaskModel } from '../models/Task';
-import { Day, PeriodUnits, RepeatTypes, Task, TaskMomentsList } from '../types';
-import { Moment, WeekDays } from '../../types';
+import { Day, PeriodUnits, RepeatTypes, Task, TaskMomentsList, Moment, WeekDays } from '../../types';
 import { cloneDate } from '../../utils/date';
 import { TaskMomentsModel } from '../models/TaskMoments';
 import { getTodayMoment } from '../../utils/date/today';
@@ -83,10 +82,10 @@ describe('Check noRepeat task', () => {
 		});
 
 		const taskMomentsList: TaskMomentsList = {
-			[yesterdayTask.id]: TaskMomentsModel({
+			[yesterdayTask.id]: TaskMomentsModel(yesterdayTask.id, {
 				checks: [{ moment: yesterdayMoment }],
 			}),
-			[yesterdayResheduledTask.id]: TaskMomentsModel({
+			[yesterdayResheduledTask.id]: TaskMomentsModel(yesterdayResheduledTask.id, {
 				checks: [{ moment: todayMoment }],
 			}),
 		};

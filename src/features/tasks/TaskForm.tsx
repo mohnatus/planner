@@ -7,10 +7,16 @@ import { Input } from '../../components/Input';
 import { Textarea } from '../../components/Textarea';
 import { Toggler, TogglerOption } from '../../components/Toggler';
 
-import { PeriodUnits, RepeatTypes } from '../../domain/types';
+import {
+	MonthDay,
+	Time,
+	WeekDays,
+	PeriodUnits,
+	RepeatTypes,
+} from '../../types';
 import { DateInput } from '../../components/DateInput';
 import { getTodayMoment } from '../../utils/date/today';
-import { MonthDay, Time, WeekDays } from '../../types';
+
 import { Checkbox } from '../../components/Checkbox';
 import {
 	RepeatParams,

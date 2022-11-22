@@ -1,31 +1,28 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Selector } from 'react-redux';
-import { RootState } from '../../app/store';
+import { AppThunk, RootState } from '../../app/store';
 import { TaskModel } from '../../domain/models/Task';
 import { getDayTasks } from '../../domain/operations/getDayTasks';
-import { Moment } from '../../types';
+import { Moment, PlannerData, TasksList } from '../../types';
 import {
 	DaysConfiguration,
 	DayTasksList,
 	Task,
 	TaskMomentsList,
-} from '../../domain/types';
+} from '../../types';
+import { addTask as addTaskToDb } from '../../db/tasks';
 
 export enum Statuses {
 	Loading,
 	Idle,
 }
 
-export interface TasksState {
+export interface TasksState extends PlannerData {
 	status: Statuses;
-
-	list: Array<Task>;
-	days: DaysConfiguration;
-	moments: TaskMomentsList;
 }
 
 const initialState: TasksState = {
-	status: Statuses.Idle,
+	status: Statuses.Loading,
 
 	list: [],
 	days: {},
@@ -36,9 +33,17 @@ export const tasksSlice = createSlice({
 	name: 'tasks',
 	initialState,
 	reducers: {
-		addTask: (state, action: PayloadAction<Partial<Task>>) => {
-			const newTask = TaskModel(action.payload);
-			console.log('add task', action, newTask);
+		init: (state, action: PayloadAction<PlannerData>) => {
+			console.log('init', { action });
+			const { list, days, moments } = action.payload;
+			state.list = list;
+			state.days = days;
+			state.moments = moments;
+			state.status = Statuses.Idle;
+		},
+		addTaskToList: (state, action: PayloadAction<Task>) => {
+			const newTask = action.payload;
+			console.log('add task to list', action, newTask);
 			state.list = [...state.list, newTask];
 		},
 		removeTask: (state, action: PayloadAction<string>) => {
@@ -65,7 +70,7 @@ export const tasksSlice = createSlice({
 	},
 });
 
-export const { addTask, removeTask, editTask } = tasksSlice.actions;
+export const { init, addTaskToList, removeTask, editTask } = tasksSlice.actions;
 
 export const selectTasks = (state: RootState) => state.tasks.list;
 export const selectDays = (state: RootState) => state.tasks.days;
@@ -105,6 +110,17 @@ export const selectDayTasks = (dayMoment: Moment) => {
 	daySelectorsCache[dayMoment] = selector;
 	return selector;
 };
+
+export const addTask =
+	(task: Partial<Task>): AppThunk =>
+	(dispatch, getState) => {
+		const newTask = TaskModel(task);
+		console.log('add task', newTask);
+		addTaskToDb(newTask).then(() => {
+			dispatch(addTaskToList(newTask));
+		})
+
+	};
 
 // export const incrementIfOdd =
 // 	(amount: number): AppThunk =>

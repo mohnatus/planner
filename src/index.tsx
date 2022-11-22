@@ -1,4 +1,4 @@
-import React, { version} from 'react';
+import React, { version } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 
@@ -8,28 +8,25 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
+import { getPlannerData } from './db';
+import { init } from './features/tasks/tasksSlice';
+import { PlannerData } from './types';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
+getPlannerData().then((data: PlannerData) => {
+    store.dispatch(init(data))
 
-console.log(version);
-
-root.render(
+    root.render(
 	<React.StrictMode>
-    <BrowserRouter>
-<Provider store={store}>
-       <App />
-
+		<BrowserRouter>
+			<Provider store={store}>
+				<App />
 			</Provider>
-    </BrowserRouter>
-
-
-
+		</BrowserRouter>
 	</React.StrictMode>
 );
+});
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// reportWebVitals();

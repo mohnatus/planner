@@ -1,8 +1,6 @@
 import { DayModel } from '../models/Day';
 import { DayTaskModel } from '../models/DayTask';
-import { Moment } from '../../types';
-import {
-	TasksList,
+import { Moment, TasksList,
 	Task,
 	DayTasksList,
 	Day,
@@ -11,7 +9,7 @@ import {
 	IRepeatTask,
 	TaskMomentsList,
 	TaskCheck,
-} from '../types';
+} from '../../types';
 import {
 	getDayOfMonth,
 } from '../../utils/date';

@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { PeriodUnits, RepeatTypes, Task } from '../types';
+import { PeriodUnits, RepeatTypes, Task } from '../../types';
 import { getTodayMoment } from '../../utils/date/today';
 
 export function TaskModel(taskData?: Partial<Task>): Task {

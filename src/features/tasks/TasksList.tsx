@@ -5,7 +5,7 @@ import {
   selectTasks
 } from './tasksSlice';
 import styles from './Tasks.module.css';
-import { RepeatTypes, Task } from '../../domain/types';
+import { RepeatTypes, Task } from '../../types';
 import { Link } from 'react-router-dom';
 import { WEEK_DAYS } from '../../texts/Date';
 import { formatTime } from '../../utils/date/time';

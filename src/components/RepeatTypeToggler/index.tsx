@@ -1,5 +1,4 @@
-import { PeriodUnits, RepeatTypes } from '../../domain/types';
-import { Moment, MonthDay, WeekDays } from '../../types';
+import { Moment, MonthDay, WeekDays, PeriodUnits, RepeatTypes } from '../../types';
 import { DateInput } from '../DateInput';
 import { Input } from '../Input';
 import { MonthDaysInput } from '../MonthDaysInput';

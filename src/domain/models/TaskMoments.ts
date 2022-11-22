@@ -1,7 +1,8 @@
-import { TaskMoments } from '../types';
+import { TaskMoments } from '../../types';
 
-export function TaskMomentsModel(data: Partial<TaskMoments>): TaskMoments {
+export function TaskMomentsModel(taskId: string, data: Partial<TaskMoments>): TaskMoments {
 	return {
+		id: taskId,
 		exclude: [],
 		include: [],
 		time: {},
