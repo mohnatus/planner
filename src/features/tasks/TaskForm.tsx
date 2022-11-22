@@ -10,13 +10,17 @@ import { Toggler, TogglerOption } from '../../components/Toggler';
 import { PeriodUnits, RepeatTypes } from '../../domain/types';
 import { DateInput } from '../../components/DateInput';
 import { getTodayMoment } from '../../utils/date/today';
-import {  MonthDay, Time, WeekDays } from '../../types';
+import { MonthDay, Time, WeekDays } from '../../types';
 import { Checkbox } from '../../components/Checkbox';
 import {
 	RepeatParams,
 	RepeatTypeToggler,
 } from '../../components/RepeatTypeToggler';
 import { TimeInput } from '../../components/TimeInput';
+import {
+	TaskExceptionParams,
+	TaskExceptions,
+} from '../../components/TaskExceptions';
 
 const NO_REPEAT = 'no-repeat';
 const REPEAT = 'repeat';
@@ -50,6 +54,8 @@ export function TaskForm() {
 	const [periodValue, setPeriodValue] = useState(1);
 	const [periodUnit, setPeriodUnit] = useState(PeriodUnits.Days);
 	const [defaultTime, setDefaultTime] = useState<Time[]>([]);
+	const [excludeWeekDays, setExcludeWeekDays] = useState<WeekDays[]>([]);
+	const [excludeMonthDays, setExcludeMonthDays] = useState<MonthDay[]>([]);
 
 	const onChangeRepeatParams = (newParams: Partial<RepeatParams>) => {
 		if ('repeatType' in newParams) {
@@ -72,6 +78,17 @@ export function TaskForm() {
 		}
 	};
 
+	const onChangeExceptionsParams = (
+		newParams: Partial<TaskExceptionParams>
+	) => {
+		if ('weekDays' in newParams) {
+			setExcludeWeekDays(newParams.weekDays || []);
+		}
+		if ('monthDays' in newParams) {
+			setExcludeMonthDays(newParams.monthDays || []);
+		}
+	};
+
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
@@ -86,10 +103,14 @@ export function TaskForm() {
 			monthDays,
 			periodUnit,
 			periodValue,
-			defaultTime
+			defaultTime,
+			exclude: {
+				weekDays: excludeWeekDays,
+				monthDays: excludeMonthDays,
+			},
 		};
 
-		console.log('handle submit', { taskParams })
+		console.log('handle submit', { taskParams });
 
 		if (!taskId) {
 			dispatch(addTask(taskParams));
@@ -116,6 +137,8 @@ export function TaskForm() {
 		setPeriodUnit(task?.periodUnit || PeriodUnits.Days);
 		setPeriodValue(task?.periodValue || 1);
 		setDefaultTime(task?.defaultTime || []);
+		setExcludeWeekDays(task?.exclude.weekDays || []);
+		setExcludeMonthDays(task?.exclude.monthDays || []);
 	}, [task]);
 
 	return (
@@ -177,6 +200,14 @@ export function TaskForm() {
 			<hr />
 
 			<TimeInput values={defaultTime} onChange={setDefaultTime} />
+
+			<hr />
+
+			<TaskExceptions
+				weekDays={excludeWeekDays}
+				monthDays={excludeMonthDays}
+				onChange={onChangeExceptionsParams}
+			/>
 
 			<button type='submit'>Сохранить</button>
 		</form>
