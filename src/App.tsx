@@ -7,6 +7,7 @@ import './App.css';
 import { TaskForm } from './features/tasks/TaskForm';
 import { useState } from 'react';
 import { Modal } from './components/Modal';
+import { TasksCalendar } from './features/days/TasksCalendar';
 
 function App() {
 
@@ -16,10 +17,11 @@ function App() {
 				<Route path='/tasks' element={<TasksList />} />
         <Route path="/task/new" element={<TaskForm />} />
         <Route path="/task/:id" element={<TaskForm />} />
+        <Route path="/calendar" element={<TasksCalendar />} />
 			</Routes>
 
 
-      
+
 
       <Footer></Footer>
 		</div>

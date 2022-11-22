@@ -1,9 +1,7 @@
-import { Moment } from '../../types';
-import { getCalendarMonth } from './calendar';
-import { CalendarDay } from './calendar.types';
-
+import { Moment, CalendarDay } from '../../types';
 import styles from './Calendar.module.css';
 import { getTodayMoment } from '../../utils/date/today';
+import { getCalendarMonth } from '../../utils/date/calendar';
 
 export interface CalendarProps {
 	value: Moment;

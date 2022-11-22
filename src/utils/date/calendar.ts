@@ -1,12 +1,11 @@
-import { Moment } from "../../types";
-import { isWeekend, getMoment, getDayOfMonth, getMonth } from "../../utils/date";
-import { getDiffInDays } from "../../utils/date/diff";
-import { addDays } from "../../utils/date/manipulations";
-import { getMonthEnd, getMonthStart } from "../../utils/date/month";
-import { getPeriodDays } from "../../utils/date/period";
-import { isToday } from "../../utils/date/today";
-import { getWeekEnd, getWeekStart } from "../../utils/date/week";
-import { CalendarDay, CalendarMonth } from "./calendar.types";
+import { Moment, CalendarDay, CalendarMonth } from "../../types";
+import { isWeekend, getMoment, getDayOfMonth, getMonth } from ".";
+import { getDiffInDays } from "./diff";
+import { addDays } from "./manipulations";
+import { getMonthEnd, getMonthStart } from "./month";
+import { getPeriodDays } from "./period";
+import { isToday } from "./today";
+import { getWeekEnd, getWeekStart } from "./week";
 
 function CalendarDayModel(date: Date, month: Moment): CalendarDay {
   return {
