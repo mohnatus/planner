@@ -2,10 +2,12 @@ import { MouseEvent, ReactNode, useCallback, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
-import { SPACING_MD } from '../../style/spacing';
+import { RADIUS_LG } from '../../style/decor';
+import { SPACING_LG, SPACING_MD, SPACING_XS } from '../../style/spacing';
 import { BASE_TIMING_FUNCTION, TRANSITION_LONG } from '../../style/transitions';
 
 export interface ModalProps {
+	width?: number;
 	show: boolean;
 	onClose: () => void;
 	title?: string | ReactNode;
@@ -51,22 +53,35 @@ const ModalWrapper = styled.div`
 	cursor: pointer;
 `;
 
-const ModalContent = styled.div`
+interface ModalContentProps {
+	width?: number;
+}
+
+const ModalContent = styled.div<ModalContentProps>`
 	margin: auto;
 	width: 100%;
-	max-width: 500px;
+	max-width: ${props => props?.width || 280}px;
 	background: white;
 	pointer-events: all;
 	transform: scale(0);
 	transition: transform ${TRANSITION_LONG} ${BASE_TIMING_FUNCTION};
 	cursor: default;
+	padding: ${SPACING_XS}px ${SPACING_MD}px ${SPACING_LG}px;
+	border-radius: ${RADIUS_LG}px;
 
 	.show & {
 		transform: scale(1);
 	}
 `;
 
-export function Modal({ show, onClose, title, children }: ModalProps) {
+const ModalClose = styled.div`
+	display: flex;
+	justify-content: flex-end;
+	margin-right: ${-1 * SPACING_MD / 2};
+	margin-bottom: ${SPACING_XS}px;
+`
+
+export function Modal({ width, show, onClose, title, children }: ModalProps) {
 	const modalRef = useRef<null | HTMLDivElement>(null);
 
 	const closeOnEscapeKeydown = useCallback(
@@ -103,13 +118,12 @@ export function Modal({ show, onClose, title, children }: ModalProps) {
 			<ModalRoot ref={modalRef}>
 				<ModalMask></ModalMask>
 				<ModalWrapper onClick={onWrapperClick}>
-					<ModalContent>
-						<div>
-							<button onClick={onClose}>&times;</button>
-						</div>
+					<ModalContent width={width}>
+						<ModalClose>
+							<button type="button" onClick={onClose}>&times;</button>
+						</ModalClose>
 						{title && <div>{title}</div>}
 						<div>{children}</div>
-						<div></div>
 					</ModalContent>
 				</ModalWrapper>
 			</ModalRoot>
