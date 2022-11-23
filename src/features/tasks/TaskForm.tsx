@@ -2,7 +2,7 @@ import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { addTask, editTask, selectTask } from './tasksSlice';
-import { FormGroup } from '../../components/FormGroup';
+import { FormGroup } from '../../containers/FormGroup';
 import { Input } from '../../components/Input';
 import { Textarea } from '../../components/Textarea';
 import { Toggler, TogglerOption } from '../../components/Toggler';
@@ -27,6 +27,9 @@ import {
 	TaskExceptionParams,
 	TaskExceptions,
 } from '../../components/TaskExceptions';
+import { Container } from '../../containers/Container';
+import { PageHeader } from '../../components/PageHeader';
+import { ServiceText } from '../../containers/ServiceText';
 
 const NO_REPEAT = 'no-repeat';
 const REPEAT = 'repeat';
@@ -121,12 +124,7 @@ export function TaskForm() {
 		if (!taskId) {
 			dispatch(addTask(taskParams));
 		} else {
-			dispatch(
-				editTask(
-					taskId,
-					taskParams,
-				)
-			);
+			dispatch(editTask(taskId, taskParams));
 		}
 	};
 
@@ -148,74 +146,93 @@ export function TaskForm() {
 	}, [task]);
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h1>{taskId ? 'Редактировать' : 'Новая задача'}</h1>
+		<div>
+			<PageHeader
+				title={taskId ? 'Редактировать' : 'Новая задача'}
+			></PageHeader>
 
-			{taskId && !task && `Задача с id ${taskId} не существует`}
-
-			<FormGroup id='task-name' label='Название'>
-				<Input id='task-name' value={name} onChange={setName}></Input>
-			</FormGroup>
-
-			<FormGroup id='task-description' label='Описание'>
-				<Textarea
-					id='task-description'
-					value={description}
-					onChange={setDescription}
-				></Textarea>
-			</FormGroup>
-
-			<Toggler
-				options={REPEAT_OPTIONS}
-				value={repeat}
-				onChange={setRepeat}
-			></Toggler>
-
-			{repeat === NO_REPEAT && (
-				<div>
+			<Container>
+				{taskId && !task ? (
 					<div>
-						Начиная с{' '}
-						<DateInput
-							value={startMoment}
-							onChange={setStartMoment}
-						></DateInput>
+						<ServiceText>
+							Задача с id ${taskId} не существует
+						</ServiceText>
 					</div>
+				) : (
+					<form onSubmit={handleSubmit}>
+						<FormGroup id='task-name' label='Название'>
+							<Input
+								id='task-name'
+								value={name}
+								onChange={setName}
+							></Input>
+						</FormGroup>
 
-					<Checkbox
-						label='Переносить на следующий день'
-						checked={resheduleToNextDay}
-						onChange={setResheduleToNextDay}
-					/>
-				</div>
-			)}
+						<FormGroup id='task-description' label='Описание'>
+							<Textarea
+								id='task-description'
+								value={description}
+								onChange={setDescription}
+							></Textarea>
+						</FormGroup>
 
-			{repeat === REPEAT && (
-				<div>
-					<RepeatTypeToggler
-						repeatType={repeatType}
-						weekDays={weekDays}
-						monthDays={monthDays}
-						startMoment={startMoment}
-						periodUnit={periodUnit}
-						periodValue={periodValue}
-						onChange={onChangeRepeatParams}
-					/>
-				</div>
-			)}
+						<Toggler
+							options={REPEAT_OPTIONS}
+							value={repeat}
+							onChange={setRepeat}
+						></Toggler>
 
-			<hr />
+						{repeat === NO_REPEAT && (
+							<div>
+								<div>
+									Начиная с{' '}
+									<DateInput
+										value={startMoment}
+										onChange={setStartMoment}
+									></DateInput>
+								</div>
 
-			<TimeInput values={defaultTime} onChange={setDefaultTime} />
+								<Checkbox
+									label='Переносить на следующий день'
+									checked={resheduleToNextDay}
+									onChange={setResheduleToNextDay}
+								/>
+							</div>
+						)}
 
-			<hr />
+						{repeat === REPEAT && (
+							<div>
+								<RepeatTypeToggler
+									repeatType={repeatType}
+									weekDays={weekDays}
+									monthDays={monthDays}
+									startMoment={startMoment}
+									periodUnit={periodUnit}
+									periodValue={periodValue}
+									onChange={onChangeRepeatParams}
+								/>
+							</div>
+						)}
 
-			<TaskExceptions
-				weekDays={excludeWeekDays}
-				monthDays={excludeMonthDays}
-				onChange={onChangeExceptionsParams}
-			/>
+						<hr />
 
-			<button type='submit'>Сохранить</button>
-		</form>
+						<TimeInput
+							values={defaultTime}
+							onChange={setDefaultTime}
+						/>
+
+						<hr />
+
+						<TaskExceptions
+							weekDays={excludeWeekDays}
+							monthDays={excludeMonthDays}
+							onChange={onChangeExceptionsParams}
+						/>
+
+						<button type='submit'>Сохранить</button>
+					</form>
+				)}
+			</Container>
+		</div>
 	);
 }
