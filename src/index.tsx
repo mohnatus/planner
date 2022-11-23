@@ -15,7 +15,7 @@ import { PlannerData } from './types';
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
-db.getPlannerData().then((data: PlannerData) => {
+db.readPlannerData().then((data: PlannerData) => {
     store.dispatch(init(data))
 
     root.render(

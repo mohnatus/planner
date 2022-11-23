@@ -5,7 +5,7 @@ import { getMomentsTransaction } from './moments';
 import { getTasksTransaction } from './tasks';
 import { getDb } from './db';
 
-export async function getPlannerData(): Promise<PlannerData> {
+export async function readPlannerData(): Promise<PlannerData> {
 	const db = await getDb();
 
 	const list = await getTasksTransaction(db);

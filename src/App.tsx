@@ -8,6 +8,7 @@ import { TaskForm } from './features/tasks/TaskForm';
 import { useState } from 'react';
 import { Modal } from './components/Modal';
 import { TasksCalendar } from './features/days/TasksCalendar';
+import { DayTasks } from './features/days/DayTasks';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route path="/task/new" element={<TaskForm />} />
         <Route path="/task/:id" element={<TaskForm />} />
         <Route path="/calendar" element={<TasksCalendar />} />
+        <Route path="/day/:moment" element={<DayTasks />} />
 			</Routes>
 
 

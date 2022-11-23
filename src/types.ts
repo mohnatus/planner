@@ -177,6 +177,7 @@ export type DaysList = {
 
 export type DayTask = {
 	id: string;
+  taskId: string;
 	name: string;
 	description: string;
 	time: Time | null;

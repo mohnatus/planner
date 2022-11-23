@@ -41,17 +41,17 @@ export const tasksSlice = createSlice({
 			state.moments = moments;
 			state.status = Statuses.Idle;
 		},
-		addTaskToStore: (state, action: PayloadAction<Task>) => {
+		addTask: (state, action: PayloadAction<Task>) => {
 			const newTask = action.payload;
 			console.log('add task to list', action, newTask);
 			state.list = [...state.list, newTask];
 		},
-		removeTaskFromStore: (state, action: PayloadAction<string>) => {
+		removeTask: (state, action: PayloadAction<string>) => {
 			state.list = state.list.filter(
 				(task) => task.id !== action.payload
 			);
 		},
-		editTaskInStore: (
+		editTask: (
 			state,
 			action: PayloadAction<Task>
 		) => {
@@ -67,7 +67,8 @@ export const tasksSlice = createSlice({
 	},
 });
 
-export const { init, addTaskToStore, removeTaskFromStore, editTaskInStore } = tasksSlice.actions;
+const { init, addTask: _addTask, removeTask: _removeTask, editTask: _editTask } = tasksSlice.actions;
+export { init };
 
 export const selectTasks = (state: RootState) => state.tasks.list;
 export const selectDays = (state: RootState) => state.tasks.days;
@@ -113,8 +114,8 @@ export const addTask =
 	(dispatch, getState) => {
 		const newTask = TaskModel(task);
 		console.log('add task', newTask);
-		db.addTask(newTask).then(() => {
-			dispatch(addTaskToStore(newTask));
+		db.createTask(newTask).then(() => {
+			dispatch(_addTask(newTask));
 		})
 
 	};
@@ -134,18 +135,21 @@ export const editTask =
 
 		console.log('edit task', updatedTask);
 		db.updateTask(updatedTask).then(() => {
-			dispatch(editTaskInStore(updatedTask));
+			dispatch(_editTask(updatedTask));
 		})
 
 	};
 
-// export const incrementIfOdd =
-// 	(amount: number): AppThunk =>
-// 	(dispatch, getState) => {
-// 		const currentValue = selectCount(getState());
-// 		if (currentValue % 2 === 1) {
-// 			//dispatch(incrementByAmount(amount));
-// 		}
-// 	};
+export const removeTask =
+	(task: Task): AppThunk =>
+	(dispatch, getState) => {
+
+		db.deleteTask(task).then(() => {
+			dispatch(_removeTask(task.id));
+		})
+
+	};
+
+
 
 export default tasksSlice.reducer;

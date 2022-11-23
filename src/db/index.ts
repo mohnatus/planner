@@ -1,8 +1,10 @@
-import { getPlannerData } from "./getData";
-import { addTask, updateTask } from "./tasks";
+import { readPlannerData } from "./getData";
+import { createTask, updateTask, deleteTask } from "./tasks";
 
 export {
-  getPlannerData,
-  addTask,
-  updateTask
+  readPlannerData,
+  createTask,
+  updateTask,
+  deleteTask
+
 }

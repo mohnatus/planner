@@ -12,5 +12,11 @@ export function DayTasks() {
 
   console.log(dayTasks);
 
-	return <div></div>;
+	return <div>
+    {dayTasks.map(task => (<div key={task.id}>
+      <div>{task.name}</div>
+      <div>{task.description}</div>
+      <hr />
+    </div>))}
+  </div>;
 }
