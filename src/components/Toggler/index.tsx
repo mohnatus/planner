@@ -1,5 +1,9 @@
 import { useCallback } from 'react';
-import styles from './Toggler.module.css';
+import styled from 'styled-components';
+import { COLORS } from '../../style/colors';
+import { RADIUS_SM } from '../../style/decor';
+import { CONTROL_HEIGHT } from '../../style/sizes';
+import { ButtonControl } from '../Button';
 
 export type TogglerOption<T> = {
 	id: T;
@@ -17,15 +21,38 @@ export interface TogglerProps<T> {
 	onChange: (newValue: T) => void;
 }
 
+const TogglerWrapper = styled.div`
+	display: flex;
+
+`;
+
+interface TogglerButtonProps {
+	active?: boolean;
+}
+
+const TogglerButton = styled(ButtonControl)<TogglerButtonProps>`
+	flex-grow: 1;
+	border-color: ${COLORS.border};
+	&:not(:first-child) {
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+		margin-left: -1px;
+	}
+	&:not(:last-child) {
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+`;
+
 function TogglerItem<T>({ option, active, onClick }: TogglerOptionProps<T>) {
-	const classes = [styles.TogglerItem, active && styles.Active].filter(Boolean);
 	const handleClick = useCallback(() => {
 		onClick(option.id);
 	}, [option, onClick]);
+
 	return (
-		<div className={classes.join(' ')} onClick={handleClick}>
+		<TogglerButton accent={active} onClick={handleClick}>
 			{option.name}
-		</div>
+		</TogglerButton>
 	);
 }
 
@@ -35,17 +62,15 @@ export function Toggler<T>({ options, value, onChange }: TogglerProps<T>) {
 	};
 
 	return (
-		<div className={styles.Toggler}>
-			<div className={styles.Wrapper}>
-				{options.map((option: TogglerOption<T>) => (
-					<TogglerItem
-						key={`${option.id}`}
-						option={option}
-						active={option.id === value}
-						onClick={onOptionClick}
-					/>
-				))}
-			</div>
-		</div>
+		<TogglerWrapper>
+			{options.map((option: TogglerOption<T>) => (
+				<TogglerItem
+					key={`${option.id}`}
+					option={option}
+					active={option.id === value}
+					onClick={onOptionClick}
+				/>
+			))}
+		</TogglerWrapper>
 	);
 }

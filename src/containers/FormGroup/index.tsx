@@ -16,6 +16,7 @@ const FormGroupWrapper = styled.div`
 `
 
 const Label = styled.label`
+  display: inline-block;
 	color: ${COLORS.serviceText};
 	margin-bottom: ${SPACING_XXS}px;
 `;

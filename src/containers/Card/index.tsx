@@ -4,7 +4,8 @@ import { RADIUS_LG } from '../../style/decor';
 import { SPACING_MD, SPACING_SM, SPACING_XS } from '../../style/spacing';
 
 const Card = styled.div`
-  background-color: ${COLORS.controlsBackground};
+  background-color: ${COLORS.controls.color};
+  color: ${COLORS.controls.contrast};
   padding: ${SPACING_MD}px ${SPACING_XS}px ${SPACING_XS}px;
   border-radius: ${RADIUS_LG}px;
 `;

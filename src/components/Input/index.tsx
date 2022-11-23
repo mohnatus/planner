@@ -21,7 +21,8 @@ const InputControl = styled.input`
 	display: block;
 	width: 100%;
 	height: ${CONTROL_HEIGHT}px;
-	background-color: ${COLORS.controlsBackground};
+	background-color: ${COLORS.controls.color};
+	color: ${COLORS.controls.contrast};
 	border: 1px solid ${COLORS.border};
 	border-radius: ${RADIUS_SM}px;
 	padding: ${SPACING_XXS}px ${SPACING_SM}px;

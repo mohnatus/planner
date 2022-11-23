@@ -20,7 +20,8 @@ const TextareaControl = styled.textarea`
 	display: block;
 	width: 100%;
 	min-height: 80px;
-	background-color: ${COLORS.controlsBackground};
+	background-color: ${COLORS.controls.color};
+	text: ${COLORS.controls.contrast};
 	border: 1px solid ${COLORS.border};
 	border-radius: ${RADIUS_SM}px;
 	padding: 17px ${SPACING_SM}px;

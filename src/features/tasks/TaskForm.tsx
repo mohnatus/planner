@@ -176,11 +176,13 @@ export function TaskForm() {
 							></Textarea>
 						</FormGroup>
 
-						<Toggler
-							options={REPEAT_OPTIONS}
-							value={repeat}
-							onChange={setRepeat}
-						></Toggler>
+						<FormGroup>
+							<Toggler
+								options={REPEAT_OPTIONS}
+								value={repeat}
+								onChange={setRepeat}
+							></Toggler>
+						</FormGroup>
 
 						{repeat === NO_REPEAT && (
 							<div>
