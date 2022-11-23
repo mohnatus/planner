@@ -1,16 +1,25 @@
-import React, { ReactNode, useState } from 'react';
-
+import { ReactNode, useState } from 'react';
+import styled from 'styled-components';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { removeTask, selectTasks } from './tasksSlice';
-import styles from './Tasks.module.css';
 import { RepeatTypes, Task } from '../../types';
 import { Link, useNavigate } from 'react-router-dom';
 import { WEEK_DAYS } from '../../texts/Date';
 import { formatTime } from '../../utils/date/time';
+import { PageHeader } from '../../components/PageHeader';
+import { Container } from '../../containers/Container';
+import { Card, CardContent, CardTitle } from '../../containers/Card';
+import { SPACING_LG } from '../../style/spacing';
 
 export interface TaskProps {
 	task: Task;
 }
+
+const TaskCard = styled(Card)`
+  &:not(:last-child) {
+    margin-bottom: ${SPACING_LG}px;
+  }
+`
 
 export function TaskPreview({ task }: TaskProps) {
 	let repeatBlock: ReactNode = null;
@@ -49,21 +58,27 @@ export function TaskPreview({ task }: TaskProps) {
 	};
 
 	return (
-		<div>
-			<div>{task.name}</div>
-			<div>{task.description}</div>
-			<div>{repeatBlock}</div>
-			<div>{excludeBlock}</div>
+		<TaskCard>
 			<div>
-				Время:{' '}
-				{task.defaultTime.map((time) => formatTime(time)).join(', ')}
+				<CardTitle>{task.name}</CardTitle>
 			</div>
-			<Link to={`/task/${task.id}`}>Редактировать</Link>
-			<div>
-				<button onClick={onRemove}>Удалить</button>
-			</div>
-			<hr />
-		</div>
+
+			<CardContent bordered>
+				<div>{task.description}</div>
+				<div>{repeatBlock}</div>
+				<div>{excludeBlock}</div>
+				<div>
+					Время:{' '}
+					{task.defaultTime
+						.map((time) => formatTime(time))
+						.join(', ')}
+				</div>
+				<Link to={`/task/${task.id}`}>Редактировать</Link>
+				<div>
+					<button onClick={onRemove}>Удалить</button>
+				</div>
+			</CardContent>
+		</TaskCard>
 	);
 }
 
@@ -73,11 +88,13 @@ export function TasksList() {
 
 	return (
 		<div>
-			<h1>Список задач</h1>
+			<PageHeader title='Список задач'></PageHeader>
 
-			{tasks.map((task: Task) => (
-				<TaskPreview key={task.id} task={task} />
-			))}
+			<Container>
+				{tasks.map((task: Task) => (
+					<TaskPreview key={task.id} task={task} />
+				))}
+			</Container>
 		</div>
 	);
 }

@@ -1,6 +1,7 @@
 import styled, {createGlobalStyle } from 'styled-components';
 import { FONT_FAMILY, FONT_SIZE } from './style/typography';
 import { COLORS } from './style/colors';
+import { SPACING_MD } from './style/spacing';
 
 export const GlobalStyle = createGlobalStyle`
 	* {
@@ -28,11 +29,14 @@ export const PageWrapper = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
+
 `
 
 export const ContentWrapper = styled.div`
   flex-grow: 1;
   overflow: auto;
+  padding-top: ${SPACING_MD}px;
+  padding-bottom: ${SPACING_MD}px;
 `
 
 export const FooterWrapper = styled.div`

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { COLORS } from '../../style/colors';
 import { FOOTER_HEIGHT } from '../../style/sizes';
-import { Container } from '../Container';
+import { Container } from '../../containers/Container';
 
 const FooterWrapper = styled.footer`
 	height: ${FOOTER_HEIGHT}px;
