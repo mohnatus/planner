@@ -7,7 +7,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 
-import './index.css';
 import * as db from './db/getData';
 import { init } from './features/tasks/tasksSlice';
 import { PlannerData } from './types';
