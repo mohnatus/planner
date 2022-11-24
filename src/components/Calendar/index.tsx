@@ -10,6 +10,10 @@ import {
 	CALENDAR_VIEW_YEAR,
 } from './constants';
 import { COLORS } from '../../style/colors';
+import { CalendarDays } from './CalendarDays';
+import { CalendarMonths } from './CalendarMonths';
+import { CalendarYears } from './CalendarYears';
+import { CalendarHeader } from './CalendarHeader';
 
 export interface CalendarProps {
 	moment: Moment;
@@ -17,72 +21,12 @@ export interface CalendarProps {
 	onSelect?: (moment: Moment) => void;
 }
 
-export interface CalendarMonthDayProps {
-	day: CalendarDay;
-	onClick: (moment: Moment) => void;
-  dayComponent: (day: CalendarDay, moment: Moment) => JSX.Element;
-  moment: Moment;
-}
-
-const CalendarDays = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-	width: 245px;
-	margin-right: -5px;
-`;
-
-interface CalendarDayProps {
-	today: boolean;
-	weekend: boolean;
-	inactive: boolean;
-}
-
-const CalendarDate = styled.div<CalendarDayProps>`
-	width: 30px;
-	height: 30px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
-	font-size: 11px;
-	font-weight: 700;
-	border-radius: 50%;
-	cursor: pointer;
-	margin-right: 5px;
-	margin-bottom: 5px;
-
-	${(props) => props.inactive && `color: ${COLORS.serviceText}`}
-	${(props) =>
-		props.today && !props.inactive && `color: ${COLORS.accent.color}`}
-`;
-
-function CalendarMonthDay({ day, onClick, moment, dayComponent }: CalendarMonthDayProps) {
-	return (
-		<CalendarDate
-			today={day.isToday}
-			weekend={day.isWeekend}
-			inactive={!day.active}
-			onClick={() => onClick(day.moment)}
-		>
-			{ dayComponent(day, moment) }
-		</CalendarDate>
-	);
-}
-
-const defaultDayComponent = (day: CalendarDay) => {
-	return <span>{day.date}</span>;
-};
-
 const CURRENT_YEAR = new Date().getFullYear();
 function getYearRangeStart(year: number) {
 	return year - (year % 10);
 }
 
-export function Calendar({
-	moment,
-	dayComponent = defaultDayComponent,
-	onSelect,
-}: CalendarProps) {
+export function Calendar({ moment, dayComponent, onSelect }: CalendarProps) {
 	const [view, setView] = useState(CALENDAR_VIEW_DATE);
 	const [viewMoment, setViewMoment] = useState(getTodayMoment());
 	const [rangeStart, setRangeStart] = useState(
@@ -173,14 +117,12 @@ export function Calendar({
 
 	const updateYear = useCallback(
 		(year: number) => {
-			setViewMoment(
-				(prev) => {
-					const _date = new Date(prev);
-					_date.setDate(1);
-					_date.setFullYear(year);
-          return +_date;
-				},
-			);
+			setViewMoment((prev) => {
+				const _date = new Date(prev);
+				_date.setDate(1);
+				_date.setFullYear(year);
+				return +_date;
+			});
 			setView(CALENDAR_VIEW_MONTH);
 		},
 		[setView, setViewMoment]
@@ -190,74 +132,52 @@ export function Calendar({
 		<div>
 			{view === CALENDAR_VIEW_DATE && (
 				<>
-					<div>
-						<button type='button' onClick={prevMonth}>
-							&lt;
-						</button>
+					<CalendarHeader onPrev={prevMonth} onNext={nextMonth}>
 						<span onClick={() => setView(CALENDAR_VIEW_MONTH)}>
-							{monthName} {year}
+							{monthName}
+						</span>{' '}
+						<span onClick={() => setView(CALENDAR_VIEW_YEAR)}>
+							{year}
 						</span>
-						<button type='button' onClick={nextMonth}>
-							&gt;
-						</button>
-					</div>
-					<CalendarDays>
-						{monthDays.map((day) => (
-							<CalendarMonthDay
-								key={day.moment}
-								day={day}
-								onClick={onDayClick}
-                moment={moment}
-                dayComponent={dayComponent}
-							></CalendarMonthDay>
-						))}
-					</CalendarDays>
+					</CalendarHeader>
+
+					<CalendarDays
+						days={monthDays}
+						moment={moment}
+						onDayClick={onDayClick}
+						dayComponent={dayComponent}
+					/>
 				</>
 			)}
 
 			{view === CALENDAR_VIEW_MONTH && (
 				<>
-					<div>
-						<button type='button' onClick={prevYear}>
-							&lt;
-						</button>
+					<CalendarHeader onPrev={prevYear} onNext={nextYear}>
 						<span onClick={() => setView(CALENDAR_VIEW_YEAR)}>
 							{year}
 						</span>
-						<button type='button' onClick={nextYear}>
-							&gt;
-						</button>
-					</div>
-					<div>
-						{MONTHS.map((monthName, i) => (
-							<div key={i} onClick={() => updateMonth(i)}>
-								{monthName}
-							</div>
-						))}
-					</div>
+					</CalendarHeader>
+
+					<CalendarMonths
+						onMonthClick={updateMonth}
+						currentMonth={month}
+					/>
 				</>
 			)}
 
 			{view === 'year' && (
 				<>
-					<div>
-						<button type='button' onClick={prevRange}>
-							&lt;
-						</button>
-						<span>
-							{rangeStart} - {rangeStart + 9}
-						</span>
-						<button type='button' onClick={nextRange}>
-							&gt;
-						</button>
-					</div>
-					<div>
-						{years.map((year) => (
-							<div key={year} onClick={() => updateYear(year)}>
-								{year}
-							</div>
-						))}
-					</div>
+					<CalendarHeader
+						onPrev={prevRange}
+						onNext={nextRange}
+					>
+            <span>{rangeStart} - {rangeStart + 9}</span>
+          </CalendarHeader>
+					<CalendarYears
+						years={years}
+						currentYear={year}
+						onYearClick={updateYear}
+					/>
 				</>
 			)}
 		</div>
