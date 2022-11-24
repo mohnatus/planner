@@ -1,7 +1,12 @@
 import { useCallback, useState } from 'react';
+import { COLORS } from '../../style/colors';
+import { RADIUS_SM } from '../../style/decor';
+import { CONTROL_HEIGHT } from '../../style/sizes';
+import { SPACING_XS } from '../../style/spacing';
 import { Moment } from '../../types';
 import { formatDate } from '../../utils/date/format';
 import { DateModal } from './DateModal';
+import styled from 'styled-components'
 
 export interface DateInputProps {
 	value: Moment;
@@ -13,8 +18,24 @@ interface DateInputViewProps {
 	onClick: () => void;
 }
 
+const DateInputControl = styled.div`
+	width: 186px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: ${CONTROL_HEIGHT}px;
+  padding-left: ${SPACING_XS}px;
+  padding-right: ${SPACING_XS}px;
+  background-color: ${COLORS.controls.color};
+	color: ${COLORS.controls.contrast};
+	border: 1px solid ${COLORS.border};
+	border-radius: ${RADIUS_SM}px;
+	cursor: pointer;
+`;
+
 function DateInputView({ value, onClick }: DateInputViewProps) {
-	return <div onClick={onClick}>{formatDate(value)}</div>;
+	return <DateInputControl onClick={onClick}>{formatDate(value)}</DateInputControl>;
 }
 
 export function DateInput({ value, onChange }: DateInputProps) {

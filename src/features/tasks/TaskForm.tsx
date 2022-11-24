@@ -187,15 +187,19 @@ export function TaskForm() {
 						</FormGroup>
 
 						{repeat === NO_REPEAT && (
-							<div>
-								<DateGroup label='Начиная с' value={startMoment} onChange={setStartMoment} />
+							<>
+								<FormGroup>
+									<DateGroup label='Начиная с' value={startMoment} onChange={setStartMoment} />
+								</FormGroup>
 
-								<Checkbox
-									label='Переносить на следующий день'
-									checked={resheduleToNextDay}
-									onChange={setResheduleToNextDay}
-								/>
-							</div>
+								<FormGroup>
+									<Checkbox
+										label='Переносить на следующий день'
+										checked={resheduleToNextDay}
+										onChange={setResheduleToNextDay}
+									/>
+								</FormGroup>
+							</>
 						)}
 
 						{repeat === REPEAT && (
