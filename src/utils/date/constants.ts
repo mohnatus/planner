@@ -14,3 +14,4 @@ export const daysOfWeek = [
 	WeekDays.Friday,
 	WeekDays.Saturday,
 ];
+

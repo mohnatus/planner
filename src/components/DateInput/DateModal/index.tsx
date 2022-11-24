@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Moment } from '../../../types';
-import { Calendar } from '../../Calendar';
+import { getTodayMoment } from '../../../utils/date/today';
+import { Datepicker } from '../../Datepicker';
 import { Modal } from '../../Modal';
 
 export interface DateModalProps {
@@ -16,7 +17,11 @@ export function DateModal({
 	value,
 	onChange,
 }: DateModalProps) {
-	const [selected, setSelected] = useState(value);
+	const [selected, setSelected] = useState(getTodayMoment());
+
+	useEffect(() => {
+		setSelected(value || getTodayMoment())
+	}, [value]);
 
 	const onDayChange = (moment: Moment) => {
 		setSelected(moment);
@@ -29,7 +34,7 @@ export function DateModal({
 
 	return (
 		<Modal show={show} onClose={onClose}>
-			<Calendar value={selected} onChange={onDayChange} />
+			<Datepicker value={selected} onChange={onDayChange} />
 			<button onClick={onSubmit}>Сохранить</button>
 		</Modal>
 	);

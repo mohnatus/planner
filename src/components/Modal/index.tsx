@@ -60,7 +60,7 @@ interface ModalContentProps {
 const ModalContent = styled.div<ModalContentProps>`
 	margin: auto;
 	width: 100%;
-	max-width: ${props => props?.width || 280}px;
+	max-width: ${(props) => props?.width || 280}px;
 	background: white;
 	pointer-events: all;
 	transform: scale(0);
@@ -77,9 +77,9 @@ const ModalContent = styled.div<ModalContentProps>`
 const ModalClose = styled.div`
 	display: flex;
 	justify-content: flex-end;
-	margin-right: ${-1 * SPACING_MD / 2};
+	margin-right: ${(-1 * SPACING_MD) / 2};
 	margin-bottom: ${SPACING_XS}px;
-`
+`;
 
 export function Modal({ width, show, onClose, title, children }: ModalProps) {
 	const modalRef = useRef<null | HTMLDivElement>(null);
@@ -100,7 +100,9 @@ export function Modal({ width, show, onClose, title, children }: ModalProps) {
 	}, [closeOnEscapeKeydown]);
 
 	const onWrapperClick = (e: MouseEvent<HTMLDivElement>) => {
-		if (!e.currentTarget || !e.currentTarget.closest(`[data-content]`)) {
+		const target = e.target as HTMLElement;
+		const contentParent = target.closest('[data-content]');
+		if (!contentParent) {
 			onClose();
 		}
 	};
@@ -118,9 +120,11 @@ export function Modal({ width, show, onClose, title, children }: ModalProps) {
 			<ModalRoot ref={modalRef}>
 				<ModalMask></ModalMask>
 				<ModalWrapper onClick={onWrapperClick}>
-					<ModalContent width={width}>
+					<ModalContent data-content width={width}>
 						<ModalClose>
-							<button type="button" onClick={onClose}>&times;</button>
+							<button type='button' onClick={onClose}>
+								&times;
+							</button>
 						</ModalClose>
 						{title && <div>{title}</div>}
 						<div>{children}</div>
