@@ -1,8 +1,25 @@
+import styled from 'styled-components'
+
 export interface CalendarYearsProps {
 	years: Array<number>;
 	currentYear: number;
 	onYearClick: (year: number) => void;
 }
+
+const Wrapper = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+`;
+
+const Year = styled.div`
+  width: 33.33%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+`
 
 export function CalendarYears({
 	years,
@@ -10,12 +27,12 @@ export function CalendarYears({
 	onYearClick,
 }: CalendarYearsProps) {
 	return (
-		<div>
+		<Wrapper>
 			{years.map((year) => (
-				<div key={year} onClick={() => onYearClick(year)}>
+				<Year key={year} onClick={() => onYearClick(year)}>
 					{year}
-				</div>
+				</Year>
 			))}
-		</div>
+		</Wrapper>
 	);
 }

@@ -1,26 +1,40 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
+import styled from 'styled-components';
 
 export interface CalendarHeaderProps {
 	onPrev: () => void;
 	onNext: () => void;
-	children: ReactNode
+	children: ReactNode;
 }
+
+const Header = styled.div`
+	display: flex;
+	align-items: center;
+`;
+
+const Control = styled.button`
+	flex-shrink: 0;
+`;
+
+const Title = styled.div`
+	flex-grow: 1;
+	text-align: center;
+`;
 
 export function CalendarHeader({
 	onPrev,
 	onNext,
 	children,
 }: CalendarHeaderProps) {
-
 	return (
-		<div>
-			<button type='button' onClick={onPrev}>
+		<Header>
+			<Control type='button' onClick={onPrev}>
 				&lt;
-			</button>
-			<div>{children}</div>
-			<button type='button' onClick={onNext}>
+			</Control>
+			<Title>{children}</Title>
+			<Control type='button' onClick={onNext}>
 				&gt;
-			</button>
-		</div>
+			</Control>
+		</Header>
 	);
 }

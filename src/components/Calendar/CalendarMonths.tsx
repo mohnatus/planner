@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import { MONTHS } from '../../texts/Date';
 
 export interface CalendarMonthsProps {
@@ -5,17 +6,32 @@ export interface CalendarMonthsProps {
 	currentMonth: number;
 }
 
+const Wrapper = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+`;
+
+const Month = styled.div`
+  width: 33.33%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+`
+
 export function CalendarMonths({
 	onMonthClick,
 	currentMonth,
 }: CalendarMonthsProps) {
 	return (
-		<div>
+		<Wrapper>
 			{MONTHS.map((monthName, i) => (
-				<div key={i} onClick={() => onMonthClick(i)}>
+				<Month key={i} onClick={() => onMonthClick(i)}>
 					{monthName}
-				</div>
+				</Month>
 			))}
-		</div>
+		</Wrapper>
 	);
 }
