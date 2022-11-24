@@ -3,18 +3,22 @@ import styled from 'styled-components';
 import { COLORS } from '../../style/colors';
 import { RADIUS_SM } from '../../style/decor';
 import { CONTROL_HEIGHT } from '../../style/sizes';
+import { SPACING_XS } from '../../style/spacing';
 import { FONT_SIZE } from '../../style/typography';
 
 export interface ButtonProps {
+  type?: 'button'|'submit'|'reset';
 	accent?: boolean;
   secondary?: boolean;
-	onClick: () => void;
+  block?: boolean;
+	onClick?: () => void;
 	children: ReactNode;
 }
 
 interface ButtonControlProps {
 	accent?: boolean;
 	secondary?: boolean;
+  block?: boolean;
 }
 
 const ButtonControl = styled.button<ButtonControlProps>`
@@ -23,6 +27,8 @@ const ButtonControl = styled.button<ButtonControlProps>`
 	align-items: center;
 	justify-content: center;
 	border-radius: ${RADIUS_SM}px;
+  padding-left: ${SPACING_XS}px;
+  padding-right: ${SPACING_XS}px;
 
 	background-color: ${COLORS.controls.color};
 	color: ${COLORS.controls.contrast};
@@ -49,13 +55,17 @@ const ButtonControl = styled.button<ButtonControlProps>`
     color: ${COLORS.secondary.contrast};
     border-color: transparent;
   `}
+
+  ${(props) => props.block && `
+  width: 100%;
+  `}
 `;
 
 export { ButtonControl };
 
-export function Button({ accent, secondary, onClick, children }: ButtonProps) {
+export function Button({ type='button', onClick, children, ...props }: ButtonProps) {
 	return (
-		<ButtonControl type='button' onClick={onClick} accent={accent} secondary={secondary}>
+		<ButtonControl type={type} onClick={onClick} {...props}>
 			{children}
 		</ButtonControl>
 	);

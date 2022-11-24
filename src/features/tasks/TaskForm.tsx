@@ -30,6 +30,8 @@ import {
 import { Container } from '../../containers/Container';
 import { PageHeader } from '../../components/PageHeader';
 import { ServiceText } from '../../containers/ServiceText';
+import { DateGroup } from '../../containers/DateGroup';
+import { Button } from '../../components/Button';
 
 const NO_REPEAT = 'no-repeat';
 const REPEAT = 'repeat';
@@ -186,13 +188,7 @@ export function TaskForm() {
 
 						{repeat === NO_REPEAT && (
 							<div>
-								<div>
-									Начиная с{' '}
-									<DateInput
-										value={startMoment}
-										onChange={setStartMoment}
-									></DateInput>
-								</div>
+								<DateGroup label='Начиная с' value={startMoment} onChange={setStartMoment} />
 
 								<Checkbox
 									label='Переносить на следующий день'
@@ -231,7 +227,7 @@ export function TaskForm() {
 							onChange={onChangeExceptionsParams}
 						/>
 
-						<button type='submit'>Сохранить</button>
+						<Button type='submit' accent block>Сохранить</Button>
 					</form>
 				)}
 			</Container>
