@@ -30,7 +30,7 @@ const WrapperView = styled.div`
 	display: flex;
 `;
 
-const ToggerButtonView = styled(ButtonView)<TogglerButtonViewProps>`
+const TogglerButtonView = styled(ButtonView)<TogglerButtonViewProps>`
 	flex-grow: 1;
 	border-color: ${COLORS.border};
 	&:not(:first-child) {
@@ -50,9 +50,9 @@ function TogglerItem<T>({ option, active, onClick }: TogglerOptionProps<T>) {
 	}, [option, onClick]);
 
 	return (
-		<ButtonView accent={active} onClick={handleClick}>
+		<TogglerButtonView accent={active} onClick={handleClick}>
 			{option.name}
-		</ButtonView>
+		</TogglerButtonView>
 	);
 }
 

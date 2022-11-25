@@ -1,4 +1,4 @@
-import { FormEvent, RefObject, useCallback, useRef } from 'react';
+import { FormEvent, RefObject, useCallback } from 'react';
 import styled from 'styled-components';
 
 import { COLORS } from '../../style/colors';
@@ -52,8 +52,6 @@ const LabelView = styled.span`
 		color: ${COLORS.text};
 	}
 `;
-
-let unique = 1;
 
 function Checkbox({ ref, label, checked, onChange }: CheckboxProps) {
 	const handleChange = useCallback(
