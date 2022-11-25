@@ -2,42 +2,41 @@ import { ReactNode, useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { SPACING_SM, SPACING_XXS } from '../../style/spacing';
 
-export interface ToggleBlockProps {
+interface ToggleBlockProps {
 	title: string;
 	children: ReactNode;
 }
 
-const Header = styled.div`
+interface IconViewProps {
+	open: boolean;
+}
+
+const HeaderView = styled.div`
 	min-height: 48px;
 	display: flex;
 	align-items: center;
 	padding-top: ${SPACING_XXS}px;
 	padding-bottom: ${SPACING_XXS}px;
-  cursor: pointer;
+	cursor: pointer;
 `;
 
-const Title = styled.div`
+const TitleView = styled.div`
 	flex-grow: 1;
-  font-weight: 700;
+	font-weight: 700;
 `;
 
-interface TogglerProps {
-	open: boolean;
-}
-
-const Toggler = styled.button<TogglerProps>`
+const IconView = styled.button<IconViewProps>`
 	flex-grow: 0;
 	margin-left: ${SPACING_SM}px;
-  transform: rotate(${props => props.open ? 90 : -90}deg);
-
+	transform: rotate(${(props) => (props.open ? 90 : -90)}deg);
 `;
 
-const Content = styled.div`
-  padding-top: ${SPACING_SM}px;
-  padding-bottom: ${SPACING_SM}px;
-`
+const ContentView = styled.div`
+	padding-top: ${SPACING_SM}px;
+	padding-bottom: ${SPACING_SM}px;
+`;
 
-export function ToggleBlock({ title, children }: ToggleBlockProps) {
+function ToggleBlock({ title, children }: ToggleBlockProps) {
 	const [open, setOpen] = useState(false);
 
 	const toggle = useCallback(() => {
@@ -46,12 +45,15 @@ export function ToggleBlock({ title, children }: ToggleBlockProps) {
 
 	return (
 		<div>
-			<Header onClick={toggle}>
-				<Title>{title}</Title>
-				<Toggler open={open}>&lt;</Toggler>
-			</Header>
+			<HeaderView onClick={toggle}>
+				<TitleView>{title}</TitleView>
+				<IconView open={open}>&lt;</IconView>
+			</HeaderView>
 
-			{open && <Content>{children}</Content>}
+			{open && <ContentView>{children}</ContentView>}
 		</div>
 	);
 }
+
+export type { ToggleBlockProps };
+export { ToggleBlock };

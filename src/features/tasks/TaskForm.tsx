@@ -156,11 +156,9 @@ export function TaskForm() {
 
 			<Container>
 				{taskId && !task ? (
-					<div>
-						<ServiceText>
-							Задача с id ${taskId} не существует
-						</ServiceText>
-					</div>
+					<ServiceText>
+						Задача с id ${taskId} не существует
+					</ServiceText>
 				) : (
 					<form onSubmit={handleSubmit}>
 						<FormGroup id='task-name' label='Название'>
