@@ -1,16 +1,17 @@
 import { FormEvent, RefObject, useCallback } from 'react';
 
-export interface NumberInputProps {
+interface NumberInputProps {
 	ref?: RefObject<HTMLInputElement>;
 	id?: string;
 	value: number;
 	onChange: (newValue: number) => void;
 }
 
-export function NumberInput({ ref, value, onChange, id }: NumberInputProps) {
+function NumberInput({ ref, value, onChange, id }: NumberInputProps) {
 	const handleChange = useCallback(
 		(e: FormEvent<HTMLInputElement>) => {
-			if (typeof onChange === 'function') onChange(+e.currentTarget.value);
+			if (typeof onChange === 'function')
+				onChange(+e.currentTarget.value);
 		},
 		[onChange]
 	);
@@ -19,7 +20,7 @@ export function NumberInput({ ref, value, onChange, id }: NumberInputProps) {
 		<div>
 			<input
 				ref={ref}
-				type="number"
+				type='number'
 				id={id}
 				value={value}
 				onChange={handleChange}
@@ -27,3 +28,6 @@ export function NumberInput({ ref, value, onChange, id }: NumberInputProps) {
 		</div>
 	);
 }
+
+export type { NumberInputProps };
+export { NumberInput };

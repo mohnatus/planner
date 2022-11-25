@@ -6,7 +6,6 @@ import {
 	CALENDAR_VIEW_MONTH,
 	CALENDAR_VIEW_YEAR,
 } from './constants';
-
 import { MONTHS } from '../../texts/Date';
 import { getCalendarMonth } from '../../utils/date/calendar';
 import { getTodayMoment } from '../../utils/date/today';

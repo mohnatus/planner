@@ -2,16 +2,21 @@ import { MouseEvent, ReactNode, useCallback, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
+
 import { RADIUS_LG } from '../../style/decor';
 import { SPACING_LG, SPACING_MD, SPACING_XS } from '../../style/spacing';
 import { BASE_TIMING_FUNCTION, TRANSITION_LONG } from '../../style/transitions';
 
-export interface ModalProps {
+interface ModalProps {
 	width?: number;
 	show: boolean;
 	onClose: () => void;
 	title?: string | ReactNode;
 	children: ReactNode;
+}
+
+interface ModalContentProps {
+	width?: number;
 }
 
 const ModalRoot = styled.div`
@@ -53,10 +58,6 @@ const ModalWrapper = styled.div`
 	cursor: pointer;
 `;
 
-interface ModalContentProps {
-	width?: number;
-}
-
 const ModalContent = styled.div<ModalContentProps>`
 	margin: auto;
 	width: 100%;
@@ -81,7 +82,7 @@ const ModalClose = styled.div`
 	margin-bottom: ${SPACING_XS}px;
 `;
 
-export function Modal({ width, show, onClose, title, children }: ModalProps) {
+function Modal({ width, show, onClose, title, children }: ModalProps) {
 	const modalRef = useRef<null | HTMLDivElement>(null);
 
 	const closeOnEscapeKeydown = useCallback(
@@ -135,3 +136,6 @@ export function Modal({ width, show, onClose, title, children }: ModalProps) {
 		document.getElementById('root') as HTMLElement
 	);
 }
+
+export type { ModalProps };
+export { Modal };

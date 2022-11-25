@@ -1,11 +1,12 @@
 import { FormEvent, RefObject, useCallback } from 'react';
 import styled from 'styled-components';
+
 import { COLORS } from '../../style/colors';
 import { RADIUS_SM } from '../../style/decor';
 import { CONTROL_HEIGHT } from '../../style/sizes';
 import { SPACING_SM, SPACING_XXS } from '../../style/spacing';
 
-export interface InputProps {
+interface InputProps {
 	ref?: RefObject<HTMLInputElement>;
 	id?: string;
 	type?: string;
@@ -13,9 +14,7 @@ export interface InputProps {
 	onChange: (newValue: string) => void;
 }
 
-const InputWrapper = styled.div`
-
-`
+const InputWrapper = styled.div``;
 
 const InputControl = styled.input`
 	display: block;
@@ -35,9 +34,9 @@ const InputControl = styled.input`
 		outline: none;
 		border-color: ${COLORS.focus};
 	}
-`
+`;
 
-export function Input({ ref, value, onChange, id, type = 'text' }: InputProps) {
+function Input({ ref, value, onChange, id, type = 'text' }: InputProps) {
 	const handleChange = useCallback(
 		(e: FormEvent<HTMLInputElement>) => {
 			if (typeof onChange === 'function') onChange(e.currentTarget.value);
@@ -57,3 +56,6 @@ export function Input({ ref, value, onChange, id, type = 'text' }: InputProps) {
 		</InputWrapper>
 	);
 }
+
+export type { InputProps };
+export { Input };

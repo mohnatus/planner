@@ -1,13 +1,15 @@
 import { useCallback, useState } from 'react';
+
 import { WeekDays } from '../../types';
+
 import { MonthDaysModal } from './MonthDaysModal';
 
-export interface MonthDaysInputProps {
+interface MonthDaysInputProps {
 	value: Array<WeekDays>;
 	onChange: (newValue: Array<WeekDays>) => void;
 }
 
-export function MonthDaysInput({ value, onChange }: MonthDaysInputProps) {
+function MonthDaysInput({ value, onChange }: MonthDaysInputProps) {
 	const [showModal, setShowModal] = useState(false);
 
 	const openModal = useCallback(() => {
@@ -39,3 +41,6 @@ export function MonthDaysInput({ value, onChange }: MonthDaysInputProps) {
 		</div>
 	);
 }
+
+export type { MonthDaysInputProps };
+export { MonthDaysInput };

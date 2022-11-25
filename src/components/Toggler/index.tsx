@@ -1,34 +1,34 @@
 import { useCallback } from 'react';
 import styled from 'styled-components';
+
 import { COLORS } from '../../style/colors';
-import { RADIUS_SM } from '../../style/decor';
-import { CONTROL_HEIGHT } from '../../style/sizes';
+
 import { ButtonControl } from '../Button';
 
-export type TogglerOption<T> = {
+type TogglerOption<T> = {
 	id: T;
 	name: string;
 };
+
 interface TogglerOptionProps<T> {
 	option: TogglerOption<T>;
 	active: boolean;
 	onClick: (id: T) => void;
 }
 
-export interface TogglerProps<T> {
+interface TogglerProps<T> {
 	options: Array<TogglerOption<T>>;
 	value: T;
 	onChange: (newValue: T) => void;
 }
 
-const TogglerWrapper = styled.div`
-	display: flex;
-
-`;
-
 interface TogglerButtonProps {
 	active?: boolean;
 }
+
+const TogglerWrapper = styled.div`
+	display: flex;
+`;
 
 const TogglerButton = styled(ButtonControl)<TogglerButtonProps>`
 	flex-grow: 1;
@@ -56,7 +56,7 @@ function TogglerItem<T>({ option, active, onClick }: TogglerOptionProps<T>) {
 	);
 }
 
-export function Toggler<T>({ options, value, onChange }: TogglerProps<T>) {
+function Toggler<T>({ options, value, onChange }: TogglerProps<T>) {
 	const onOptionClick = (id: T) => {
 		onChange(id);
 	};
@@ -74,3 +74,6 @@ export function Toggler<T>({ options, value, onChange }: TogglerProps<T>) {
 		</TogglerWrapper>
 	);
 }
+
+export type { TogglerOption, TogglerProps };
+export { Toggler };

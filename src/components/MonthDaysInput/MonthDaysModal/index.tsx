@@ -1,20 +1,22 @@
 import { useState } from 'react';
+
 import { MonthDay, WeekDays } from '../../../types';
+
 import { Checkbox } from '../../Checkbox';
 import { Modal } from '../../Modal';
 
-const MONTH: MonthDay[] = Array(31)
-	.fill(null)
-	.map((_, i) => i + 1);
-
-export interface MonthDaysModalProps {
+interface MonthDaysModalProps {
 	show: boolean;
 	onClose: () => void;
 	onChange: (newValue: Array<MonthDay>) => void;
 	value: Array<MonthDay>;
 }
 
-export function MonthDaysModal({
+const MONTH: MonthDay[] = Array(31)
+	.fill(null)
+	.map((_, i) => i + 1);
+
+function MonthDaysModal({
 	show,
 	onClose,
 	value,
@@ -55,3 +57,6 @@ export function MonthDaysModal({
 		</Modal>
 	);
 }
+
+export type { MonthDaysModalProps };
+export { MonthDaysModal };

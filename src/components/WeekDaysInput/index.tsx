@@ -1,14 +1,16 @@
 import { useCallback, useState } from 'react';
-import { WEEK_DAYS } from '../../texts/Date';
+
 import { WeekDays } from '../../types';
+import { WEEK_DAYS } from '../../texts/Date';
+
 import { WeekDaysModal } from './WeekDaysModal';
 
-export interface WeekDaysInputProps {
+interface WeekDaysInputProps {
 	value: Array<WeekDays>;
 	onChange: (newValue: Array<WeekDays>) => void;
 }
 
-export function WeekDaysInput({ value, onChange }: WeekDaysInputProps) {
+function WeekDaysInput({ value, onChange }: WeekDaysInputProps) {
 	const [showModal, setShowModal] = useState(false);
 
 	const openModal = useCallback(() => {
@@ -40,3 +42,6 @@ export function WeekDaysInput({ value, onChange }: WeekDaysInputProps) {
 		</div>
 	);
 }
+
+export type { WeekDaysInputProps };
+export { WeekDaysInput };

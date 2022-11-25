@@ -1,19 +1,20 @@
 import { MonthDay, WeekDays } from '../../types';
+
 import { MonthDaysInput } from '../MonthDaysInput';
 import { WeekDaysInput } from '../WeekDaysInput';
 
-export type TaskExceptionParams = {
+type TaskExceptionParams = {
 	weekDays: Array<WeekDays>;
 	monthDays: Array<MonthDay>;
 };
 
-export interface TaskExceptionsProps {
+interface TaskExceptionsProps {
 	weekDays: Array<WeekDays>;
 	monthDays: Array<MonthDay>;
 	onChange: (newValue: Partial<TaskExceptionParams>) => void;
 }
 
-export function TaskExceptions({
+function TaskExceptions({
 	weekDays,
 	monthDays,
 	onChange,
@@ -40,3 +41,6 @@ export function TaskExceptions({
 		</div>
 	);
 }
+
+export type { TaskExceptionParams, TaskExceptionsProps };
+export { TaskExceptions };

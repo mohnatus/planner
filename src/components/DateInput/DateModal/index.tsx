@@ -1,26 +1,23 @@
 import { useEffect, useState } from 'react';
+
 import { Moment } from '../../../types';
 import { getTodayMoment } from '../../../utils/date/today';
+
 import { Datepicker } from '../../Datepicker';
 import { Modal } from '../../Modal';
 
-export interface DateModalProps {
+interface DateModalProps {
 	show: boolean;
 	onClose: () => void;
 	onChange: (newValue: Moment) => void;
 	value: Moment;
 }
 
-export function DateModal({
-	show,
-	onClose,
-	value,
-	onChange,
-}: DateModalProps) {
+function DateModal({ show, onClose, value, onChange }: DateModalProps) {
 	const [selected, setSelected] = useState(getTodayMoment());
 
 	useEffect(() => {
-		setSelected(value || getTodayMoment())
+		setSelected(value || getTodayMoment());
 	}, [value]);
 
 	const onDayChange = (moment: Moment) => {
@@ -39,3 +36,6 @@ export function DateModal({
 		</Modal>
 	);
 }
+
+export type { DateModalProps };
+export { DateModal };

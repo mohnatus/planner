@@ -1,8 +1,17 @@
 import { useState } from 'react';
+
 import { WEEK_DAYS } from '../../../texts/Date';
+
 import { WeekDays } from '../../../types';
 import { Checkbox } from '../../Checkbox';
 import { Modal } from '../../Modal';
+
+interface WeekDaysModalProps {
+	show: boolean;
+	onClose: () => void;
+	onChange: (newValue: Array<WeekDays>) => void;
+	value: Array<WeekDays>;
+}
 
 const WEEK: WeekDays[] = [
 	WeekDays.Monday,
@@ -13,13 +22,6 @@ const WEEK: WeekDays[] = [
 	WeekDays.Saturday,
 	WeekDays.Sunday,
 ];
-
-export interface WeekDaysModalProps {
-	show: boolean;
-	onClose: () => void;
-	onChange: (newValue: Array<WeekDays>) => void;
-	value: Array<WeekDays>;
-}
 
 export function WeekDaysModal({
 	show,
@@ -62,3 +64,6 @@ export function WeekDaysModal({
 		</Modal>
 	);
 }
+
+export type { WeekDaysModalProps };
+export { WeekDaysModal };

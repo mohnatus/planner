@@ -1,29 +1,27 @@
+import { useCallback } from 'react';
 import styled from 'styled-components';
+
 import { Moment, CalendarDay } from '../../types';
-import { getTodayMoment } from '../../utils/date/today';
-import { getCalendarMonth } from '../../utils/date/calendar';
 import { COLORS } from '../../style/colors';
-import { useCallback, useEffect, useState } from 'react';
-import { MONTHS } from '../../texts/Date';
+
 import { Calendar } from '../Calendar';
 
-export interface DatepickerProps {
+interface DatepickerProps {
 	value: Moment;
 	onChange: (newValue: Moment) => void;
 }
 
-export interface DatepickerMonthDayProps {
+interface DatepickerMonthDayProps {
 	day: CalendarDay;
 	selected: boolean;
 }
 
-
-interface DatepickerDayProps {
+interface DatepickerDayViewProps {
 	selected: boolean;
 	inactive: boolean;
 }
 
-const DatepickerDate = styled.div<DatepickerDayProps>`
+const DatepickerDayView = styled.div<DatepickerDayViewProps>`
 	width: 100%;
 	height: 100%;
 	border-radius: 50%;
@@ -40,27 +38,19 @@ const DatepickerDate = styled.div<DatepickerDayProps>`
 	}`}
 `;
 
-function DatepickerMonthDay({
-	day,
-	selected,
-}: DatepickerMonthDayProps) {
-
+function DatepickerMonthDay({ day, selected }: DatepickerMonthDayProps) {
 	return (
-		<DatepickerDate
-			inactive={!day.active}
-			selected={selected}
-		>
+		<DatepickerDayView inactive={!day.active} selected={selected}>
 			{day.date}
-		</DatepickerDate>
+		</DatepickerDayView>
 	);
 }
 
 const DayComponentRenderFn = (day: CalendarDay, value: Moment): JSX.Element => {
-	return <DatepickerMonthDay day={day} selected={day.moment === value} />
-}
+	return <DatepickerMonthDay day={day} selected={day.moment === value} />;
+};
 
-export function Datepicker({ value, onChange }: DatepickerProps) {
-
+function Datepicker({ value, onChange }: DatepickerProps) {
 	const onDaySelect = useCallback(
 		(moment: Moment) => {
 			onChange(moment);
@@ -70,7 +60,14 @@ export function Datepicker({ value, onChange }: DatepickerProps) {
 
 	return (
 		<div>
-			<Calendar moment={value} onSelect={onDaySelect} dayComponent={DayComponentRenderFn} />
+			<Calendar
+				moment={value}
+				onSelect={onDaySelect}
+				dayComponent={DayComponentRenderFn}
+			/>
 		</div>
 	);
 }
+
+export type { DatepickerProps };
+export { Datepicker };

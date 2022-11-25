@@ -1,10 +1,12 @@
 import styled from 'styled-components';
+
 import { COLORS } from '../../style/colors';
 import { HEADER_HEIGHT } from '../../style/sizes';
 import { FONT_SIZE } from '../../style/typography';
+
 import { Container } from '../../containers/Container';
 
-export interface PageHeaderProps {
+interface PageHeaderProps {
 	title: string;
 }
 
@@ -32,9 +34,9 @@ const Header = styled.header`
 		opacity: 0.8;
 	}
 
-  .container {
-    height: 100%;
-  }
+	.container {
+		height: 100%;
+	}
 `;
 
 const Title = styled.h1`
@@ -46,14 +48,17 @@ const Title = styled.h1`
 	align-items: center;
 `;
 
-export function PageHeader({ title }: PageHeaderProps) {
+function PageHeader({ title }: PageHeaderProps) {
 	return (
 		<HeaderWrapper>
 			<Header>
-				<Container className="container">
+				<Container className='container'>
 					<Title>{title}</Title>
 				</Container>
 			</Header>
 		</HeaderWrapper>
 	);
 }
+
+export type { PageHeaderProps };
+export { PageHeader };

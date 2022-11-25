@@ -1,20 +1,18 @@
 import { FormEvent, RefObject, useCallback } from 'react';
-import styled from 'styled-components'
+import styled from 'styled-components';
+
 import { COLORS } from '../../style/colors';
 import { RADIUS_SM } from '../../style/decor';
-import { CONTROL_HEIGHT } from '../../style/sizes';
-import { SPACING_SM, SPACING_XS, SPACING_XXS } from '../../style/spacing';
+import { SPACING_SM } from '../../style/spacing';
 
-export interface TextareaProps {
+interface TextareaProps {
 	ref?: RefObject<HTMLTextAreaElement>;
 	id?: string;
 	value: string;
 	onChange?: (newValue: string) => void;
 }
 
-const TextareaWrapper = styled.div`
-
-`
+const TextareaWrapper = styled.div``;
 
 const TextareaControl = styled.textarea`
 	display: block;
@@ -35,9 +33,9 @@ const TextareaControl = styled.textarea`
 		outline: none;
 		border-color: ${COLORS.focus};
 	}
-`
+`;
 
-export function Textarea({ ref, value, onChange, id }: TextareaProps) {
+function Textarea({ ref, value, onChange, id }: TextareaProps) {
 	const handleChange = useCallback(
 		(e: FormEvent<HTMLTextAreaElement>) => {
 			if (typeof onChange === 'function') onChange(e.currentTarget.value);
@@ -47,7 +45,15 @@ export function Textarea({ ref, value, onChange, id }: TextareaProps) {
 
 	return (
 		<TextareaWrapper>
-			<TextareaControl ref={ref} id={id} value={value} onChange={handleChange} />
+			<TextareaControl
+				ref={ref}
+				id={id}
+				value={value}
+				onChange={handleChange}
+			/>
 		</TextareaWrapper>
 	);
 }
+
+export type { TextareaProps };
+export { Textarea };
