@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-export interface CalendarHeaderProps {
+interface CalendarHeaderProps {
 	onPrev: () => void;
 	onNext: () => void;
 	children: ReactNode;
@@ -21,11 +21,7 @@ const Title = styled.div`
 	text-align: center;
 `;
 
-export function CalendarHeader({
-	onPrev,
-	onNext,
-	children,
-}: CalendarHeaderProps) {
+function CalendarHeader({ onPrev, onNext, children }: CalendarHeaderProps) {
 	return (
 		<Header>
 			<Control type='button' onClick={onPrev}>
@@ -38,3 +34,6 @@ export function CalendarHeader({
 		</Header>
 	);
 }
+
+export type { CalendarHeaderProps };
+export { CalendarHeader };

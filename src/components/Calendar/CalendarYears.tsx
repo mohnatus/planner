@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-export interface CalendarYearsProps {
+interface CalendarYearsProps {
 	years: Array<number>;
 	currentYear: number;
 	onYearClick: (year: number) => void;
@@ -12,16 +12,16 @@ const Wrapper = styled.div`
 `;
 
 const Year = styled.div`
-  width: 33.33%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  cursor: pointer;
-`
+	width: 33.33%;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	cursor: pointer;
+`;
 
-export function CalendarYears({
+function CalendarYears({
 	years,
 	currentYear,
 	onYearClick,
@@ -36,3 +36,6 @@ export function CalendarYears({
 		</Wrapper>
 	);
 }
+
+export type { CalendarYearsProps };
+export { CalendarYears };

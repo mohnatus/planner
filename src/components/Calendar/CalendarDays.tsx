@@ -1,18 +1,29 @@
 import styled from 'styled-components';
+
 import { CalendarDay, Moment } from '../../types';
 import { COLORS } from '../../style/colors';
 
-const defaultDayComponent = (day: CalendarDay) => {
-	return <span>{day.date}</span>;
-};
-
-interface CalendarDayProps {
+interface DayViewProps {
 	today: boolean;
 	weekend: boolean;
 	inactive: boolean;
 }
 
-const CalendarDate = styled.div<CalendarDayProps>`
+interface CalendarMonthDayProps {
+	day: CalendarDay;
+	onClick: (moment: Moment) => void;
+	dayComponent?: (day: CalendarDay, moment: Moment) => JSX.Element;
+	moment: Moment;
+}
+
+interface CalendarDaysProps {
+	moment: Moment;
+	days: Array<CalendarDay>;
+	onDayClick: (moment: Moment) => void;
+	dayComponent?: (day: CalendarDay, moment: Moment) => JSX.Element;
+}
+
+const CalendarDayView = styled.div<DayViewProps>`
 	width: 30px;
 	height: 30px;
 	display: flex;
@@ -31,12 +42,9 @@ const CalendarDate = styled.div<CalendarDayProps>`
 		props.today && !props.inactive && `color: ${COLORS.accent.color}`}
 `;
 
-export interface CalendarMonthDayProps {
-	day: CalendarDay;
-	onClick: (moment: Moment) => void;
-	dayComponent?: (day: CalendarDay, moment: Moment) => JSX.Element;
-	moment: Moment;
-}
+const defaultDayComponent = (day: CalendarDay) => {
+	return <span>{day.date}</span>;
+};
 
 function CalendarMonthDay({
 	day,
@@ -45,22 +53,15 @@ function CalendarMonthDay({
 	dayComponent = defaultDayComponent,
 }: CalendarMonthDayProps) {
 	return (
-		<CalendarDate
+		<CalendarDayView
 			today={day.isToday}
 			weekend={day.isWeekend}
 			inactive={!day.active}
 			onClick={() => onClick(day.moment)}
 		>
 			{dayComponent(day, moment)}
-		</CalendarDate>
+		</CalendarDayView>
 	);
-}
-
-export interface CalendarDaysProps {
-	moment: Moment;
-	days: Array<CalendarDay>;
-	onDayClick: (moment: Moment) => void;
-	dayComponent?: (day: CalendarDay, moment: Moment) => JSX.Element;
 }
 
 const CalendarDaysWrapper = styled.div`
@@ -70,7 +71,7 @@ const CalendarDaysWrapper = styled.div`
 	margin-right: -5px;
 `;
 
-export function CalendarDays({
+function CalendarDays({
 	moment,
 	days,
 	onDayClick,
@@ -90,3 +91,6 @@ export function CalendarDays({
 		</CalendarDaysWrapper>
 	);
 }
+
+export type { CalendarDaysProps };
+export { CalendarDays };

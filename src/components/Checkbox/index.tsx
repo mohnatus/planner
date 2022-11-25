@@ -1,10 +1,11 @@
 import { FormEvent, RefObject, useCallback, useRef } from 'react';
 import styled from 'styled-components';
+
 import { COLORS } from '../../style/colors';
 import { RADIUS_SM } from '../../style/decor';
 import { SPACING_SM } from '../../style/spacing';
 
-export interface CheckboxProps {
+interface CheckboxProps {
 	ref?: RefObject<HTMLInputElement>;
 	label: string;
 	checked: boolean;
@@ -54,7 +55,7 @@ const Label = styled.span`
 
 let unique = 1;
 
-export function Checkbox({ ref, label, checked, onChange }: CheckboxProps) {
+function Checkbox({ ref, label, checked, onChange }: CheckboxProps) {
 	const id = useRef<string>(`checkbox-${unique++}`);
 	const handleChange = useCallback(
 		(e: FormEvent<HTMLInputElement>) => {
@@ -77,3 +78,6 @@ export function Checkbox({ ref, label, checked, onChange }: CheckboxProps) {
 		</Wrapper>
 	);
 }
+
+export type { CheckboxProps };
+export { Checkbox };

@@ -1,32 +1,34 @@
 import { useCallback, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { MONTHS } from '../../texts/Date';
+
 import { CalendarDay, Moment } from '../../types';
-import { getCalendarMonth } from '../../utils/date/calendar';
-import { getTodayMoment } from '../../utils/date/today';
 import {
 	CALENDAR_VIEW_DATE,
 	CALENDAR_VIEW_MONTH,
 	CALENDAR_VIEW_YEAR,
 } from './constants';
-import { COLORS } from '../../style/colors';
+
+import { MONTHS } from '../../texts/Date';
+import { getCalendarMonth } from '../../utils/date/calendar';
+import { getTodayMoment } from '../../utils/date/today';
+
 import { CalendarDays } from './CalendarDays';
 import { CalendarMonths } from './CalendarMonths';
 import { CalendarYears } from './CalendarYears';
 import { CalendarHeader } from './CalendarHeader';
 
-export interface CalendarProps {
+interface CalendarProps {
 	moment: Moment;
 	dayComponent?: (day: CalendarDay, moment: Moment) => JSX.Element;
 	onSelect?: (moment: Moment) => void;
 }
 
 const CURRENT_YEAR = new Date().getFullYear();
+
 function getYearRangeStart(year: number) {
 	return year - (year % 10);
 }
 
-export function Calendar({ moment, dayComponent, onSelect }: CalendarProps) {
+function Calendar({ moment, dayComponent, onSelect }: CalendarProps) {
 	const [view, setView] = useState(CALENDAR_VIEW_DATE);
 	const [viewMoment, setViewMoment] = useState(getTodayMoment());
 	const [rangeStart, setRangeStart] = useState(
@@ -167,12 +169,11 @@ export function Calendar({ moment, dayComponent, onSelect }: CalendarProps) {
 
 			{view === 'year' && (
 				<>
-					<CalendarHeader
-						onPrev={prevRange}
-						onNext={nextRange}
-					>
-            <span>{rangeStart} - {rangeStart + 9}</span>
-          </CalendarHeader>
+					<CalendarHeader onPrev={prevRange} onNext={nextRange}>
+						<span>
+							{rangeStart} - {rangeStart + 9}
+						</span>
+					</CalendarHeader>
 					<CalendarYears
 						years={years}
 						currentYear={year}
@@ -183,3 +184,6 @@ export function Calendar({ moment, dayComponent, onSelect }: CalendarProps) {
 		</div>
 	);
 }
+
+export type { CalendarProps };
+export { Calendar };

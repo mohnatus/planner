@@ -190,7 +190,11 @@ export function TaskForm() {
 						{repeat === NO_REPEAT && (
 							<>
 								<FormGroup>
-									<DateGroup label='Начиная с' value={startMoment} onChange={setStartMoment} />
+									<DateGroup
+										label='Начиная с'
+										value={startMoment}
+										onChange={setStartMoment}
+									/>
 								</FormGroup>
 
 								<FormGroup>
@@ -219,24 +223,26 @@ export function TaskForm() {
 
 						<hr />
 
-						<ToggleBlock title="Настроить время">
+						<ToggleBlock title='Настроить время'>
 							<TimeInput
-							values={defaultTime}
-							onChange={setDefaultTime}
-						/>
+								values={defaultTime}
+								onChange={setDefaultTime}
+							/>
 						</ToggleBlock>
-
-
 
 						<hr />
 
-						<TaskExceptions
-							weekDays={excludeWeekDays}
-							monthDays={excludeMonthDays}
-							onChange={onChangeExceptionsParams}
-						/>
+						<ToggleBlock title='Настроить исключения'>
+							<TaskExceptions
+								weekDays={excludeWeekDays}
+								monthDays={excludeMonthDays}
+								onChange={onChangeExceptionsParams}
+							/>
+						</ToggleBlock>
 
-						<Button type='submit' accent block>Сохранить</Button>
+						<Button type='submit' accent block>
+							Сохранить
+						</Button>
 					</form>
 				)}
 			</Container>
