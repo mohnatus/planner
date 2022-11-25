@@ -10,11 +10,11 @@ interface PageHeaderProps {
 	title: string;
 }
 
-const HeaderWrapper = styled.div`
+const WrapperView = styled.div`
 	margin-bottom: ${HEADER_HEIGHT}px;
 `;
 
-const Header = styled.header`
+const HeaderView = styled.header`
 	position: fixed;
 
 	top: 0;
@@ -39,7 +39,7 @@ const Header = styled.header`
 	}
 `;
 
-const Title = styled.h1`
+const TitleView = styled.h1`
 	font-size: ${FONT_SIZE.header};
 	font-weight: 700;
 	position: relative;
@@ -50,13 +50,13 @@ const Title = styled.h1`
 
 function PageHeader({ title }: PageHeaderProps) {
 	return (
-		<HeaderWrapper>
-			<Header>
+		<WrapperView>
+			<HeaderView>
 				<Container className='container'>
-					<Title>{title}</Title>
+					<TitleView>{title}</TitleView>
 				</Container>
-			</Header>
-		</HeaderWrapper>
+			</HeaderView>
+		</WrapperView>
 	);
 }
 

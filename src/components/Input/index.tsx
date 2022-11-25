@@ -14,9 +14,9 @@ interface InputProps {
 	onChange: (newValue: string) => void;
 }
 
-const InputWrapper = styled.div``;
+const WrapperView = styled.div``;
 
-const InputControl = styled.input`
+const ControlView = styled.input`
 	display: block;
 	width: 100%;
 	height: ${CONTROL_HEIGHT}px;
@@ -45,15 +45,15 @@ function Input({ ref, value, onChange, id, type = 'text' }: InputProps) {
 	);
 
 	return (
-		<InputWrapper>
-			<InputControl
+		<WrapperView>
+			<ControlView
 				ref={ref}
 				type={type}
 				id={id}
 				value={value}
 				onChange={handleChange}
 			/>
-		</InputWrapper>
+		</WrapperView>
 	);
 }
 

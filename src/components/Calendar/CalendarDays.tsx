@@ -23,7 +23,7 @@ interface CalendarDaysProps {
 	dayComponent?: (day: CalendarDay, moment: Moment) => JSX.Element;
 }
 
-const CalendarDayView = styled.div<DayViewProps>`
+const DayView = styled.div<DayViewProps>`
 	width: 30px;
 	height: 30px;
 	display: flex;
@@ -42,6 +42,13 @@ const CalendarDayView = styled.div<DayViewProps>`
 		props.today && !props.inactive && `color: ${COLORS.accent.color}`}
 `;
 
+const CalendarDaysView = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+	width: 245px;
+	margin-right: -5px;
+`;
+
 const defaultDayComponent = (day: CalendarDay) => {
 	return <span>{day.date}</span>;
 };
@@ -53,23 +60,16 @@ function CalendarMonthDay({
 	dayComponent = defaultDayComponent,
 }: CalendarMonthDayProps) {
 	return (
-		<CalendarDayView
+		<DayView
 			today={day.isToday}
 			weekend={day.isWeekend}
 			inactive={!day.active}
 			onClick={() => onClick(day.moment)}
 		>
 			{dayComponent(day, moment)}
-		</CalendarDayView>
+		</DayView>
 	);
 }
-
-const CalendarDaysWrapper = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-	width: 245px;
-	margin-right: -5px;
-`;
 
 function CalendarDays({
 	moment,
@@ -78,7 +78,7 @@ function CalendarDays({
 	dayComponent,
 }: CalendarDaysProps) {
 	return (
-		<CalendarDaysWrapper>
+		<CalendarDaysView>
 			{days.map((day) => (
 				<CalendarMonthDay
 					key={day.moment}
@@ -88,7 +88,7 @@ function CalendarDays({
 					dayComponent={dayComponent}
 				></CalendarMonthDay>
 			))}
-		</CalendarDaysWrapper>
+		</CalendarDaysView>
 	);
 }
 

@@ -7,13 +7,22 @@ import { CONTROL_HEIGHT } from '../../style/sizes';
 import { SPACING_XS } from '../../style/spacing';
 import { FONT_SIZE } from '../../style/typography';
 
-interface ButtonControlProps {
+interface ButtonViewProps {
 	accent?: boolean;
 	secondary?: boolean;
 	block?: boolean;
 }
 
-const ButtonControl = styled.button<ButtonControlProps>`
+interface ButtonProps {
+	type?: 'button' | 'submit' | 'reset';
+	accent?: boolean;
+	secondary?: boolean;
+	block?: boolean;
+	onClick?: () => void;
+	children: ReactNode;
+}
+
+const ButtonView = styled.button<ButtonViewProps>`
 	height: ${CONTROL_HEIGHT}px;
 	display: flex;
 	align-items: center;
@@ -55,22 +64,13 @@ const ButtonControl = styled.button<ButtonControlProps>`
   `}
 `;
 
-interface ButtonProps {
-	type?: 'button' | 'submit' | 'reset';
-	accent?: boolean;
-	secondary?: boolean;
-	block?: boolean;
-	onClick?: () => void;
-	children: ReactNode;
-}
-
 function Button({ type = 'button', onClick, children, ...props }: ButtonProps) {
 	return (
-		<ButtonControl type={type} onClick={onClick} {...props}>
+		<ButtonView type={type} onClick={onClick} {...props}>
 			{children}
-		</ButtonControl>
+		</ButtonView>
 	);
 }
 
-export type { ButtonControlProps, ButtonProps };
-export { ButtonControl, Button };
+export type { ButtonViewProps, ButtonProps };
+export { ButtonView, Button };

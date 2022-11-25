@@ -24,9 +24,9 @@ const TimeView = styled.div`
 	margin: 0 ${SPACING_XXS}px ${SPACING_XS}px;
 `;
 
-const RemoveButton = styled.button``;
+const RemoveButtonView = styled.button``;
 
-const TimeList = styled.div`
+const TimeListView = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	margin-bottom: ${SPACING_SM}px;
@@ -38,9 +38,9 @@ function TimeItem({ time, onRemove }: TimeItemProps) {
 	return (
 		<TimeView>
 			{formatTime(time)}
-			<RemoveButton type='button' onClick={() => onRemove(time)}>
+			<RemoveButtonView type='button' onClick={() => onRemove(time)}>
 				&times;
-			</RemoveButton>
+			</RemoveButtonView>
 		</TimeView>
 	);
 }
@@ -74,7 +74,7 @@ function TimeInput({ values, onChange }: TimeInputProps) {
 	return (
 		<div>
 			{values.length && (
-				<TimeList>
+				<TimeListView>
 					{values.map((time) => (
 						<TimeItem
 							key={`${time}`}
@@ -82,7 +82,7 @@ function TimeInput({ values, onChange }: TimeInputProps) {
 							onRemove={removeTime}
 						/>
 					))}
-				</TimeList>
+				</TimeListView>
 			)}
 
 			<ActionButton

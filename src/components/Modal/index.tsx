@@ -15,11 +15,11 @@ interface ModalProps {
 	children: ReactNode;
 }
 
-interface ModalContentProps {
+interface ContentViewProps {
 	width?: number;
 }
 
-const ModalRoot = styled.div`
+const RootView = styled.div`
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -36,7 +36,7 @@ const ModalRoot = styled.div`
 	}
 `;
 
-const ModalMask = styled.div`
+const MaskView = styled.div`
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -46,7 +46,7 @@ const ModalMask = styled.div`
 	cursor: pointer;
 `;
 
-const ModalWrapper = styled.div`
+const WrapperView = styled.div`
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -58,7 +58,7 @@ const ModalWrapper = styled.div`
 	cursor: pointer;
 `;
 
-const ModalContent = styled.div<ModalContentProps>`
+const ContentView = styled.div<ContentViewProps>`
 	margin: auto;
 	width: 100%;
 	max-width: ${(props) => props?.width || 280}px;
@@ -75,7 +75,7 @@ const ModalContent = styled.div<ModalContentProps>`
 	}
 `;
 
-const ModalClose = styled.div`
+const CloseView = styled.div`
 	display: flex;
 	justify-content: flex-end;
 	margin-right: ${(-1 * SPACING_MD) / 2};
@@ -118,20 +118,20 @@ function Modal({ width, show, onClose, title, children }: ModalProps) {
 			}}
 			timeout={{ enter: 0, exit: 400 }}
 		>
-			<ModalRoot ref={modalRef}>
-				<ModalMask></ModalMask>
-				<ModalWrapper onClick={onWrapperClick}>
-					<ModalContent data-content width={width}>
-						<ModalClose>
+			<RootView ref={modalRef}>
+				<MaskView></MaskView>
+				<WrapperView onClick={onWrapperClick}>
+					<ContentView data-content width={width}>
+						<CloseView>
 							<button type='button' onClick={onClose}>
 								&times;
 							</button>
-						</ModalClose>
+						</CloseView>
 						{title && <div>{title}</div>}
 						<div>{children}</div>
-					</ModalContent>
-				</ModalWrapper>
-			</ModalRoot>
+					</ContentView>
+				</WrapperView>
+			</RootView>
 		</CSSTransition>,
 		document.getElementById('root') as HTMLElement
 	);

@@ -15,12 +15,12 @@ interface DateInputProps {
 	onChange: (newValue: Moment) => void;
 }
 
-interface DateInputViewProps {
+interface DateInputControlProps {
 	value: Moment;
 	onClick: () => void;
 }
 
-const DateInputControl = styled.div`
+const ControlView = styled.div`
 	width: 186px;
 	flex-shrink: 0;
 	display: flex;
@@ -36,11 +36,11 @@ const DateInputControl = styled.div`
 	cursor: pointer;
 `;
 
-function DateInputView({ value, onClick }: DateInputViewProps) {
+function DateInputControl({ value, onClick }: DateInputControlProps) {
 	return (
-		<DateInputControl onClick={onClick}>
+		<ControlView onClick={onClick}>
 			{formatDate(value)}
-		</DateInputControl>
+		</ControlView>
 	);
 }
 
@@ -64,7 +64,7 @@ function DateInput({ value, onChange }: DateInputProps) {
 
 	return (
 		<div>
-			<DateInputView value={value} onClick={openModal} />
+			<DateInputControl value={value} onClick={openModal} />
 
 			<DateModal
 				show={showModal}

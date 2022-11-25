@@ -6,7 +6,7 @@ import { FOOTER_HEIGHT } from '../../style/sizes';
 
 import { Container } from '../../containers/Container';
 
-const FooterWrapper = styled.footer`
+const WrapperView = styled.footer`
 	height: ${FOOTER_HEIGHT}px;
 	background: ${COLORS.accent.color};
 	color: ${COLORS.accent.contrast};
@@ -16,13 +16,13 @@ const FooterWrapper = styled.footer`
 	}
 `;
 
-const FooterMenu = styled.ul`
+const MenuView = styled.ul`
 	display: flex;
 	justify-content: space-between;
 	height: 100%;
 `;
 
-const FooterMenuItem = styled.li`
+const MenuItemView = styled.li`
 	flex-grow: 1;
 	min-width: 40px;
 	display: flex;
@@ -40,23 +40,23 @@ const FooterMenuItem = styled.li`
 
 function Footer() {
 	return (
-		<FooterWrapper>
+		<WrapperView>
 			<Container className='container'>
-				<FooterMenu>
-					<FooterMenuItem></FooterMenuItem>
-					<FooterMenuItem>
+				<MenuView>
+					<MenuItemView></MenuItemView>
+					<MenuItemView>
 						<Link to='/calendar'>Calendar</Link>
-					</FooterMenuItem>
-					<FooterMenuItem className='add'>
+					</MenuItemView>
+					<MenuItemView className='add'>
 						<Link to='/task/new'>Add task</Link>
-					</FooterMenuItem>
-					<FooterMenuItem>
+					</MenuItemView>
+					<MenuItemView>
 						<Link to='/tasks'>Tasks List</Link>
-					</FooterMenuItem>
-					<FooterMenuItem></FooterMenuItem>
-				</FooterMenu>
+					</MenuItemView>
+					<MenuItemView></MenuItemView>
+				</MenuView>
 			</Container>
-		</FooterWrapper>
+		</WrapperView>
 	);
 }
 

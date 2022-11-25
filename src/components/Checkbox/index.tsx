@@ -12,13 +12,13 @@ interface CheckboxProps {
 	onChange: (newChecked: boolean) => void;
 }
 
-const Wrapper = styled.label`
+const WrapperView = styled.label`
 	display: flex;
 	align-items: center;
 	cursor: pointer;
 `;
 
-const Control = styled.input`
+const ControlView = styled.input`
 	visibility: hidden;
 	position: absolute;
 	width: 1px;
@@ -32,7 +32,7 @@ const Control = styled.input`
 	overflow: hidden;
 `;
 
-const Box = styled.div`
+const BoxView = styled.div`
 	width: 25px;
 	height: 25px;
 	border: 1px solid ${COLORS.border};
@@ -45,7 +45,7 @@ const Box = styled.div`
 	}
 `;
 
-const Label = styled.span`
+const LabelView = styled.span`
 	color: ${COLORS.serviceText};
 
 	input:checked ~ & {
@@ -56,7 +56,6 @@ const Label = styled.span`
 let unique = 1;
 
 function Checkbox({ ref, label, checked, onChange }: CheckboxProps) {
-	const id = useRef<string>(`checkbox-${unique++}`);
 	const handleChange = useCallback(
 		(e: FormEvent<HTMLInputElement>) => {
 			if (typeof onChange === 'function')
@@ -66,16 +65,16 @@ function Checkbox({ ref, label, checked, onChange }: CheckboxProps) {
 	);
 
 	return (
-		<Wrapper>
-			<Control
+		<WrapperView>
+			<ControlView
 				ref={ref}
 				type='checkbox'
 				checked={checked}
 				onChange={handleChange}
 			/>
-			<Box />
-			<Label>{label}</Label>
-		</Wrapper>
+			<BoxView />
+			<LabelView>{label}</LabelView>
+		</WrapperView>
 	);
 }
 

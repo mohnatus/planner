@@ -6,12 +6,12 @@ interface CalendarYearsProps {
 	onYearClick: (year: number) => void;
 }
 
-const Wrapper = styled.div`
+const WrapperView = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 `;
 
-const Year = styled.div`
+const YearView = styled.div`
 	width: 33.33%;
 	display: flex;
 	flex-wrap: wrap;
@@ -27,13 +27,13 @@ function CalendarYears({
 	onYearClick,
 }: CalendarYearsProps) {
 	return (
-		<Wrapper>
+		<WrapperView>
 			{years.map((year) => (
-				<Year key={year} onClick={() => onYearClick(year)}>
+				<YearView key={year} onClick={() => onYearClick(year)}>
 					{year}
-				</Year>
+				</YearView>
 			))}
-		</Wrapper>
+		</WrapperView>
 	);
 }
 

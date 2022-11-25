@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { COLORS } from '../../style/colors';
 
-import { ButtonControl } from '../Button';
+import { ButtonView } from '../Button';
 
 type TogglerOption<T> = {
 	id: T;
@@ -22,15 +22,15 @@ interface TogglerProps<T> {
 	onChange: (newValue: T) => void;
 }
 
-interface TogglerButtonProps {
+interface TogglerButtonViewProps {
 	active?: boolean;
 }
 
-const TogglerWrapper = styled.div`
+const WrapperView = styled.div`
 	display: flex;
 `;
 
-const TogglerButton = styled(ButtonControl)<TogglerButtonProps>`
+const ToggerButtonView = styled(ButtonView)<TogglerButtonViewProps>`
 	flex-grow: 1;
 	border-color: ${COLORS.border};
 	&:not(:first-child) {
@@ -50,9 +50,9 @@ function TogglerItem<T>({ option, active, onClick }: TogglerOptionProps<T>) {
 	}, [option, onClick]);
 
 	return (
-		<TogglerButton accent={active} onClick={handleClick}>
+		<ButtonView accent={active} onClick={handleClick}>
 			{option.name}
-		</TogglerButton>
+		</ButtonView>
 	);
 }
 
@@ -62,7 +62,7 @@ function Toggler<T>({ options, value, onChange }: TogglerProps<T>) {
 	};
 
 	return (
-		<TogglerWrapper>
+		<WrapperView>
 			{options.map((option: TogglerOption<T>) => (
 				<TogglerItem
 					key={`${option.id}`}
@@ -71,7 +71,7 @@ function Toggler<T>({ options, value, onChange }: TogglerProps<T>) {
 					onClick={onOptionClick}
 				/>
 			))}
-		</TogglerWrapper>
+		</WrapperView>
 	);
 }
 

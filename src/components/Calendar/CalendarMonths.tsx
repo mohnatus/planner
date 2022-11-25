@@ -7,12 +7,12 @@ interface CalendarMonthsProps {
 	currentMonth: number;
 }
 
-const Wrapper = styled.div`
+const WrapperView = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 `;
 
-const Month = styled.div`
+const MonthView = styled.div`
 	width: 33.33%;
 	display: flex;
 	flex-wrap: wrap;
@@ -24,13 +24,13 @@ const Month = styled.div`
 
 function CalendarMonths({ onMonthClick, currentMonth }: CalendarMonthsProps) {
 	return (
-		<Wrapper>
+		<WrapperView>
 			{MONTHS.map((monthName, i) => (
-				<Month key={i} onClick={() => onMonthClick(i)}>
+				<MonthView key={i} onClick={() => onMonthClick(i)}>
 					{monthName}
-				</Month>
+				</MonthView>
 			))}
-		</Wrapper>
+		</WrapperView>
 	);
 }
 

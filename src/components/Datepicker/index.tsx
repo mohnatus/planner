@@ -16,12 +16,12 @@ interface DatepickerMonthDayProps {
 	selected: boolean;
 }
 
-interface DatepickerDayViewProps {
+interface DayViewProps {
 	selected: boolean;
 	inactive: boolean;
 }
 
-const DatepickerDayView = styled.div<DatepickerDayViewProps>`
+const DayView = styled.div<DayViewProps>`
 	width: 100%;
 	height: 100%;
 	border-radius: 50%;
@@ -40,9 +40,9 @@ const DatepickerDayView = styled.div<DatepickerDayViewProps>`
 
 function DatepickerMonthDay({ day, selected }: DatepickerMonthDayProps) {
 	return (
-		<DatepickerDayView inactive={!day.active} selected={selected}>
+		<DayView inactive={!day.active} selected={selected}>
 			{day.date}
-		</DatepickerDayView>
+		</DayView>
 	);
 }
 

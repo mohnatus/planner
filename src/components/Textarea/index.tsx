@@ -12,9 +12,9 @@ interface TextareaProps {
 	onChange?: (newValue: string) => void;
 }
 
-const TextareaWrapper = styled.div``;
+const WrapperView = styled.div``;
 
-const TextareaControl = styled.textarea`
+const ControlView = styled.textarea`
 	display: block;
 	width: 100%;
 	min-height: 80px;
@@ -44,14 +44,14 @@ function Textarea({ ref, value, onChange, id }: TextareaProps) {
 	);
 
 	return (
-		<TextareaWrapper>
-			<TextareaControl
+		<WrapperView>
+			<ControlView
 				ref={ref}
 				id={id}
 				value={value}
 				onChange={handleChange}
 			/>
-		</TextareaWrapper>
+		</WrapperView>
 	);
 }
 

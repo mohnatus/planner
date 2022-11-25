@@ -23,7 +23,7 @@ const WEEK: WeekDays[] = [
 	WeekDays.Sunday,
 ];
 
-export function WeekDaysModal({
+function WeekDaysModal({
 	show,
 	onClose,
 	value,

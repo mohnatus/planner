@@ -10,7 +10,7 @@ interface ActionButtonProps {
 	onClick?: () => void;
 }
 
-const Wrapper = styled.button`
+const WrapperView = styled.button`
 	display: flex;
 	align-items: center;
 	font: inherit;
@@ -19,7 +19,7 @@ const Wrapper = styled.button`
 	cursor: pointer;
 `;
 
-const Icon = styled.div`
+const IconView = styled.div`
 	width: ${CONTROL_HEIGHT}px;
 	height: ${CONTROL_HEIGHT}px;
 	display: flex;
@@ -33,14 +33,14 @@ const Icon = styled.div`
 	margin-right: ${SPACING_SM}px;
 `;
 
-const Label = styled.span``;
+const LabelView = styled.span``;
 
 function ActionButton({ action, label, onClick }: ActionButtonProps) {
 	return (
-		<Wrapper type='button' onClick={onClick}>
-			<Icon>{action === 'add' ? '+' : '-'}</Icon>
-			<Label>{label}</Label>
-		</Wrapper>
+		<WrapperView type='button' onClick={onClick}>
+			<IconView>{action === 'add' ? '+' : '-'}</IconView>
+			<LabelView>{label}</LabelView>
+		</WrapperView>
 	);
 }
 

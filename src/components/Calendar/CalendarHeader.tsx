@@ -7,31 +7,31 @@ interface CalendarHeaderProps {
 	children: ReactNode;
 }
 
-const Header = styled.div`
+const HeaderView = styled.div`
 	display: flex;
 	align-items: center;
 `;
 
-const Control = styled.button`
+const ControlView = styled.button`
 	flex-shrink: 0;
 `;
 
-const Title = styled.div`
+const TitleView = styled.div`
 	flex-grow: 1;
 	text-align: center;
 `;
 
 function CalendarHeader({ onPrev, onNext, children }: CalendarHeaderProps) {
 	return (
-		<Header>
-			<Control type='button' onClick={onPrev}>
+		<HeaderView>
+			<ControlView type='button' onClick={onPrev}>
 				&lt;
-			</Control>
-			<Title>{children}</Title>
-			<Control type='button' onClick={onNext}>
+			</ControlView>
+			<TitleView>{children}</TitleView>
+			<ControlView type='button' onClick={onNext}>
 				&gt;
-			</Control>
-		</Header>
+			</ControlView>
+		</HeaderView>
 	);
 }
 
