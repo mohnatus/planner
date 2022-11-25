@@ -32,6 +32,7 @@ import { PageHeader } from '../../components/PageHeader';
 import { ServiceText } from '../../containers/ServiceText';
 import { DateGroup } from '../../containers/DateGroup';
 import { Button } from '../../components/Button';
+import { ToggleBlock } from '../../containers/ToggleBlock';
 
 const NO_REPEAT = 'no-repeat';
 const REPEAT = 'repeat';
@@ -218,10 +219,14 @@ export function TaskForm() {
 
 						<hr />
 
-						<TimeInput
+						<ToggleBlock title="Настроить время">
+							<TimeInput
 							values={defaultTime}
 							onChange={setDefaultTime}
 						/>
+						</ToggleBlock>
+
+
 
 						<hr />
 
