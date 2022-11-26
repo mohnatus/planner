@@ -1,10 +1,10 @@
 import { FormEvent, RefObject, useCallback } from 'react';
 import styled from 'styled-components';
 
-import { COLORS } from '../../style/colors';
-import { RADIUS_SM } from '../../style/decor';
-import { CONTROL_HEIGHT } from '../../style/sizes';
-import { SPACING_SM, SPACING_XXS } from '../../style/spacing';
+import { COLORS } from '../../ui/colors';
+import { RADIUS_SM } from '../../ui/decor';
+import { CONTROL_HEIGHT } from '../../ui/sizes';
+import { SPACING_SM, SPACING_XXS } from '../../ui/spacing';
 
 interface InputProps {
 	ref?: RefObject<HTMLInputElement>;
@@ -16,7 +16,7 @@ interface InputProps {
 
 const WrapperView = styled.div``;
 
-const ControlView = styled.input`
+const InputView = styled.input`
 	display: block;
 	width: 100%;
 	height: ${CONTROL_HEIGHT}px;
@@ -46,7 +46,7 @@ function Input({ ref, value, onChange, id, type = 'text' }: InputProps) {
 
 	return (
 		<WrapperView>
-			<ControlView
+			<InputView
 				ref={ref}
 				type={type}
 				id={id}

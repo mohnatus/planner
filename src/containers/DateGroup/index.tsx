@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { COLORS } from '../../style/colors';
+import { COLORS } from '../../ui/colors';
 
 import { DateInput, DateInputProps } from '../../components/DateInput';
 

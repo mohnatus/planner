@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CONTAINER_PADDING } from '../../style/spacing';
+import { CONTAINER_PADDING } from '../../ui/spacing';
 
 const Container = styled.div`
 	width: 100%;

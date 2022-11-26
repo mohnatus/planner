@@ -1,4 +1,6 @@
+import { FormGroup } from '../../containers/FormGroup';
 import { MonthDay, WeekDays } from '../../types';
+import { REMOVE_ACTION } from '../../ui/actions';
 
 import { MonthDaysInput } from '../MonthDaysInput';
 import { WeekDaysInput } from '../WeekDaysInput';
@@ -25,19 +27,27 @@ function TaskExceptions({
 
 	return (
 		<div>
-			<WeekDaysInput
-				value={weekDays}
-				onChange={(newValue) => {
-					handleChange({ weekDays: newValue });
-				}}
-			/>
+			<FormGroup>
+				<WeekDaysInput
+					value={weekDays}
+					onChange={(newValue) => {
+						handleChange({ weekDays: newValue });
+					}}
+					action={REMOVE_ACTION}
+					label='Исключить дни недели'
+				/>
+			</FormGroup>
 
-			<MonthDaysInput
-				value={monthDays}
-				onChange={(newValue) => {
-					handleChange({ monthDays: newValue });
-				}}
-			/>
+			<FormGroup>
+				<MonthDaysInput
+					value={monthDays}
+					onChange={(newValue) => {
+						handleChange({ monthDays: newValue });
+					}}
+					action={REMOVE_ACTION}
+					label='Исключить дни месяца'
+				/>
+			</FormGroup>
 		</div>
 	);
 }

@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 
 import { Moment, CalendarDay } from '../../types';
-import { COLORS } from '../../style/colors';
+import { COLORS } from '../../ui/colors';
 
 import { Calendar } from '../Calendar';
 

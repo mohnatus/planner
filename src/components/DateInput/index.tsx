@@ -2,10 +2,10 @@ import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 import { Moment } from '../../types';
-import { COLORS } from '../../style/colors';
-import { RADIUS_SM } from '../../style/decor';
-import { CONTROL_HEIGHT } from '../../style/sizes';
-import { SPACING_XS } from '../../style/spacing';
+import { COLORS } from '../../ui/colors';
+import { RADIUS_SM } from '../../ui/decor';
+import { CONTROL_HEIGHT } from '../../ui/sizes';
+import { SPACING_XS } from '../../ui/spacing';
 import { formatDate } from '../../utils/date/format';
 
 import { DateModal } from './DateModal';

@@ -1,7 +1,7 @@
 import styled, {createGlobalStyle } from 'styled-components';
-import { FONT_FAMILY, FONT_SIZE } from './style/typography';
-import { COLORS } from './style/colors';
-import { SPACING_MD } from './style/spacing';
+import { FONT_FAMILY, FONT_SIZE } from './ui/typography';
+import { COLORS } from './ui/colors';
+import { SPACING_MD } from './ui/spacing';
 
 export const GlobalStyle = createGlobalStyle`
 	* {

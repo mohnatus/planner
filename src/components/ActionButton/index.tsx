@@ -1,12 +1,18 @@
 import styled from 'styled-components';
 
-import { COLORS } from '../../style/colors';
-import { CONTROL_HEIGHT } from '../../style/sizes';
-import { SPACING_SM } from '../../style/spacing';
+import { COLORS } from '../../ui/colors';
+import { CONTROL_HEIGHT } from '../../ui/sizes';
+import { SPACING_SM } from '../../ui/spacing';
+import { ADD_ACTION, REMOVE_ACTION } from '../../ui/actions';
 
-interface ActionButtonProps {
-	action: 'add' | 'remove';
-	label: string;
+type ActionType = typeof ADD_ACTION | typeof REMOVE_ACTION;
+
+interface UIAction {
+	action?: ActionType;
+	label?: string;
+}
+
+interface ActionButtonProps extends UIAction {
 	onClick?: () => void;
 }
 
@@ -35,14 +41,14 @@ const IconView = styled.div`
 
 const LabelView = styled.span``;
 
-function ActionButton({ action, label, onClick }: ActionButtonProps) {
+function ActionButton({ action = ADD_ACTION, label = '', onClick }: ActionButtonProps) {
 	return (
 		<WrapperView type='button' onClick={onClick}>
-			<IconView>{action === 'add' ? '+' : '-'}</IconView>
+			<IconView>{action === ADD_ACTION ? '+' : '-'}</IconView>
 			<LabelView>{label}</LabelView>
 		</WrapperView>
 	);
 }
 
-export type { ActionButtonProps };
+export type { UIAction, ActionType, ActionButtonProps };
 export { ActionButton };

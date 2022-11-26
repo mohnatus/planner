@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-import { COLORS } from '../../style/colors';
-import { RADIUS_LG } from '../../style/decor';
-import { SPACING_MD, SPACING_SM, SPACING_XS } from '../../style/spacing';
+import { COLORS } from '../../ui/colors';
+import { RADIUS_LG } from '../../ui/decor';
+import { SPACING_MD, SPACING_SM, SPACING_XS } from '../../ui/spacing';
 
 interface CardContentProps {
 	bordered?: boolean;

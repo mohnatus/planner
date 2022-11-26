@@ -1,15 +1,22 @@
 import { useCallback, useState } from 'react';
 
 import { WeekDays } from '../../types';
+import { ADD_ACTION } from '../../ui/actions';
+import { ActionButton, UIAction } from '../ActionButton';
 
 import { MonthDaysModal } from './MonthDaysModal';
 
-interface MonthDaysInputProps {
+interface MonthDaysInputProps extends UIAction {
 	value: Array<WeekDays>;
 	onChange: (newValue: Array<WeekDays>) => void;
 }
 
-function MonthDaysInput({ value, onChange }: MonthDaysInputProps) {
+function MonthDaysInput({
+	value,
+	label = 'Выбрать дни месяца',
+	action = ADD_ACTION,
+	onChange,
+}: MonthDaysInputProps) {
 	const [showModal, setShowModal] = useState(false);
 
 	const openModal = useCallback(() => {
@@ -22,9 +29,7 @@ function MonthDaysInput({ value, onChange }: MonthDaysInputProps) {
 
 	return (
 		<div>
-			<button type='button' onClick={openModal}>
-				Выбрать дни месяца
-			</button>
+			<ActionButton label={label} action={action} onClick={openModal} />
 
 			<div>
 				{value.map((day) => (

@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-import { COLORS } from '../../style/colors';
-import { SPACING_MD, SPACING_XXS } from '../../style/spacing';
+import { COLORS } from '../../ui/colors';
+import { SPACING_MD, SPACING_XXS } from '../../ui/spacing';
 
 interface FormGroupProps {
 	id?: string;

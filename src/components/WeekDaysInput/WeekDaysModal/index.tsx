@@ -1,8 +1,10 @@
 import { useState } from 'react';
-
-import { WEEK_DAYS } from '../../../texts/Date';
+import styled from 'styled-components';
 
 import { WeekDays } from '../../../types';
+import { WEEK_DAYS } from '../../../texts/Date';
+import { SPACING_SM } from '../../../ui/spacing';
+
 import { Checkbox } from '../../Checkbox';
 import { Modal } from '../../Modal';
 
@@ -12,6 +14,12 @@ interface WeekDaysModalProps {
 	onChange: (newValue: Array<WeekDays>) => void;
 	value: Array<WeekDays>;
 }
+
+const DayView = styled.div`
+	&:not(:last-child) {
+		margin-bottom: ${SPACING_SM}px;
+	}
+`
 
 const WEEK: WeekDays[] = [
 	WeekDays.Monday,
@@ -49,7 +57,7 @@ function WeekDaysModal({
 	return (
 		<Modal show={show} onClose={onClose}>
 			{WEEK.map((day: WeekDays) => (
-				<div key={day}>
+				<DayView key={day}>
 					<Checkbox
 						label={WEEK_DAYS[day]}
 						checked={selected.includes(day)}
@@ -57,7 +65,7 @@ function WeekDaysModal({
 							toggleDay(day, checked);
 						}}
 					/>
-				</div>
+				</DayView>
 			))}
 
 			<button onClick={onSubmit}>Сохранить</button>

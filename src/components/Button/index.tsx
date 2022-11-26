@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-import { COLORS } from '../../style/colors';
-import { RADIUS_SM } from '../../style/decor';
-import { CONTROL_HEIGHT } from '../../style/sizes';
-import { SPACING_XS } from '../../style/spacing';
-import { FONT_SIZE } from '../../style/typography';
+import { COLORS } from '../../ui/colors';
+import { RADIUS_SM } from '../../ui/decor';
+import { CONTROL_HEIGHT } from '../../ui/sizes';
+import { SPACING_XS } from '../../ui/spacing';
+import { FONT_SIZE } from '../../ui/typography';
 
 interface ButtonViewProps {
 	accent?: boolean;

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-import { COLORS } from '../../style/colors';
-import { HEADER_HEIGHT } from '../../style/sizes';
-import { FONT_SIZE } from '../../style/typography';
+import { COLORS } from '../../ui/colors';
+import { HEADER_HEIGHT } from '../../ui/sizes';
+import { FONT_SIZE } from '../../ui/typography';
 
 import { Container } from '../../containers/Container';
 

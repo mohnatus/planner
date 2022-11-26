@@ -9,7 +9,7 @@ import { formatTime } from '../../utils/date/time';
 import { PageHeader } from '../../components/PageHeader';
 import { Container } from '../../containers/Container';
 import { Card, CardContent, CardTitle } from '../../containers/Card';
-import { SPACING_LG } from '../../style/spacing';
+import { SPACING_LG } from '../../ui/spacing';
 
 export interface TaskProps {
 	task: Task;

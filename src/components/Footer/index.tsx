@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { COLORS } from '../../style/colors';
-import { FOOTER_HEIGHT } from '../../style/sizes';
+import { COLORS } from '../../ui/colors';
+import { FOOTER_HEIGHT } from '../../ui/sizes';
 
 import { Container } from '../../containers/Container';
 

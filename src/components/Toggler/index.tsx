@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import styled from 'styled-components';
 
-import { COLORS } from '../../style/colors';
+import { COLORS } from '../../ui/colors';
 
 import { ButtonView } from '../Button';
 

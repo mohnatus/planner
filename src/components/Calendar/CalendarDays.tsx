@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { CalendarDay, Moment } from '../../types';
-import { COLORS } from '../../style/colors';
+import { COLORS } from '../../ui/colors';
 
 interface DayViewProps {
 	today: boolean;

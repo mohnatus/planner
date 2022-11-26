@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { SPACING_SM, SPACING_XXS } from '../../style/spacing';
+import { SPACING_SM, SPACING_XXS } from '../../ui/spacing';
 
 interface ToggleBlockProps {
 	title: string;

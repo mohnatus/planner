@@ -1,9 +1,9 @@
 import { FormEvent, RefObject, useCallback } from 'react';
 import styled from 'styled-components';
 
-import { COLORS } from '../../style/colors';
-import { RADIUS_SM } from '../../style/decor';
-import { SPACING_SM } from '../../style/spacing';
+import { COLORS } from '../../ui/colors';
+import { RADIUS_SM } from '../../ui/decor';
+import { SPACING_SM } from '../../ui/spacing';
 
 interface TextareaProps {
 	ref?: RefObject<HTMLTextAreaElement>;

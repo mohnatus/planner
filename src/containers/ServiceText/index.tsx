@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { COLORS } from '../../style/colors';
-import { SPACING_SM } from '../../style/spacing';
+import { COLORS } from '../../ui/colors';
+import { SPACING_SM } from '../../ui/spacing';
 
 const ServiceText = styled.div`
 	color: ${COLORS.serviceText};

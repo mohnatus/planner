@@ -3,9 +3,9 @@ import { createPortal } from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
-import { RADIUS_LG } from '../../style/decor';
-import { SPACING_LG, SPACING_MD, SPACING_XS } from '../../style/spacing';
-import { BASE_TIMING_FUNCTION, TRANSITION_LONG } from '../../style/transitions';
+import { RADIUS_LG } from '../../ui/decor';
+import { SPACING_LG, SPACING_MD, SPACING_XS } from '../../ui/spacing';
+import { BASE_TIMING_FUNCTION, TRANSITION_LONG } from '../../ui/transitions';
 
 interface ModalProps {
 	width?: number;

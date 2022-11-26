@@ -1,11 +1,5 @@
-import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addTask, editTask, selectTask } from './tasksSlice';
-import { FormGroup } from '../../containers/FormGroup';
-import { Input } from '../../components/Input';
-import { Textarea } from '../../components/Textarea';
-import { Toggler, TogglerOption } from '../../components/Toggler';
 
 import {
 	MonthDay,
@@ -14,9 +8,18 @@ import {
 	PeriodUnits,
 	RepeatTypes,
 } from '../../types';
-import { DateInput } from '../../components/DateInput';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { addTask, editTask, selectTask } from './tasksSlice';
 import { getTodayMoment } from '../../utils/date/today';
 
+import { FormGroup } from '../../containers/FormGroup';
+import { Container } from '../../containers/Container';
+import { ServiceText } from '../../containers/ServiceText';
+import { DateGroup } from '../../containers/DateGroup';
+import { ToggleBlock } from '../../containers/ToggleBlock';
+import { Input } from '../../components/Input';
+import { Textarea } from '../../components/Textarea';
+import { Toggler, TogglerOption } from '../../components/Toggler';
 import { Checkbox } from '../../components/Checkbox';
 import {
 	RepeatParams,
@@ -27,12 +30,8 @@ import {
 	TaskExceptionParams,
 	TaskExceptions,
 } from '../../components/TaskExceptions';
-import { Container } from '../../containers/Container';
 import { PageHeader } from '../../components/PageHeader';
-import { ServiceText } from '../../containers/ServiceText';
-import { DateGroup } from '../../containers/DateGroup';
 import { Button } from '../../components/Button';
-import { ToggleBlock } from '../../containers/ToggleBlock';
 
 const NO_REPEAT = 'no-repeat';
 const REPEAT = 'repeat';

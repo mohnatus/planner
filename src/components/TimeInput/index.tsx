@@ -3,10 +3,13 @@ import styled from 'styled-components';
 
 import { Time } from '../../types';
 import { formatTime } from '../../utils/date/time';
-import { SPACING_SM, SPACING_XS, SPACING_XXS } from '../../style/spacing';
+import { SPACING_SM, SPACING_XS, SPACING_XXS } from '../../ui/spacing';
+import { COLORS } from '../../ui/colors';
 
 import { ActionButton } from '../ActionButton';
 import { TimeModal } from './TimeModal';
+import { CONTROL_HEIGHT } from '../../ui/sizes';
+import { RADIUS_SM } from '../../ui/decor';
 
 interface TimeItemProps {
 	time: Time;
@@ -22,9 +25,18 @@ const TimeView = styled.div`
 	display: flex;
 	align-items: center;
 	margin: 0 ${SPACING_XXS}px ${SPACING_XS}px;
+	background-color: ${COLORS.controls.color};
+	color: ${COLORS.controls.contrast};
+	height: ${CONTROL_HEIGHT}px;
+	padding: ${SPACING_XXS}px ${SPACING_SM}px;
+	border-radius: ${RADIUS_SM}px;
+	border: 1px solid ${COLORS.border};
 `;
 
-const RemoveButtonView = styled.button``;
+const RemoveButtonView = styled.button`
+	margin-left: ${SPACING_XS}px;
+	margin-right: ${-1 * SPACING_XXS}px;
+`;
 
 const TimeListView = styled.div`
 	display: flex;
@@ -73,7 +85,7 @@ function TimeInput({ values, onChange }: TimeInputProps) {
 
 	return (
 		<div>
-			{values.length && (
+			{values.length > 0 && (
 				<TimeListView>
 					{values.map((time) => (
 						<TimeItem
