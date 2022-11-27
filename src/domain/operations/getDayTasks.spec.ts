@@ -1,134 +1,19 @@
 import { DayModel } from '../models/Day';
 import {
-	isMonthDaysTaskVisibleOnDay,
-	isNoRepeatTaskVisibleOnDay,
 	isPeriodTaskVisibleOnDay,
-	isWeekDaysTaskVisibleOnDay,
 } from './getDayTasks';
 import { TaskModel } from '../models/Task';
-import { Day, PeriodUnits, RepeatTypes, Task, TaskMomentsList, Moment, WeekDays } from '../../types';
+import {
+	PeriodUnits,
+	RepeatTypes,
+	WeekDays,
+} from '../../types';
 import { cloneDate } from '../../utils/date';
-import { TaskMomentsModel } from '../models/TaskMoments';
-import { getTodayMoment } from '../../utils/date/today';
 import { MS_IN_DAY } from '../../utils/date/constants';
 
-const todayMoment: Moment = getTodayMoment();
-const yesterdayMoment: Moment = todayMoment - MS_IN_DAY;
-const tomorrowMoment: Moment = todayMoment + MS_IN_DAY;
 
-describe('Check noRepeat task', () => {
-	const today: Day = DayModel(todayMoment);
-	const yesterday: Day = DayModel(yesterdayMoment);
-	const tomorrow: Day = DayModel(tomorrowMoment);
 
-	test('Task without resheduling is visible only on the day of creation', () => {
-		const yesterdayTask: Task = TaskModel({
-			createdMoment: yesterdayMoment,
-		});
-		const todayTask: Task = TaskModel({});
-		const taskMomentsList = {};
-
-		expect(
-			isNoRepeatTaskVisibleOnDay(
-				yesterdayTask,
-				yesterday,
-				taskMomentsList
-			)
-		).toBe(true);
-		expect(
-			isNoRepeatTaskVisibleOnDay(yesterdayTask, today, taskMomentsList)
-		).toBe(false);
-		expect(
-			isNoRepeatTaskVisibleOnDay(todayTask, today, taskMomentsList)
-		).toBe(true);
-		expect(
-			isNoRepeatTaskVisibleOnDay(todayTask, tomorrow, taskMomentsList)
-		).toBe(false);
-		expect(
-			isNoRepeatTaskVisibleOnDay(todayTask, yesterday, taskMomentsList)
-		).toBe(false);
-	});
-
-	test('Resheduled task is visible only today', () => {
-		const yesterdayTask: Task = TaskModel({
-			createdMoment: yesterdayMoment,
-			resheduleToNextDay: true,
-		});
-		const todayTask: Task = TaskModel({
-			resheduleToNextDay: true,
-		});
-
-		const taskMomentsList = {};
-
-		expect(
-			isNoRepeatTaskVisibleOnDay(yesterdayTask, today, taskMomentsList)
-		).toBe(true);
-		expect(
-			isNoRepeatTaskVisibleOnDay(todayTask, today, taskMomentsList)
-		).toBe(true);
-		expect(
-			isNoRepeatTaskVisibleOnDay(todayTask, tomorrow, taskMomentsList)
-		).toBe(false);
-	});
-
-	test('Checked task is visible on the days of check', () => {
-		const yesterdayTask: Task = TaskModel({
-			createdMoment: yesterdayMoment,
-		});
-
-		const yesterdayResheduledTask: Task = TaskModel({
-			resheduleToNextDay: true,
-			createdMoment: yesterdayMoment,
-		});
-
-		const taskMomentsList: TaskMomentsList = {
-			[yesterdayTask.id]: TaskMomentsModel(yesterdayTask.id, {
-				checks: [{ moment: yesterdayMoment }],
-			}),
-			[yesterdayResheduledTask.id]: TaskMomentsModel(yesterdayResheduledTask.id, {
-				checks: [{ moment: todayMoment }],
-			}),
-		};
-
-		expect(
-			isNoRepeatTaskVisibleOnDay(
-				yesterdayTask,
-				yesterday,
-				taskMomentsList
-			)
-		).toBe(true);
-		expect(
-			isNoRepeatTaskVisibleOnDay(yesterdayTask, today, taskMomentsList)
-		).toBe(false);
-		expect(
-			isNoRepeatTaskVisibleOnDay(yesterdayTask, tomorrow, taskMomentsList)
-		).toBe(false);
-
-		expect(
-			isNoRepeatTaskVisibleOnDay(
-				yesterdayResheduledTask,
-				yesterday,
-				taskMomentsList
-			)
-		).toBe(false);
-		expect(
-			isNoRepeatTaskVisibleOnDay(
-				yesterdayResheduledTask,
-				today,
-				taskMomentsList
-			)
-		).toBe(true);
-		expect(
-			isNoRepeatTaskVisibleOnDay(
-				yesterdayResheduledTask,
-				tomorrow,
-				taskMomentsList
-			)
-		).toBe(false);
-	});
-});
-
-describe('Check weekDays task', () => {
+describe('Повторение по дням недели', () => {
 	const createdDate = new Date(2022, 3, 10);
 	const mondayDate = new Date(2022, 4, 2);
 	const fridayDate = new Date(2022, 4, 6);
@@ -138,35 +23,56 @@ describe('Check weekDays task', () => {
 	const friday = DayModel(+fridayDate);
 	const sunday = DayModel(+sundayDate);
 
-	test('Friday task is visible only on Fridays', () => {
-		const fridayTask = TaskModel({
-			repeat: true,
-			repeatType: RepeatTypes.WeekDays,
-			weekDays: [WeekDays.Friday],
-			createdMoment: +createdDate,
-		});
-
-		expect(isWeekDaysTaskVisibleOnDay(fridayTask, friday)).toBe(true);
-		expect(isWeekDaysTaskVisibleOnDay(fridayTask, monday)).toBe(false);
+	const fridayMondayTask = TaskModel({
+		repeat: true,
+		repeatType: RepeatTypes.WeekDays,
+		weekDays: [WeekDays.Friday, WeekDays.Monday],
+		createdMoment: +createdDate,
+		resheduleToNextDay: false
 	});
 
-	test('Friday & monday task is visible only on Fridays and Mondays', () => {
-		const fridayMondayTask = TaskModel({
-			repeat: true,
-			repeatType: RepeatTypes.WeekDays,
-			weekDays: [WeekDays.Friday, WeekDays.Monday],
-			createdMoment: +createdDate,
-		});
-
-		expect(isWeekDaysTaskVisibleOnDay(fridayMondayTask, friday)).toBe(true);
-		expect(isWeekDaysTaskVisibleOnDay(fridayMondayTask, monday)).toBe(true);
-		expect(isWeekDaysTaskVisibleOnDay(fridayMondayTask, sunday)).toBe(
-			false
-		);
+	const fridayMondayResheduledTask = TaskModel({
+		repeat: true,
+		repeatType: RepeatTypes.WeekDays,
+		weekDays: [WeekDays.Friday, WeekDays.Monday],
+		createdMoment: +createdDate,
+		resheduleToNextDay: true
 	});
+
+	describe('В прошлом', () => {
+		test('Задача видна в указанные дни, если была в них отмечена', () => {});
+
+		test('Задача не видна в указанные дни, если не была в них отмечена', () => {});
+		test('Задача видна в неуказанные дни, если была в них отмечена', () => {});
+
+		test('Задача не видна в неуказанные дни, если не была в них отмечена', () => {});
+	});
+
+	describe('В будущем', () => {
+		test('Задача видна в указанные дни в будущем', () => {});
+		test('Задача не видна в неуказанные дни в будущем', () => {});
+	});
+
+	describe('Если последняя запланированная задача не выполнена', () => {
+		test('С опцией переносить на следующий день, задача видна сегодня', () => {});
+		test('Без опции переносить на следующий день, задача не видна сегодня', () => {});
+	});
+
+	// test('Задача видна в указанные дни', () => {
+	// 	expect(isWeekDaysTaskVisibleOnDay(fridayMondayTask, friday)).toBe(true);
+	// 	expect(isWeekDaysTaskVisibleOnDay(fridayMondayTask, monday)).toBe(true);
+	// });
+
+	// test('Задача не видна в другие дни', () => {
+	// 	expect(isWeekDaysTaskVisibleOnDay(fridayMondayTask, friday)).toBe(true);
+	// 	expect(isWeekDaysTaskVisibleOnDay(fridayMondayTask, monday)).toBe(true);
+	// 	expect(isWeekDaysTaskVisibleOnDay(fridayMondayTask, sunday)).toBe(
+	// 		false
+	// 	);
+	// });
 });
 
-describe('Check monthDays task', () => {
+describe('Повторение по дням месяца', () => {
 	const createdDate = new Date(2022, 4, 1);
 	const secondDayDate = new Date(2022, 4, 2);
 	const secondDayDate2 = new Date(2022, 6, 2);
@@ -178,46 +84,65 @@ describe('Check monthDays task', () => {
 	const thirdDay = DayModel(+thirdDayDate);
 	const eleventhDay = DayModel(+eleventhDayDate);
 
-	test('2th day task is visible only on 2th dates', () => {
-		const secondDayTask = TaskModel({
-			repeat: true,
-			repeatType: RepeatTypes.MonthDays,
-			monthDays: [2],
-			createdMoment: +createdDate,
-		});
-
-		expect(isMonthDaysTaskVisibleOnDay(secondDayTask, secondDay)).toBe(
-			true
-		);
-		expect(isMonthDaysTaskVisibleOnDay(secondDayTask, secondDay2)).toBe(
-			true
-		);
-		expect(isMonthDaysTaskVisibleOnDay(secondDayTask, thirdDay)).toBe(
-			false
-		);
+	const secondEleventhDayTask = TaskModel({
+		repeat: true,
+		repeatType: RepeatTypes.MonthDays,
+		monthDays: [2, 11],
+		createdMoment: +createdDate,
+		resheduleToNextDay: false
 	});
 
-	test('2th & 11th task is visible only on 2th & 11th dates', () => {
-		const secondEleventhDayTask = TaskModel({
-			repeat: true,
-			repeatType: RepeatTypes.MonthDays,
-			monthDays: [2, 11],
-			createdMoment: +createdDate,
-		});
-
-		expect(
-			isMonthDaysTaskVisibleOnDay(secondEleventhDayTask, secondDay2)
-		).toBe(true);
-		expect(
-			isMonthDaysTaskVisibleOnDay(secondEleventhDayTask, eleventhDay)
-		).toBe(true);
-		expect(
-			isMonthDaysTaskVisibleOnDay(secondEleventhDayTask, thirdDay)
-		).toBe(false);
+	const secondEleventhDayResheduledTask = TaskModel({
+		repeat: true,
+		repeatType: RepeatTypes.MonthDays,
+		monthDays: [2, 11],
+		createdMoment: +createdDate,
+		resheduleToNextDay: true
 	});
+
+	describe('В прошлом', () => {
+		test('Задача видна в указанные дни, если была в них отмечена', () => {});
+
+		test('Задача не видна в указанные дни, если не была в них отмечена', () => {});
+		test('Задача видна в неуказанные дни, если была в них отмечена', () => {});
+
+		test('Задача не видна в неуказанные дни, если не была в них отмечена', () => {});
+	});
+
+	describe('В настоящем и будущем', () => {
+		test('Задача видна в указанные дни в будущем', () => {});
+		test('Задача не видна в неуказанные дни в будущем', () => {});
+		test('Если последняя запланированная задача не выполнена, задача видна сегодня', () => {});
+	});
+
+	describe('Если последняя запланированная задача не выполнена', () => {
+		test('С опцией переносить на следующий день, задача видна сегодня', () => {});
+		test('Без опции переносить на следующий день, задача не видна сегодня', () => {});
+	});
+
+
+
+	// test('2th & 11th task is visible only on 2th & 11th dates', () => {
+	// 	const secondEleventhDayTask = TaskModel({
+	// 		repeat: true,
+	// 		repeatType: RepeatTypes.MonthDays,
+	// 		monthDays: [2, 11],
+	// 		createdMoment: +createdDate,
+	// 	});
+
+	// 	expect(
+	// 		isMonthDaysTaskVisibleOnDay(secondEleventhDayTask, secondDay2)
+	// 	).toBe(true);
+	// 	expect(
+	// 		isMonthDaysTaskVisibleOnDay(secondEleventhDayTask, eleventhDay)
+	// 	).toBe(true);
+	// 	expect(
+	// 		isMonthDaysTaskVisibleOnDay(secondEleventhDayTask, thirdDay)
+	// 	).toBe(false);
+	// });
 });
 
-describe('Check period task', () => {
+describe('Повторение через период', () => {
 	test('Period task is not visible if startMoment is after date', () => {
 		const startDate = new Date(2022, 4, 8);
 

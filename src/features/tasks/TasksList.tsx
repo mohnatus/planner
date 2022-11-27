@@ -16,14 +16,13 @@ export interface TaskProps {
 }
 
 const TaskCard = styled(Card)`
-  &:not(:last-child) {
-    margin-bottom: ${SPACING_LG}px;
-  }
-`
+	&:not(:last-child) {
+		margin-bottom: ${SPACING_LG}px;
+	}
+`;
 
 export function TaskPreview({ task }: TaskProps) {
 	let repeatBlock: ReactNode = null;
-	let excludeBlock: ReactNode = null;
 	const dispatch = useAppDispatch();
 
 	if (task.repeat) {
@@ -42,17 +41,6 @@ export function TaskPreview({ task }: TaskProps) {
 		repeatBlock = <div>Не повторять</div>;
 	}
 
-	const { weekDays, monthDays } = task.exclude;
-	if (weekDays.length || monthDays.length) {
-		excludeBlock = (
-			<div>
-				Кроме:
-				<div>{weekDays.map((d) => WEEK_DAYS[d]).join(', ')}</div>
-				<div>{monthDays.join(', ')}</div>
-			</div>
-		);
-	}
-
 	const onRemove = () => {
 		dispatch(removeTask(task));
 	};
@@ -66,7 +54,6 @@ export function TaskPreview({ task }: TaskProps) {
 			<CardContent bordered>
 				<div>{task.description}</div>
 				<div>{repeatBlock}</div>
-				<div>{excludeBlock}</div>
 				<div>
 					Время:{' '}
 					{task.defaultTime

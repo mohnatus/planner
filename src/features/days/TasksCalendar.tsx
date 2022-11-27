@@ -1,53 +1,91 @@
-import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
-import { getDayTasks } from "../../domain/operations/getDayTasks";
-import { CalendarDay, Moment } from "../../types";
-import { getCalendarMonth } from "../../utils/date/calendar";
-import { getTodayMoment } from "../../utils/date/today";
-import { selectDayTasks } from "../tasks/tasksSlice";
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
-import styles from './TasksCalendar.module.css'
+import { useAppSelector } from '../../app/hooks';
+import { selectDayTasks } from '../tasks/tasksSlice';
+import { CalendarDay, Moment } from '../../types';
+import { getTodayMoment } from '../../utils/date/today';
 
-function CalendarMonthDay({ day, onSelect }: { day: CalendarDay, onSelect: (value: Moment) => void }) {
-  const tasks = useAppSelector(selectDayTasks(day.moment));
+import { Calendar } from '../../components/Calendar';
+import { COLORS } from '../../ui/colors';
+import { getDateComponents } from '../../utils/date/format';
+import { Container } from '../../containers/Container';
+import { PageHeader } from '../../components/PageHeader';
 
-  console.log({ day, tasks })
+interface TasksCalendarDayProps {
+	day: CalendarDay;
+}
 
-	const classes = [
+interface TasksCalendarDayViewProps {
+	today: boolean;
+}
 
-		day.isToday && 'today',
-		day.isWeekend && 'weekend',
-		!day.active && 'inactive',
-	].filter(Boolean);
+const TasksCalendarDayView = styled.div<TasksCalendarDayViewProps>`
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	font-size: 16px;
+`;
 
-	const onClick = () => onSelect(day.moment);
+const DayTasksView = styled.div`
+	width: 10px;
+	height: 10px;
+	background-color: ${COLORS.accent.color};
+	color: ${COLORS.accent.contrast};
+	font-size: 8px;
+	position: absolute;
+	bottom: -5px;
+	right: -5px;
+`;
+
+const WrapperView = styled.div`
+	width: 280px;
+	max-width: 100%;
+	margin: 0 auto;
+`;
+
+function TasksCalendarDay({ day }: TasksCalendarDayProps) {
+	const tasks = useAppSelector(selectDayTasks(day.moment));
 
 	return (
-		<div className={classes.join(' ')} onClick={onClick}>
-			<b>{day.date}</b>({tasks.length})
-		</div>
+		<TasksCalendarDayView today={day.isToday}>
+			{day.date}
+			{tasks.length > 0 && <DayTasksView>{tasks.length}</DayTasksView>}
+		</TasksCalendarDayView>
 	);
 }
 
+const DayComponentRenderFn = (day: CalendarDay, value: Moment): JSX.Element => {
+	return <TasksCalendarDay day={day} />;
+};
+
 export function TasksCalendar() {
-  const month = getTodayMoment();
-	const monthDays = getCalendarMonth(month);
-  const navigate = useNavigate();
+	const month = getTodayMoment();
+	const navigate = useNavigate();
 
 	const onDaySelect = (moment: Moment) => {
-    navigate(`/day/${moment}`)
+		const { dayOfMonth, month, year } = getDateComponents(moment);
+		const date = `${year}-${month}-${dayOfMonth}`;
+		navigate(`/day/${date}`);
 	};
 
 	return (
-		<div className={styles.Days}>
-			{monthDays.map((day) => (
-
-				<CalendarMonthDay
-					key={day.moment}
-					day={day}
-					onSelect={onDaySelect}
-				/>
-			))}
+		<div>
+			<PageHeader
+				title='Текущие задачи'
+			></PageHeader>
+			<Container>
+				<WrapperView>
+					<Calendar
+						moment={month}
+						onSelect={onDaySelect}
+						dayComponent={DayComponentRenderFn}
+					/>
+				</WrapperView>
+			</Container>
 		</div>
 	);
 }

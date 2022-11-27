@@ -16,7 +16,7 @@ export function TaskModel(taskData?: Partial<Task>): Task {
 
 			defaultTime: [],
 
-			resheduleToNextDay: false,
+			resheduleToNextDay: true,
 
 			repeatType: RepeatTypes.WeekDays,
 			weekDays: [],
@@ -24,11 +24,6 @@ export function TaskModel(taskData?: Partial<Task>): Task {
 			startMoment: getTodayMoment(),
 			periodUnit: PeriodUnits.Days,
 			periodValue: 0,
-
-			exclude: {
-				weekDays: [],
-				monthDays: [],
-			},
 		},
 		taskData || {}
 	);

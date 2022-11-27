@@ -24,9 +24,8 @@ interface CalendarDaysProps {
 }
 
 const DayView = styled.div<DayViewProps>`
-	width: 30px;
-	height: 30px;
-	display: flex;
+	flex-shrink: 0;
+	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
@@ -34,19 +33,20 @@ const DayView = styled.div<DayViewProps>`
 	font-weight: 700;
 	border-radius: 50%;
 	cursor: pointer;
-	margin-right: 5px;
-	margin-bottom: 5px;
 
 	${(props) => props.inactive && `color: ${COLORS.serviceText}`}
 	${(props) =>
 		props.today && !props.inactive && `color: ${COLORS.accent.color}`}
 `;
 
-const CalendarDaysView = styled.div`
+const CalendarWeekView = styled.div`
 	display: flex;
-	flex-wrap: wrap;
-	width: 245px;
-	margin-right: -5px;
+	width: 100%;
+	justify-content: space-between;
+`;
+
+const CalendarDaysView = styled.div`
+
 `;
 
 const defaultDayComponent = (day: CalendarDay) => {
@@ -77,16 +77,30 @@ function CalendarDays({
 	onDayClick,
 	dayComponent,
 }: CalendarDaysProps) {
+	const weeks = [];
+
+	let currentIndex = 0;
+
+	while (currentIndex < days.length) {
+		const week = days.slice(currentIndex, currentIndex + 7);
+		weeks.push(week);
+		currentIndex += 7;
+	}
+
 	return (
 		<CalendarDaysView>
-			{days.map((day) => (
-				<CalendarMonthDay
-					key={day.moment}
-					day={day}
-					onClick={onDayClick}
-					moment={moment}
-					dayComponent={dayComponent}
-				></CalendarMonthDay>
+			{weeks.map((week, i) => (
+				<CalendarWeekView key={i}>
+					{week.map((day) => (
+						<CalendarMonthDay
+							key={day.moment}
+							day={day}
+							onClick={onDayClick}
+							moment={moment}
+							dayComponent={dayComponent}
+						></CalendarMonthDay>
+					))}
+				</CalendarWeekView>
 			))}
 		</CalendarDaysView>
 	);

@@ -5,9 +5,11 @@ import { HEADER_HEIGHT } from '../../ui/sizes';
 import { FONT_SIZE } from '../../ui/typography';
 
 import { Container } from '../../containers/Container';
+import { ReactNode } from 'react';
 
 interface PageHeaderProps {
-	title: string;
+	title?: string;
+	children?: ReactNode;
 }
 
 const WrapperView = styled.div`
@@ -39,7 +41,7 @@ const HeaderView = styled.header`
 	}
 `;
 
-const TitleView = styled.h1`
+const PageHeaderTitle = styled.div`
 	font-size: ${FONT_SIZE.header};
 	font-weight: 700;
 	position: relative;
@@ -48,12 +50,14 @@ const TitleView = styled.h1`
 	align-items: center;
 `;
 
-function PageHeader({ title }: PageHeaderProps) {
+function PageHeader({ title, children }: PageHeaderProps) {
 	return (
 		<WrapperView>
 			<HeaderView>
 				<Container className='container'>
-					<TitleView>{title}</TitleView>
+
+						<PageHeaderTitle>{title ? title : children}</PageHeaderTitle>
+
 				</Container>
 			</HeaderView>
 		</WrapperView>
@@ -61,4 +65,4 @@ function PageHeader({ title }: PageHeaderProps) {
 }
 
 export type { PageHeaderProps };
-export { PageHeader };
+export { PageHeader, PageHeaderTitle };

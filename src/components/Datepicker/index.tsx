@@ -22,8 +22,8 @@ interface DayViewProps {
 }
 
 const DayView = styled.div<DayViewProps>`
-	width: 100%;
-	height: 100%;
+	width: 30px;
+	height: 30px;
 	border-radius: 50%;
 	display: flex;
 	align-items: center;

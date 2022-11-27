@@ -24,8 +24,6 @@ export function getCalendarMonth(date: Moment): CalendarMonth {
   const monthEnd = getMonthEnd(date);
   let monthWeekEnd = getWeekEnd(monthEnd);
 
-  console.log('diff', getDiffInDays(monthWeekStart, monthWeekEnd))
-
   if (getDiffInDays(monthWeekStart, monthWeekEnd) < 35) {
     monthWeekEnd = addDays(monthWeekEnd, 7);
   }

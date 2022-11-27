@@ -50,7 +50,7 @@ function TogglerItem<T>({ option, active, onClick }: TogglerOptionProps<T>) {
 	}, [option, onClick]);
 
 	return (
-		<TogglerButtonView accent={active} onClick={handleClick}>
+		<TogglerButtonView type="button" accent={active} onClick={handleClick}>
 			{option.name}
 		</TogglerButtonView>
 	);

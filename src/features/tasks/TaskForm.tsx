@@ -26,10 +26,6 @@ import {
 	RepeatTypeToggler,
 } from '../../components/RepeatTypeToggler';
 import { TimeInput } from '../../components/TimeInput';
-import {
-	TaskExceptionParams,
-	TaskExceptions,
-} from '../../components/TaskExceptions';
 import { PageHeader } from '../../components/PageHeader';
 import { Button } from '../../components/Button';
 
@@ -58,15 +54,13 @@ export function TaskForm() {
 	const [description, setDescription] = useState('');
 	const [repeat, setRepeat] = useState(NO_REPEAT);
 	const [startMoment, setStartMoment] = useState(getTodayMoment());
-	const [resheduleToNextDay, setResheduleToNextDay] = useState(false);
+	const [resheduleToNextDay, setResheduleToNextDay] = useState(true);
 	const [repeatType, setRepeatType] = useState(RepeatTypes.WeekDays);
 	const [weekDays, setWeekDays] = useState<WeekDays[]>([]);
 	const [monthDays, setMonthDays] = useState<MonthDay[]>([]);
 	const [periodValue, setPeriodValue] = useState(1);
 	const [periodUnit, setPeriodUnit] = useState(PeriodUnits.Days);
 	const [defaultTime, setDefaultTime] = useState<Time[]>([]);
-	const [excludeWeekDays, setExcludeWeekDays] = useState<WeekDays[]>([]);
-	const [excludeMonthDays, setExcludeMonthDays] = useState<MonthDay[]>([]);
 
 	const onChangeRepeatParams = (newParams: Partial<RepeatParams>) => {
 		if ('repeatType' in newParams) {
@@ -89,17 +83,6 @@ export function TaskForm() {
 		}
 	};
 
-	const onChangeExceptionsParams = (
-		newParams: Partial<TaskExceptionParams>
-	) => {
-		if ('weekDays' in newParams) {
-			setExcludeWeekDays(newParams.weekDays || []);
-		}
-		if ('monthDays' in newParams) {
-			setExcludeMonthDays(newParams.monthDays || []);
-		}
-	};
-
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
@@ -115,10 +98,6 @@ export function TaskForm() {
 			periodUnit,
 			periodValue,
 			defaultTime,
-			exclude: {
-				weekDays: excludeWeekDays,
-				monthDays: excludeMonthDays,
-			},
 		};
 
 		console.log('handle submit', { taskParams });
@@ -136,15 +115,13 @@ export function TaskForm() {
 		setDescription(task?.description || '');
 		setRepeat(task?.repeat ? REPEAT : NO_REPEAT);
 		setStartMoment(task?.startMoment ? task.startMoment : getTodayMoment());
-		setResheduleToNextDay(task?.resheduleToNextDay || false);
+		setResheduleToNextDay(task ? task.resheduleToNextDay : true);
 		setRepeatType(task?.repeatType || RepeatTypes.WeekDays);
 		setWeekDays(task?.weekDays || []);
 		setMonthDays(task?.monthDays || []);
 		setPeriodUnit(task?.periodUnit || PeriodUnits.Days);
 		setPeriodValue(task?.periodValue || 1);
 		setDefaultTime(task?.defaultTime || []);
-		setExcludeWeekDays(task?.exclude.weekDays || []);
-		setExcludeMonthDays(task?.exclude.monthDays || []);
 	}, [task]);
 
 	return (
@@ -193,19 +170,11 @@ export function TaskForm() {
 										onChange={setStartMoment}
 									/>
 								</FormGroup>
-
-								<FormGroup>
-									<Checkbox
-										label='Переносить на следующий день'
-										checked={resheduleToNextDay}
-										onChange={setResheduleToNextDay}
-									/>
-								</FormGroup>
 							</>
 						)}
 
 						{repeat === REPEAT && (
-							<div>
+							<FormGroup>
 								<RepeatTypeToggler
 									repeatType={repeatType}
 									weekDays={weekDays}
@@ -215,8 +184,16 @@ export function TaskForm() {
 									periodValue={periodValue}
 									onChange={onChangeRepeatParams}
 								/>
-							</div>
+							</FormGroup>
 						)}
+
+						<FormGroup>
+							<Checkbox
+								label='Переносить на следующий день'
+								checked={resheduleToNextDay}
+								onChange={setResheduleToNextDay}
+							/>
+						</FormGroup>
 
 						<hr />
 
@@ -224,16 +201,6 @@ export function TaskForm() {
 							<TimeInput
 								values={defaultTime}
 								onChange={setDefaultTime}
-							/>
-						</ToggleBlock>
-
-						<hr />
-
-						<ToggleBlock title='Настроить исключения'>
-							<TaskExceptions
-								weekDays={excludeWeekDays}
-								monthDays={excludeMonthDays}
-								onChange={onChangeExceptionsParams}
 							/>
 						</ToggleBlock>
 

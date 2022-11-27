@@ -1,6 +1,8 @@
 import { DayModel } from '../models/Day';
 import { DayTaskModel } from '../models/DayTask';
-import { Moment, TasksList,
+import {
+	Moment,
+	TasksList,
 	Task,
 	DayTasksList,
 	Day,
@@ -10,11 +12,11 @@ import { Moment, TasksList,
 	TaskMomentsList,
 	TaskCheck,
 } from '../../types';
-import {
-	getDayOfMonth,
-} from '../../utils/date';
+import { getDayOfMonth } from '../../utils/date';
 import { getTodayMoment } from '../../utils/date/today';
 import { getDiffInDays, getDiffInMonths } from '../../utils/date/diff';
+import { isNoRepeatTaskVisibleOnDay } from './noRepeatTask';
+import { isWeekDaysTaskVisibleOnDay } from './weekDaysTask';
 
 export function getActiveTasks(tasks: TasksList): TasksList {
 	return tasks.filter((task: Task) => {
@@ -22,31 +24,9 @@ export function getActiveTasks(tasks: TasksList): TasksList {
 	});
 }
 
-export function isNoRepeatTaskVisibleOnDay(
-	task: Task,
-	day: Day,
-	moments: TaskMomentsList
-): boolean {
-	if (!task.resheduleToNextDay) {
-		return task.createdMoment === day.moment;
-	}
 
-	const taskMoments = moments[task.id];
-	if (taskMoments) {
-		const { checks } = taskMoments;
-		if (checks.some((check: TaskCheck) => {
-			return check.moment === day.moment;
-		})) return true;
-	}
 
-	const today = getTodayMoment();
 
-	return today === day.moment;
-}
-
-export function isWeekDaysTaskVisibleOnDay(task: Task, day: Day): boolean {
-	return task.weekDays.includes(day.weekDay);
-}
 
 export function isMonthDaysTaskVisibleOnDay(task: Task, day: Day): boolean {
 	return task.monthDays.includes(day.monthDay);
@@ -95,13 +75,9 @@ export function isTaskVisibleOnDay(
 		if (exclude.includes(day.moment)) return false;
 	}
 
-	// base exclude settings
-	const { exclude, repeat, repeatType } = task;
-
-	if (exclude.weekDays.includes(day.weekDay)) return false;
-	if (exclude.monthDays.includes(day.monthDay)) return false;
-
 	// repeat settings
+	const { repeat, repeatType } = task;
+
 	if (!repeat) {
 		return isNoRepeatTaskVisibleOnDay(task, day, moments);
 	}

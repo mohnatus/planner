@@ -82,17 +82,12 @@ export interface ITask {
 	createdMoment: Moment;
 
 	repeat: boolean;
+	resheduleToNextDay: boolean;
 
 	defaultTime: Array<Time>;
-
-	exclude: {
-		weekDays: Array<WeekDays>;
-		monthDays: Array<MonthDay>;
-	};
 }
 
 export interface INoRepeatTask {
-	resheduleToNextDay: boolean;
 	startMoment: Moment;
 }
 
