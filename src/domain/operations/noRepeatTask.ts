@@ -1,6 +1,8 @@
 import { Day, Task, TaskCheck, TaskMomentsList } from '../../types';
 import { getTodayMoment } from '../../utils/date/today';
 
+// При переносе меняется startMoment
+
 export function isNoRepeatTaskVisibleOnDay(
 	task: Task,
 	day: Day,
@@ -17,7 +19,7 @@ export function isNoRepeatTaskVisibleOnDay(
 
 	if (taskMoments) {
 		const { checks } = taskMoments;
-		// 2.1) Видна во все дни, когда была отмечена 
+		// 2.1) Видна во все дни, когда была отмечена
 		if (
 			checks.some((check: TaskCheck) => {
 				return check.moment === day.moment;
