@@ -6,7 +6,7 @@ import { Moment, PlannerData, Routine, Task } from '../../types';
 import { TasksList } from '../../types';
 import { RoutineModel } from '../../domain/models/Routine';
 import { getDayTasks } from '../../domain/operations/getDayTasks';
-import { isSameTask } from '../../utils/task/getTaskId';
+import { isSameTask } from '../../utils/task/isSameTask';
 
 export enum Statuses {
 	Loading,

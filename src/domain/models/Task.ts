@@ -1,16 +1,16 @@
 
-import { Task, Routine, Day, Time } from '../../types';
+import { Task, Routine, Day, Time, SubRoutine } from '../../types';
 
 export function TaskModel(
 	routine: Routine,
+	subRoutine: SubRoutine,
 	day: Day,
-	time: Time | null,
 ): Task {
 	const { id } = routine;
 
 	return {
 		routineId: id,
+		subRoutineId: subRoutine.id,
 		moment: day.moment,
-		time: time === undefined ? null : time,
 	};
 }

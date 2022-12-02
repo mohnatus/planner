@@ -8,7 +8,7 @@ import { Modal } from '../../Modal';
 
 interface TimeModalProps {
 	show: boolean;
-	value?: Time;
+	value?: Time | null;
 	onChange: (newValue: Time) => void;
 	onClose: () => void;
 }

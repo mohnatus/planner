@@ -6,19 +6,19 @@ import { formatTime } from '../../utils/date/time';
 import { SPACING_SM, SPACING_XS, SPACING_XXS } from '../../ui/spacing';
 import { COLORS } from '../../ui/colors';
 
-import { ActionButton } from '../ActionButton';
 import { TimeModal } from './TimeModal';
 import { CONTROL_HEIGHT } from '../../ui/sizes';
 import { RADIUS_SM } from '../../ui/decor';
 
 interface TimeItemProps {
-	time: Time;
-	onRemove: (time: Time) => void;
+	time: Time | null;
+	onRemove: () => void;
+	onClick: () => void;
 }
 
 interface TimeInputProps {
-	values: Array<Time>;
-	onChange: (newValue: Array<Time>) => void;
+	value: Time | null;
+	onChange: (newValue: Time | null) => void;
 }
 
 const TimeView = styled.div`
@@ -38,26 +38,20 @@ const RemoveButtonView = styled.button`
 	margin-right: ${-1 * SPACING_XXS}px;
 `;
 
-const TimeListView = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-	margin-bottom: ${SPACING_SM}px;
-	margin-left: ${-1 * SPACING_XXS}px;
-	margin-right: ${-1 * SPACING_XXS}px;
-`;
-
-function TimeItem({ time, onRemove }: TimeItemProps) {
+function TimeItem({ time, onRemove, onClick }: TimeItemProps) {
 	return (
 		<TimeView>
-			{formatTime(time)}
-			<RemoveButtonView type='button' onClick={() => onRemove(time)}>
+			<div onClick={onClick}>
+				{!time ? 'Время не настроено' : formatTime(time)}
+			</div>
+			<RemoveButtonView type='button' onClick={onRemove}>
 				&times;
 			</RemoveButtonView>
 		</TimeView>
 	);
 }
 
-function TimeInput({ values, onChange }: TimeInputProps) {
+function TimeInput({ value, onChange }: TimeInputProps) {
 	const [showModal, setShowModal] = useState(false);
 
 	const openModal = useCallback(() => {
@@ -68,45 +62,22 @@ function TimeInput({ values, onChange }: TimeInputProps) {
 		setShowModal(false);
 	}, [setShowModal]);
 
-	const addTime = useCallback(
-		(time: Time) => {
-			if (values.includes(time)) return;
-			onChange([...values, time]);
-		},
-		[onChange, values]
-	);
-
 	const removeTime = useCallback(
-		(time: Time) => {
-			onChange(values.filter((t) => t !== time));
+		() => {
+			onChange(null);
 		},
-		[onChange, values]
+		[onChange]
 	);
 
 	return (
 		<div>
-			{values.length > 0 && (
-				<TimeListView>
-					{values.map((time) => (
-						<TimeItem
-							key={`${time}`}
-							time={time}
-							onRemove={removeTime}
-						/>
-					))}
-				</TimeListView>
-			)}
-
-			<ActionButton
-				action='add'
-				label='Добавить время'
-				onClick={openModal}
-			></ActionButton>
+			<TimeItem time={value} onRemove={removeTime} onClick={openModal} />
 
 			<TimeModal
 				show={showModal}
+				value={value}
 				onClose={closeModal}
-				onChange={addTime}
+				onChange={onChange}
 			></TimeModal>
 		</div>
 	);

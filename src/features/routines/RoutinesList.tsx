@@ -58,10 +58,10 @@ export function RoutinePreview({ routine }: RoutineProps) {
 				<div>{routine.description}</div>
 				<div>{repeatBlock}</div>
 				<div>
-					Время:{' '}
-					{routine.defaultTime
-						.map((time) => formatTime(time))
-						.join(', ')}
+					{/* Время:{' '}
+					{routine.subRoutines
+						.map((subRoutine) => formatTime(subRoutine.time))
+						.join(', ')} */}
 				</div>
 				<Link to={`/routine/${routine.id}`}>Редактировать</Link>
 				<div>

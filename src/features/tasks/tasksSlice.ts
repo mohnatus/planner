@@ -4,12 +4,12 @@ import * as db from '../../db';
 import { AppThunk, RootState } from '../../app/store';
 import { getDayTasks } from '../../domain/operations/getDayTasks';
 import { Moment, Task, TasksList } from '../../types';
-import { isSameTask } from '../../utils/task/getTaskId';
 import {
 	selectChecks,
 	selectRoutines,
 	toggleCheck,
 } from '../routines/routinesSlice';
+import { isSameTask } from '../../utils/task/isSameTask';
 
 type TypedSelector<T> = Selector<RootState, T>;
 type SelectorCreator<K, V> = (item: K) => TypedSelector<V>;
@@ -70,11 +70,7 @@ export const selectDayActiveTasksCount = SelectorWithCache<Moment, number>(
 export const isTaskChecked = SelectorWithCache<Task, boolean>((task: Task) => {
 	return createSelector(selectChecks, (checks) => {
 		return checks.some((check) => {
-			return (
-				check.routineId === task.routineId &&
-				check.moment === task.moment &&
-				check.time === task.time
-			);
+			return isSameTask(check, task)
 		});
 	});
 });

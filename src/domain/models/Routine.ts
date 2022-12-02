@@ -1,6 +1,7 @@
 import { nanoid } from 'nanoid';
 import { PeriodUnits, RepeatTypes, Routine } from '../../types';
 import { getTodayMoment } from '../../utils/date/today';
+import { SubRoutineModel } from './SubRoutine';
 
 export function RoutineModel(routineData?: Partial<Routine>): Routine {
 	const model = Object.assign(
@@ -14,7 +15,9 @@ export function RoutineModel(routineData?: Partial<Routine>): Routine {
 
 			repeat: false,
 
-			defaultTime: [],
+			subRoutines: [
+				SubRoutineModel()
+			],
 
 			resheduleToNextDay: true,
 

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { DateBlock } from '../../components/DateBlock';
 import { PageHeader } from '../../components/PageHeader';
@@ -38,6 +38,7 @@ export function TaskItem({ task }: TaskItemProps) {
 			<input type='checkbox' checked={checked} onChange={toggleStatus} />
 			<div>{name}</div>
 			<div>{description}</div>
+			<Link to={`/routine/${task.routineId}`}>К рутине</Link>
 			<hr />
 		</div>
 	);

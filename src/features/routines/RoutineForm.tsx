@@ -7,6 +7,7 @@ import {
 	WeekDays,
 	PeriodUnits,
 	RepeatTypes,
+	SubRoutine,
 } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { addRoutine, editRoutine, selectRoutine } from './routinesSlice';
@@ -29,6 +30,7 @@ import {
 import { TimeInput } from '../../components/TimeInput';
 import { PageHeader } from '../../components/PageHeader';
 import { Button } from '../../components/Button';
+import { SubRoutines } from '../../components/SubRoutines';
 
 const NO_REPEAT = 'no-repeat';
 const REPEAT = 'repeat';
@@ -61,7 +63,7 @@ export function RoutineForm() {
 	const [monthDays, setMonthDays] = useState<MonthDay[]>([]);
 	const [periodValue, setPeriodValue] = useState(1);
 	const [periodUnit, setPeriodUnit] = useState(PeriodUnits.Days);
-	const [defaultTime, setDefaultTime] = useState<Time[]>([]);
+	const [subRoutines, setSubRoutines] = useState<SubRoutine[]>([]);
 
 	const onChangeRepeatParams = (newParams: Partial<RepeatParams>) => {
 		if ('repeatType' in newParams) {
@@ -98,7 +100,7 @@ export function RoutineForm() {
 			monthDays,
 			periodUnit,
 			periodValue,
-			defaultTime,
+			subRoutines,
 		};
 
 		console.log('handle submit', { routineParams });
@@ -122,7 +124,7 @@ export function RoutineForm() {
 		setMonthDays(routine?.monthDays || []);
 		setPeriodUnit(routine?.periodUnit || PeriodUnits.Days);
 		setPeriodValue(routine?.periodValue || 1);
-		setDefaultTime(routine?.defaultTime || []);
+		setSubRoutines(routine?.subRoutines || []);
 	}, [routine]);
 
 	return (
@@ -198,11 +200,8 @@ export function RoutineForm() {
 
 						<hr />
 
-						<ToggleBlock title='Настроить время'>
-							<TimeInput
-								values={defaultTime}
-								onChange={setDefaultTime}
-							/>
+						<ToggleBlock title='Внутри дня'>
+							<SubRoutines subRoutines={subRoutines} onChange={setSubRoutines} />
 						</ToggleBlock>
 
 						<Button type='submit' accent block>

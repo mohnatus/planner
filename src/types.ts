@@ -2,6 +2,7 @@ export type Moment = number;
 export type MonthDay = number;
 export type Time = number;
 export type RoutineId = string;
+export type SubRoutineId = string;
 
 export enum WeekDays {
 	Sunday,
@@ -72,6 +73,13 @@ export type CalendarMonth = Array<CalendarDay>;
 
 /** Routine - настройки задачи */
 
+export interface SubRoutine {
+	id: SubRoutineId;
+	time: Time | null;
+}
+
+export type SubRoutinesList = Array<SubRoutine>
+
 export interface IRoutine {
 	id: RoutineId;
 	active: boolean;
@@ -80,7 +88,7 @@ export interface IRoutine {
 	createdMoment: Moment;
 	repeat: boolean;
 	resheduleToNextDay: boolean;
-	defaultTime: Array<Time>;
+	subRoutines: SubRoutinesList;
 }
 
 export interface INoRepeatRoutine {
@@ -159,9 +167,9 @@ export type DaysList = {
 /** Task - отдельный таск в конкретный день */
 
 export type Task = {
-	routineId: string;
+	routineId: RoutineId;
+	subRoutineId: SubRoutineId;
 	moment: Moment;
-	time: Time | null;
 };
 
 export type TasksList = Array<Task>;
