@@ -1,9 +1,10 @@
 export type Moment = number;
 export type MonthDay = number;
 export type Time = number;
+export type RoutineId = string;
 
 export enum WeekDays {
-  Sunday,
+	Sunday,
 	Monday,
 	Tuesday,
 	Wednesday,
@@ -13,36 +14,36 @@ export enum WeekDays {
 }
 
 export enum Months {
-  January,
-  February,
-  March,
-  April,
-  May,
-  June,
-  July,
-  August,
-  September,
-  October,
-  November,
-  December
+	January,
+	February,
+	March,
+	April,
+	May,
+	June,
+	July,
+	August,
+	September,
+	October,
+	November,
+	December,
 }
 
 export type DateComponents = {
-  _dayOfMonth: MonthDay,
-  _month: Months,
-  _year: number,
+	_dayOfMonth: MonthDay;
+	_month: Months;
+	_year: number;
 
-  dayOfMonth: string,
-  month: string,
-  year: string,
-}
+	dayOfMonth: string;
+	month: string;
+	year: string;
+};
 
 export type TimeComponents = {
-  _hours: number,
-  _minutes: number,
-  hours: string;
-  minutes: string;
-}
+	_hours: number;
+	_minutes: number;
+	hours: string;
+	minutes: string;
+};
 
 export enum PeriodUnits {
 	Days,
@@ -56,42 +57,37 @@ export enum RepeatTypes {
 }
 
 export type CalendarDay = {
-  moment: Moment,
-  date: MonthDay,
-  isToday: boolean,
-  isWeekend: boolean,
-  active: boolean,
-}
+	moment: Moment;
+	date: MonthDay;
+	isToday: boolean;
+	isWeekend: boolean;
+	active: boolean;
+};
 
-export type CalendarMonth = Array<CalendarDay>
-
+export type CalendarMonth = Array<CalendarDay>;
 
 /****************************
  * Base Entities
  ****************************/
 
-/** Task - настройки задачи */
+/** Routine - настройки задачи */
 
-export interface ITask {
-	id: string;
+export interface IRoutine {
+	id: RoutineId;
 	active: boolean;
-
 	name: string;
 	description: string;
-
 	createdMoment: Moment;
-
 	repeat: boolean;
 	resheduleToNextDay: boolean;
-
 	defaultTime: Array<Time>;
 }
 
-export interface INoRepeatTask {
+export interface INoRepeatRoutine {
 	startMoment: Moment;
 }
 
-export interface IRepeatTask {
+export interface IRepeatRoutine {
 	repeatType: RepeatTypes;
 	weekDays: Array<WeekDays>;
 	monthDays: Array<MonthDay>;
@@ -100,36 +96,29 @@ export interface IRepeatTask {
 	periodValue: number;
 }
 
-export type Task = ITask & INoRepeatTask & IRepeatTask;
+export type Routine = IRoutine & INoRepeatRoutine & IRepeatRoutine;
 
-export type TasksList = Array<Task>;
-
-export type TaskCheck = {
-	moment: Moment;
-	time?: Time;
-};
+export type RoutinesList = Array<Routine>;
 
 /**
- * Task Moments
- * настройки видимости таска для конкретных дней
+ * Routine Moments
+ * настройки видимости рутины для конкретных дней
  */
 
-export type TaskMoments = {
-  id: string;
-
-	exclude: Array<Moment>;
-
-	include: Array<Moment>;
-
-	time: {
-		[key: Moment]: Array<Moment>;
-	};
-
-	checks: Array<TaskCheck>;
+export type RoutineMoment = {
+	time: Time | null; // время
+	moment: Moment; // день
 };
 
-export type TaskMomentsList = {
-	[key: string]: TaskMoments;
+export type RoutineMoments = {
+	id: RoutineId;
+
+	exclude: Array<RoutineMoment>;
+	include: Array<RoutineMoment>;
+};
+
+export type RoutineMomentsList = {
+	[key: RoutineId]: RoutineMoments;
 };
 
 /**
@@ -138,7 +127,7 @@ export type TaskMomentsList = {
  */
 
 export type DayConfiguration = {
-  moment: Moment;
+	moment: Moment;
 	order: Array<number>;
 };
 
@@ -147,9 +136,8 @@ export type DaysConfiguration = {
 };
 
 export interface PlannerData {
-  list: TasksList,
-  moments: TaskMomentsList,
-  days: DaysConfiguration
+	routines: RoutinesList;
+	checks: TasksList;
 }
 
 /****************************
@@ -168,14 +156,12 @@ export type DaysList = {
 	[key: Moment]: Day;
 };
 
-/** Day Task - отдельный таск в конкретный день */
+/** Task - отдельный таск в конкретный день */
 
-export type DayTask = {
-	id: string;
-  taskId: string;
-	name: string;
-	description: string;
+export type Task = {
+	routineId: string;
+	moment: Moment;
 	time: Time | null;
 };
 
-export type DayTasksList = Array<DayTask>;
+export type TasksList = Array<Task>;

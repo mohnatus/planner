@@ -1,16 +1,14 @@
 import { PlannerData } from '../types';
-
-import { getDaysTransaction } from './days';
-import { getMomentsTransaction } from './moments';
-import { getTasksTransaction } from './tasks';
 import { getDb } from './db';
+
+import { getRoutinesTransaction } from './routines';
+import { getChecksTransaction } from './checks';
 
 export async function readPlannerData(): Promise<PlannerData> {
 	const db = await getDb();
 
-	const list = await getTasksTransaction(db);
-	const moments = await getMomentsTransaction(db);
-	const days = await getDaysTransaction(db);
+	const routines = await getRoutinesTransaction(db);
+	const checks = await getChecksTransaction(db);
 
-	return { list, moments, days };
+	return { routines, checks };
 }

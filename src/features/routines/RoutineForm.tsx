@@ -9,7 +9,8 @@ import {
 	RepeatTypes,
 } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addTask, editTask, selectTask } from './tasksSlice';
+import { addRoutine, editRoutine, selectRoutine } from './routinesSlice';
+
 import { getTodayMoment } from '../../utils/date/today';
 
 import { FormGroup } from '../../containers/FormGroup';
@@ -43,12 +44,12 @@ const REPEAT_OPTIONS: Array<TogglerOption<string>> = [
 	},
 ];
 
-export function TaskForm() {
+export function RoutineForm() {
 	const dispatch = useAppDispatch();
 
-	const { id: taskId } = useParams();
+	const { id: routineId } = useParams();
 
-	const task = useAppSelector(selectTask(taskId || ''));
+	const routine = useAppSelector(selectRoutine(routineId || ''));
 
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
@@ -86,7 +87,7 @@ export function TaskForm() {
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const taskParams = {
+		const routineParams = {
 			name: name,
 			description: description,
 			repeat: repeat === REPEAT,
@@ -100,40 +101,40 @@ export function TaskForm() {
 			defaultTime,
 		};
 
-		console.log('handle submit', { taskParams });
+		console.log('handle submit', { routineParams });
 
-		if (!taskId) {
-			dispatch(addTask(taskParams));
+		if (!routineId) {
+			dispatch(addRoutine(routineParams));
 		} else {
-			dispatch(editTask(taskId, taskParams));
+			dispatch(editRoutine(routineId, routineParams));
 		}
 	};
 
 	useEffect(() => {
-		console.log({ task });
-		setName(task?.name || '');
-		setDescription(task?.description || '');
-		setRepeat(task?.repeat ? REPEAT : NO_REPEAT);
-		setStartMoment(task?.startMoment ? task.startMoment : getTodayMoment());
-		setResheduleToNextDay(task ? task.resheduleToNextDay : true);
-		setRepeatType(task?.repeatType || RepeatTypes.WeekDays);
-		setWeekDays(task?.weekDays || []);
-		setMonthDays(task?.monthDays || []);
-		setPeriodUnit(task?.periodUnit || PeriodUnits.Days);
-		setPeriodValue(task?.periodValue || 1);
-		setDefaultTime(task?.defaultTime || []);
-	}, [task]);
+		console.log({ routine });
+		setName(routine?.name || '');
+		setDescription(routine?.description || '');
+		setRepeat(routine?.repeat ? REPEAT : NO_REPEAT);
+		setStartMoment(routine?.startMoment ? routine.startMoment : getTodayMoment());
+		setResheduleToNextDay(routine ? routine.resheduleToNextDay : true);
+		setRepeatType(routine?.repeatType || RepeatTypes.WeekDays);
+		setWeekDays(routine?.weekDays || []);
+		setMonthDays(routine?.monthDays || []);
+		setPeriodUnit(routine?.periodUnit || PeriodUnits.Days);
+		setPeriodValue(routine?.periodValue || 1);
+		setDefaultTime(routine?.defaultTime || []);
+	}, [routine]);
 
 	return (
 		<div>
 			<PageHeader
-				title={taskId ? 'Редактировать' : 'Новая задача'}
+				title={routineId ? 'Редактировать' : 'Новая задача'}
 			></PageHeader>
 
 			<Container>
-				{taskId && !task ? (
+				{routineId && !routine ? (
 					<ServiceText>
-						Задача с id ${taskId} не существует
+						Задача с id ${routineId} не существует
 					</ServiceText>
 				) : (
 					<form onSubmit={handleSubmit}>

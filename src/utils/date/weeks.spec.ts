@@ -1,4 +1,10 @@
-import { getWeekEnd, getWeekStart } from "./week";
+import { WeekDays } from '../../types';
+import {
+	getNextWeekDay,
+	getPrevWeekDay,
+	getWeekEnd,
+	getWeekStart,
+} from './week';
 
 test('Get week start & end', () => {
 	const weekStart = new Date(2022, 4, 16);
@@ -17,4 +23,26 @@ test('Get week start & end', () => {
 	expect(+getWeekEnd(date1)).toBe(+weekEnd);
 	expect(+getWeekEnd(date2)).toBe(+weekEnd);
 	expect(+getWeekEnd(date3)).toBe(+weekEnd);
-})
+});
+
+test('Get prev week day', () => {
+	const monday = new Date(2022, 4, 2);
+	const wednesday = new Date(2022, 4, 4);
+	const friday = new Date(2022, 4, 6);
+
+	expect(+getPrevWeekDay(friday, [WeekDays.Wednesday, WeekDays.Monday])).toBe(
+		+wednesday
+	);
+	expect(+getPrevWeekDay(friday, [WeekDays.Monday])).toBe(+monday);
+});
+
+test('Get next week day', () => {
+	const monday = new Date(2022, 4, 2);
+	const wednesday = new Date(2022, 4, 4);
+	const friday = new Date(2022, 4, 6);
+
+	expect(+getNextWeekDay(monday, [WeekDays.Wednesday, WeekDays.Friday])).toBe(
+		+wednesday
+	);
+	expect(+getNextWeekDay(monday, [WeekDays.Friday])).toBe(+friday);
+});

@@ -8,7 +8,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 
 import * as db from './db/getData';
-import { init } from './features/tasks/tasksSlice';
+import { init } from './features/routines/routinesSlice';
 import { PlannerData } from './types';
 
 const container = document.getElementById('root')!;

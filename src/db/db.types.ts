@@ -1,14 +1,12 @@
 import { DBSchema } from 'idb';
-import { DayConfiguration, Moment, Task, TaskMoments } from '../types';
-import { STORE_TASKS, STORE_MOMENTS, STORE_DAYS } from './constants';
+import { Routine, RoutineId, Task } from '../types';
+import { STORE_ROUTINES, STORE_CHECKS } from './constants';
 
 export interface PlannerDB extends DBSchema {
-	[STORE_TASKS]: { key: string; value: Task };
-	[STORE_MOMENTS]: { key: string; value: TaskMoments };
-	[STORE_DAYS]: { key: Moment; value: DayConfiguration };
+	[STORE_ROUTINES]: { key: RoutineId; value: Routine };
+	[STORE_CHECKS]: { key: RoutineId; value: Task };
 }
 
 export type StoreNames =
-	| typeof STORE_TASKS
-	| typeof STORE_MOMENTS
-	| typeof STORE_DAYS;
+	| typeof STORE_ROUTINES
+	| typeof STORE_CHECKS;

@@ -1,32 +1,16 @@
-import { nanoid } from 'nanoid';
-import { PeriodUnits, RepeatTypes, Task } from '../../types';
-import { getTodayMoment } from '../../utils/date/today';
 
-export function TaskModel(taskData?: Partial<Task>): Task {
-	const model = Object.assign(
-		{
-			id: nanoid(),
-			active: true,
+import { Task, Routine, Day, Time } from '../../types';
 
-			name: '',
-			description: '',
-			createdMoment: getTodayMoment(),
+export function TaskModel(
+	routine: Routine,
+	day: Day,
+	time: Time | null,
+): Task {
+	const { id } = routine;
 
-			repeat: false,
-
-			defaultTime: [],
-
-			resheduleToNextDay: true,
-
-			repeatType: RepeatTypes.WeekDays,
-			weekDays: [],
-			monthDays: [],
-			startMoment: getTodayMoment(),
-			periodUnit: PeriodUnits.Days,
-			periodValue: 0,
-		},
-		taskData || {}
-	);
-
-	return model;
+	return {
+		routineId: id,
+		moment: day.moment,
+		time: time === undefined ? null : time,
+	};
 }

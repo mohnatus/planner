@@ -48,10 +48,10 @@ function Footer() {
 						<Link to='/calendar'>Calendar</Link>
 					</MenuItemView>
 					<MenuItemView className='add'>
-						<Link to='/task/new'>Add task</Link>
+						<Link to='/routine/new'>Add routine</Link>
 					</MenuItemView>
 					<MenuItemView>
-						<Link to='/tasks'>Tasks List</Link>
+						<Link to='/routines'>Routines List</Link>
 					</MenuItemView>
 					<MenuItemView></MenuItemView>
 				</MenuView>

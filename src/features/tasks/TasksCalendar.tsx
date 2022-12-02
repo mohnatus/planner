@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAppSelector } from '../../app/hooks';
-import { selectDayTasks } from '../tasks/tasksSlice';
+import { selectDayTasks } from '../routines/routinesSlice';
 import { CalendarDay, Moment } from '../../types';
 import { getTodayMoment } from '../../utils/date/today';
 

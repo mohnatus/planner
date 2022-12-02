@@ -1,40 +1,29 @@
 import { openDB, deleteDB, wrap, unwrap, DBSchema, IDBPDatabase } from 'idb';
 import { PlannerDB } from './db.types';
-import {
-	DB_NAME,
-	DB_VERSION,
-	STORE_DAYS,
-	STORE_MOMENTS,
-	STORE_TASKS,
-} from './constants';
+import { DB_NAME, DB_VERSION, STORE_CHECKS, STORE_ROUTINES } from './constants';
 
 export function initDb(db: IDBPDatabase<PlannerDB>) {
 	const { objectStoreNames } = db;
 
-	if (!objectStoreNames.contains(STORE_TASKS)) {
-		db.createObjectStore(STORE_TASKS, {
+	// TODO удалить старые базы
+	console.log({ objectStoreNames });
+
+	if (!objectStoreNames.contains(STORE_ROUTINES)) {
+		db.createObjectStore(STORE_ROUTINES, {
 			keyPath: 'id',
 		});
 	}
 
-	if (!objectStoreNames.contains(STORE_MOMENTS)) {
-		db.createObjectStore(STORE_MOMENTS, {
-			keyPath: 'id',
-		});
-	}
-
-	if (!objectStoreNames.contains(STORE_DAYS)) {
-		db.createObjectStore(STORE_DAYS, {
-			keyPath: 'moment',
-		});
+	if (!objectStoreNames.contains(STORE_CHECKS)) {
+		db.createObjectStore(STORE_CHECKS);
 	}
 }
 
 export async function getDb(): Promise<IDBPDatabase<PlannerDB>> {
-  const db = await openDB<PlannerDB>(DB_NAME, DB_VERSION, {
+	const db = await openDB<PlannerDB>(DB_NAME, DB_VERSION, {
 		upgrade: (db) => {
 			initDb(db);
 		},
 	});
-  return db;
+	return db;
 }

@@ -2,10 +2,10 @@ import { Route, Routes } from 'react-router-dom';
 
 import { Footer } from './components/Footer';
 
-import { TasksList } from './features/tasks/TasksList';
-import { TaskForm } from './features/tasks/TaskForm';
-import { TasksCalendar } from './features/days/TasksCalendar';
-import { DayTasks } from './features/days/DayTasks';
+import { RoutinesList } from './features/routines/RoutinesList';
+import { RoutineForm } from './features/routines/RoutineForm';
+import { TasksCalendar } from './features/tasks/TasksCalendar';
+import { DayTasks } from './features/tasks/DayTasks';
 
 import {
 	ContentWrapper,
@@ -21,9 +21,9 @@ function App() {
 			<PageWrapper>
 				<ContentWrapper>
 					<Routes>
-						<Route path='/tasks' element={<TasksList />} />
-						<Route path='/task/new' element={<TaskForm />} />
-						<Route path='/task/:id' element={<TaskForm />} />
+						<Route path='/routines' element={<RoutinesList />} />
+						<Route path='/routine/new' element={<RoutineForm />} />
+						<Route path='/routine/:id' element={<RoutineForm />} />
 						<Route path='/calendar' element={<TasksCalendar />} />
 						<Route path='/day/:moment' element={<DayTasks />} />
 					</Routes>
