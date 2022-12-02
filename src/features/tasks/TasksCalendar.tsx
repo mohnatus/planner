@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAppSelector } from '../../app/hooks';
-import { selectDayTasks } from '../routines/routinesSlice';
+import { selectDayActiveTasks, selectDayActiveTasksCount, selectDayTasks, selectDayTasksCount} from './tasksSlice';
 import { CalendarDay, Moment } from '../../types';
 import { getTodayMoment } from '../../utils/date/today';
 
@@ -31,13 +31,13 @@ const TasksCalendarDayView = styled.div<TasksCalendarDayViewProps>`
 `;
 
 const DayTasksView = styled.div`
-	width: 10px;
+	width: 20px;
 	height: 10px;
 	background-color: ${COLORS.accent.color};
 	color: ${COLORS.accent.contrast};
 	font-size: 8px;
 	position: absolute;
-	bottom: -5px;
+	bottom: 5px;
 	right: -5px;
 `;
 
@@ -48,12 +48,13 @@ const WrapperView = styled.div`
 `;
 
 function TasksCalendarDay({ day }: TasksCalendarDayProps) {
-	const tasks = useAppSelector(selectDayTasks(day.moment));
+	const tasksCount = useAppSelector(selectDayTasksCount(day.moment));
+	const activeTasksCount = useAppSelector(selectDayActiveTasksCount(day.moment));
 
 	return (
 		<TasksCalendarDayView today={day.isToday}>
 			{day.date}
-			{tasks.length > 0 && <DayTasksView>{tasks.length}</DayTasksView>}
+			{tasksCount > 0 && <DayTasksView>{activeTasksCount} / {tasksCount}</DayTasksView>}
 		</TasksCalendarDayView>
 	);
 }

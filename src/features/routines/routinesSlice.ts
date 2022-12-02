@@ -81,7 +81,7 @@ const {
 	editRoutine: _editRoutine,
 	toggleCheck,
 } = routinesSlice.actions;
-export { init };
+export { init, toggleCheck };
 
 export const selectRoutines = (state: RootState) => state.routines.routines;
 export const selectChecks = (state: RootState) => state.routines.checks;
@@ -103,36 +103,7 @@ export const selectRoutine = (id: string = '') => {
 	return selector;
 };
 
-const daySelectorsCache: {
-	[key: Moment]: Selector<RootState, TasksList>;
-} = {};
 
-export const selectDayTasks = (dayMoment: Moment) => {
-	if (daySelectorsCache[dayMoment]) return daySelectorsCache[dayMoment];
-
-	const selector = createSelector(
-		selectRoutines,
-		selectChecks,
-		(routines, checks) => {
-			const tasks = getDayTasks(routines, dayMoment, checks);
-			return tasks;
-		}
-	);
-	daySelectorsCache[dayMoment] = selector;
-	return selector;
-};
-
-export const isTaskChecked = (task: Task) => {
-	return createSelector(selectChecks, (checks) => {
-		return checks.some((check) => {
-			return (
-				check.routineId === task.routineId &&
-				check.moment === task.moment &&
-				check.time === task.time
-			);
-		});
-	});
-};
 
 // Thunks
 
@@ -175,17 +146,6 @@ export const removeRoutine =
 		});
 	};
 
-export const toggleTaskChecked =
-	(task: Task): AppThunk =>
-	(dispatch, getState) => {
-		const { routines } = getState();
-		const checked = routines.checks.some((check: Task) => {
-			return isSameTask(check, task);
-		});
 
-		db.toggleTaskCheck(task, !checked).then(() => {
-			dispatch(toggleCheck({ task, checked: !checked }));
-		});
-	};
 
 export default routinesSlice.reducer;

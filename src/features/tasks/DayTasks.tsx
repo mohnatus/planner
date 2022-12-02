@@ -6,12 +6,12 @@ import { PageHeader } from '../../components/PageHeader';
 import { Container } from '../../containers/Container';
 import { Moment, Task } from '../../types';
 import { getTaskId } from '../../utils/task/getTaskId';
+import { selectRoutines } from '../routines/routinesSlice';
 import {
 	isTaskChecked,
 	selectDayTasks,
-	selectRoutines,
 	toggleTaskChecked,
-} from '../routines/routinesSlice';
+} from './tasksSlice';
 
 export interface DayTasksProps {}
 
