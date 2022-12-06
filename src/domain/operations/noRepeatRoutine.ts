@@ -9,22 +9,29 @@ export function getNoRepeatRoutineTasks(
 	day: Day,
 	checks: TasksList
 ): Array<Task> {
-	// рутина началась позже указанного дня
-	if (day.moment !== routine.startMoment) return [];
+	// ничего, если рутина началась позже указанного дня
+	if (day.moment < routine.startMoment) return [];
+
+	const todayMoment = getTodayMoment();
+
+	// ничего, если указанный день позже сегодня
+	if (day.moment > todayMoment) return [];
+
+	console.log({
+		day: new Date(day.moment),
+		routine
+	})
 
 	// для каждого времени - свой таск
 	const { subRoutines = [] } = routine;
 
 	const tasks: TasksList = [];
 
-	// сегодня
-	const todayMoment = getTodayMoment();
-
-	// если указанный день позже сегодня
-	if (day.moment > todayMoment) return [];
-
 	subRoutines.forEach((subRoutine: SubRoutine) => {
-		// был ли выполнен таск с конкретным временем
+		const task = TaskModel(routine, subRoutine, day);
+
+		let isTaskVisible = false;
+
 		const check = checks.find((check) => {
 			return (
 				check.subRoutineId === subRoutine.id &&
@@ -32,10 +39,18 @@ export function getNoRepeatRoutineTasks(
 			);
 		});
 
-		if (check && check.moment === day.moment) {
-			tasks.push(TaskModel(routine, subRoutine, day));
+		if (check) {
+			// таск был выполнен, показывать в день выполнения
+			isTaskVisible = check.moment === day.moment;
+		} else if (routine.resheduleToNextDay) {
+			// при перепланировании, показывать сегодня
+			isTaskVisible = todayMoment === day.moment;
+		} else {
+			// показывать в день планирования
+			isTaskVisible = routine.startMoment === day.moment;
 		}
-		return TaskModel(routine, subRoutine, day);
+
+		if (isTaskVisible) tasks.push(task);
 	});
 
 	return tasks;

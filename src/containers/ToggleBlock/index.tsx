@@ -47,7 +47,7 @@ function ToggleBlock({ title, children }: ToggleBlockProps) {
 		<div>
 			<HeaderView onClick={toggle}>
 				<TitleView>{title}</TitleView>
-				<IconView open={open}>&lt;</IconView>
+				<IconView type="button" open={open}>&lt;</IconView>
 			</HeaderView>
 
 			{open && <ContentView>{children}</ContentView>}

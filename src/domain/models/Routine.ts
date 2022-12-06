@@ -4,6 +4,12 @@ import { getTodayMoment } from '../../utils/date/today';
 import { SubRoutineModel } from './SubRoutine';
 
 export function RoutineModel(routineData?: Partial<Routine>): Routine {
+
+	let subRoutines = [ SubRoutineModel() ];
+	if (routineData?.subRoutines?.length) {
+		subRoutines = routineData.subRoutines;
+	}
+
 	const model = Object.assign(
 		{
 			id: nanoid(),
@@ -15,9 +21,7 @@ export function RoutineModel(routineData?: Partial<Routine>): Routine {
 
 			repeat: false,
 
-			subRoutines: [
-				SubRoutineModel()
-			],
+			subRoutines,
 
 			resheduleToNextDay: true,
 

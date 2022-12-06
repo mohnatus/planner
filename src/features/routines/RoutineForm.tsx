@@ -31,6 +31,7 @@ import { TimeInput } from '../../components/TimeInput';
 import { PageHeader } from '../../components/PageHeader';
 import { Button } from '../../components/Button';
 import { SubRoutines } from '../../components/SubRoutines';
+import { SubRoutineModel } from '../../domain/models/SubRoutine';
 
 const NO_REPEAT = 'no-repeat';
 const REPEAT = 'repeat';
@@ -63,7 +64,7 @@ export function RoutineForm() {
 	const [monthDays, setMonthDays] = useState<MonthDay[]>([]);
 	const [periodValue, setPeriodValue] = useState(1);
 	const [periodUnit, setPeriodUnit] = useState(PeriodUnits.Days);
-	const [subRoutines, setSubRoutines] = useState<SubRoutine[]>([]);
+	const [subRoutines, setSubRoutines] = useState<SubRoutine[]>([SubRoutineModel()]);
 
 	const onChangeRepeatParams = (newParams: Partial<RepeatParams>) => {
 		if ('repeatType' in newParams) {
@@ -124,7 +125,7 @@ export function RoutineForm() {
 		setMonthDays(routine?.monthDays || []);
 		setPeriodUnit(routine?.periodUnit || PeriodUnits.Days);
 		setPeriodValue(routine?.periodValue || 1);
-		setSubRoutines(routine?.subRoutines || []);
+		setSubRoutines(routine? routine.subRoutines : [SubRoutineModel()]);
 	}, [routine]);
 
 	return (
