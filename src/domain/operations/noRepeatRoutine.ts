@@ -14,13 +14,10 @@ export function getNoRepeatRoutineTasks(
 
 	const todayMoment = getTodayMoment();
 
-	// ничего, если указанный день позже сегодня
-	if (day.moment > todayMoment) return [];
-
 	console.log({
 		day: new Date(day.moment),
-		routine
-	})
+		routine,
+	});
 
 	// для каждого времени - свой таск
 	const { subRoutines = [] } = routine;
@@ -39,7 +36,10 @@ export function getNoRepeatRoutineTasks(
 			);
 		});
 
-		if (check) {
+		if (day.moment > todayMoment) {
+			// день после сегодня, показывать в день планирования
+			isTaskVisible = day.moment === routine.startMoment;
+		} else if (check) {
 			// таск был выполнен, показывать в день выполнения
 			isTaskVisible = check.moment === day.moment;
 		} else if (routine.resheduleToNextDay) {
