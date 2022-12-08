@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import {
 	MonthDay,
@@ -51,6 +51,7 @@ export function RoutineForm() {
 	const dispatch = useAppDispatch();
 
 	const { id: routineId } = useParams();
+	const navigate = useNavigate();
 
 	const routine = useAppSelector(selectRoutine(routineId || ''));
 
@@ -64,7 +65,9 @@ export function RoutineForm() {
 	const [monthDays, setMonthDays] = useState<MonthDay[]>([]);
 	const [periodValue, setPeriodValue] = useState(1);
 	const [periodUnit, setPeriodUnit] = useState(PeriodUnits.Days);
-	const [subRoutines, setSubRoutines] = useState<SubRoutine[]>([SubRoutineModel()]);
+	const [subRoutines, setSubRoutines] = useState<SubRoutine[]>([
+		SubRoutineModel(),
+	]);
 
 	const onChangeRepeatParams = (newParams: Partial<RepeatParams>) => {
 		if ('repeatType' in newParams) {
@@ -104,28 +107,29 @@ export function RoutineForm() {
 			subRoutines,
 		};
 
-		console.log('handle submit', { routineParams });
-
 		if (!routineId) {
 			dispatch(addRoutine(routineParams));
 		} else {
 			dispatch(editRoutine(routineId, routineParams));
 		}
+
+		navigate(`/routines`);
 	};
 
 	useEffect(() => {
-		console.log({ routine });
 		setName(routine?.name || '');
 		setDescription(routine?.description || '');
 		setRepeat(routine?.repeat ? REPEAT : NO_REPEAT);
-		setStartMoment(routine?.startMoment ? routine.startMoment : getTodayMoment());
+		setStartMoment(
+			routine?.startMoment ? routine.startMoment : getTodayMoment()
+		);
 		setResheduleToNextDay(routine ? routine.resheduleToNextDay : true);
 		setRepeatType(routine?.repeatType || RepeatTypes.WeekDays);
 		setWeekDays(routine?.weekDays || []);
 		setMonthDays(routine?.monthDays || []);
 		setPeriodUnit(routine?.periodUnit || PeriodUnits.Days);
 		setPeriodValue(routine?.periodValue || 1);
-		setSubRoutines(routine? routine.subRoutines : [SubRoutineModel()]);
+		setSubRoutines(routine ? routine.subRoutines : [SubRoutineModel()]);
 	}, [routine]);
 
 	return (
@@ -202,7 +206,10 @@ export function RoutineForm() {
 						<hr />
 
 						<ToggleBlock title='Внутри дня'>
-							<SubRoutines subRoutines={subRoutines} onChange={setSubRoutines} />
+							<SubRoutines
+								subRoutines={subRoutines}
+								onChange={setSubRoutines}
+							/>
 						</ToggleBlock>
 
 						<Button type='submit' accent block>

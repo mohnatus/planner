@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { DateBlock } from '../../components/DateBlock';
 import { PageHeader } from '../../components/PageHeader';
 import { Container } from '../../containers/Container';
+import { ServiceText } from '../../containers/ServiceText';
 import { Moment, Task } from '../../types';
 import { MS_IN_DAY } from '../../utils/date/constants';
 import { getTodayMoment } from '../../utils/date/today';
@@ -15,6 +16,7 @@ import {
 	selectDayTasks,
 	toggleTaskChecked,
 } from './tasksSlice';
+import { getDateString } from './utils';
 
 export interface DayTasksProps {}
 
@@ -57,18 +59,39 @@ export function TaskItem({ task }: TaskItemProps) {
 }
 
 export function DayTasks() {
+	const navigate = useNavigate();
 	const { moment = '' } = useParams();
 	const [year, month, dayOfMonth] = moment.split('-');
 	const date = new Date(+year, +month - 1, +dayOfMonth);
 	const dayMoment: Moment = +date;
 	const dayTasks = useAppSelector(selectDayTasks(dayMoment));
 
+	const toPrevDay = useCallback(() => {
+		const prevDayMoment = dayMoment - MS_IN_DAY;
+		const date = getDateString(prevDayMoment);
+		navigate(`/day/${date}`);
+	}, [navigate, dayMoment]);
+
+	const toNextDay = useCallback(() => {
+		const prevDayMoment = dayMoment + MS_IN_DAY;
+		const date = getDateString(prevDayMoment);
+		navigate(`/day/${date}`);
+	}, [navigate, dayMoment]);
+
 	return (
 		<div>
 			<PageHeader>
+				<button type='button' onClick={toPrevDay}>
+					Back
+				</button>
 				<DateBlock moment={dayMoment} />
+				<button type='button' onClick={toNextDay}>
+					Forward
+				</button>
 			</PageHeader>
 			<Container>
+				{dayTasks.length === 0 && <ServiceText>Ничего не запланировано</ServiceText>}
+
 				{dayTasks.map((task) => (
 					<TaskItem key={getTaskId(task)} task={task} />
 				))}

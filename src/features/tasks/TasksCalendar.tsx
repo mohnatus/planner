@@ -2,7 +2,12 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAppSelector } from '../../app/hooks';
-import { selectDayActiveTasks, selectDayActiveTasksCount, selectDayTasks, selectDayTasksCount} from './tasksSlice';
+import {
+	selectDayActiveTasks,
+	selectDayActiveTasksCount,
+	selectDayTasks,
+	selectDayTasksCount,
+} from './tasksSlice';
 import { CalendarDay, Moment } from '../../types';
 import { getTodayMoment } from '../../utils/date/today';
 
@@ -11,6 +16,7 @@ import { COLORS } from '../../ui/colors';
 import { getDateComponents } from '../../utils/date/format';
 import { Container } from '../../containers/Container';
 import { PageHeader } from '../../components/PageHeader';
+import { getDateString } from './utils';
 
 interface TasksCalendarDayProps {
 	day: CalendarDay;
@@ -49,12 +55,18 @@ const WrapperView = styled.div`
 
 function TasksCalendarDay({ day }: TasksCalendarDayProps) {
 	const tasksCount = useAppSelector(selectDayTasksCount(day.moment));
-	const activeTasksCount = useAppSelector(selectDayActiveTasksCount(day.moment));
+	const activeTasksCount = useAppSelector(
+		selectDayActiveTasksCount(day.moment)
+	);
 
 	return (
 		<TasksCalendarDayView today={day.isToday}>
 			{day.date}
-			{tasksCount > 0 && <DayTasksView>{activeTasksCount} / {tasksCount}</DayTasksView>}
+			{tasksCount > 0 && (
+				<DayTasksView>
+					{activeTasksCount} / {tasksCount}
+				</DayTasksView>
+			)}
 		</TasksCalendarDayView>
 	);
 }
@@ -68,16 +80,13 @@ export function TasksCalendar() {
 	const navigate = useNavigate();
 
 	const onDaySelect = (moment: Moment) => {
-		const { dayOfMonth, month, year } = getDateComponents(moment);
-		const date = `${year}-${month}-${dayOfMonth}`;
+		const date = getDateString(moment);
 		navigate(`/day/${date}`);
 	};
 
 	return (
 		<div>
-			<PageHeader
-				title='Текущие задачи'
-			></PageHeader>
+			<PageHeader title='Текущие задачи'></PageHeader>
 			<Container>
 				<WrapperView>
 					<Calendar
