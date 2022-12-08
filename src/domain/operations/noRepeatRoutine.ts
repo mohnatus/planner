@@ -1,6 +1,6 @@
 import {
 	Day,
-	PlannerData,
+	Moment,
 	Routine,
 	RoutineData,
 	SubRoutine,
@@ -8,10 +8,8 @@ import {
 	TaskMomentId,
 	TaskMomentsList,
 	TasksList,
-	Time,
 } from '../../types';
 import { getTodayMoment } from '../../utils/date/today';
-import { isSameTask } from '../../utils/task/isSameTask';
 
 import { TaskModel } from '../models/Task';
 
@@ -23,7 +21,7 @@ export function getNoRepeatTaskStartMoment(
 	routine: Routine,
 	task: Task,
 	moments: TaskMomentsList
-) {
+): Moment | null {
 	const taskMomentId = getNoRepeatTaskMomentId(task);
 	const taskMoment = moments.find(moment => moment.id === taskMomentId);
 
@@ -38,8 +36,6 @@ export function getNoRepeatRoutineTasks(
 	routineData: RoutineData
 ): Array<Task> {
 	const { checks, moments } = routineData;
-
-	console.log('routine moments', { moments });
 
 	const todayMoment = getTodayMoment();
 

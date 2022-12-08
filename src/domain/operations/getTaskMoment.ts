@@ -1,5 +1,6 @@
-import { Moment, Routine, Task, TaskMoment } from '../../types';
+import { Moment, RepeatTypes, Routine, Task, TaskMoment } from '../../types';
 import { getNoRepeatTaskMomentId } from './noRepeatRoutine';
+import { getWeekDaysTaskMomentId } from './weekDaysRoutine';
 
 export function getTaskMoment(
 	task: Task,
@@ -9,6 +10,14 @@ export function getTaskMoment(
 	if (!routine.repeat) {
 		return {
 			id: getNoRepeatTaskMomentId(task),
+			subRoutineId: task.subRoutineId,
+			to,
+		};
+	}
+
+	if (routine.repeatType === RepeatTypes.WeekDays) {
+		return {
+			id: getWeekDaysTaskMomentId(routine, task, to),
 			subRoutineId: task.subRoutineId,
 			to,
 		};
