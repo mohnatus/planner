@@ -5,10 +5,13 @@ import { DateBlock } from '../../components/DateBlock';
 import { PageHeader } from '../../components/PageHeader';
 import { Container } from '../../containers/Container';
 import { Moment, Task } from '../../types';
+import { MS_IN_DAY } from '../../utils/date/constants';
+import { getTodayMoment } from '../../utils/date/today';
 import { getTaskId } from '../../utils/task/getTaskId';
 import { selectRoutines } from '../routines/routinesSlice';
 import {
 	isTaskChecked,
+	moveTask,
 	selectDayTasks,
 	toggleTaskChecked,
 } from './tasksSlice';
@@ -29,6 +32,10 @@ export function TaskItem({ task }: TaskItemProps) {
 		dispatch(toggleTaskChecked(task));
 	}, [dispatch, task]);
 
+	const moveToTomorrow = useCallback(() => {
+		dispatch(moveTask(task, getTodayMoment() + MS_IN_DAY));
+	}, [dispatch, task]);
+
 	if (!routine) return null;
 
 	const { name, description } = routine;
@@ -39,6 +46,11 @@ export function TaskItem({ task }: TaskItemProps) {
 			<div>{name}</div>
 			<div>{description}</div>
 			<Link to={`/routine/${task.routineId}`}>К рутине</Link>
+			<div>
+				<button type='button' onClick={moveToTomorrow}>
+					Перенести на завтра
+				</button>
+			</div>
 			<hr />
 		</div>
 	);

@@ -8,6 +8,9 @@ import {
 	Routine,
 	RepeatTypes,
 	DaysList,
+	TaskMomentsList,
+	PlannerData,
+	RoutineData,
 } from '../../types';
 import { getNoRepeatRoutineTasks } from './noRepeatRoutine';
 import { getWeekDaysRoutineTasks } from './weekDaysRoutine';
@@ -23,36 +26,50 @@ export function getActiveRoutines(routines: RoutinesList): RoutinesList {
 function getRoutineTasks(
 	routine: Routine,
 	day: Day,
-	checks: TasksList
+	routineData: RoutineData
 ): Array<Task> {
 	if (routine.repeat) {
-		switch(routine.repeatType) {
+		switch (routine.repeatType) {
 			case RepeatTypes.WeekDays:
-				return getWeekDaysRoutineTasks(routine, day, checks);
+				return getWeekDaysRoutineTasks(routine, day, routineData);
 			case RepeatTypes.MonthDays:
-				return getMonthDaysRoutineTasks(routine, day, checks);
+				return getMonthDaysRoutineTasks(routine, day, routineData);
 			default:
-				return getPeriodRoutineTasks(routine, day, checks);
+				return getPeriodRoutineTasks(routine, day, routineData);
 		}
 	}
 
-	return getNoRepeatRoutineTasks(routine, day, checks);
+	return getNoRepeatRoutineTasks(routine, day, routineData);
 }
 
 export function getDayTasks(
-	routines: RoutinesList,
 	dayMoment: Moment,
-	checks: TasksList
+	plannerData: PlannerData
 ): TasksList {
 	const day = DayModel(dayMoment);
+
+	const { routines, checks, moments } = plannerData;
 
 	const activeRoutines = getActiveRoutines(routines);
 
 	let tasks: Array<Task> = [];
 
 	activeRoutines.forEach((routine: Routine) => {
-		const routineChecks = checks.filter(check => check.routineId === routine.id)
-		tasks = [...tasks, ...getRoutineTasks(routine, day, routineChecks)];
+		const { subRoutines } = routine;
+		const subRoutinesIds = subRoutines.map((subRoutine) => subRoutine.id);
+		const routineChecks = checks.filter(
+			(check) => check.routineId === routine.id
+		);
+		const routineMoments = moments.filter((moment) => {
+			return subRoutinesIds.includes(moment.subRoutineId);
+		});
+		tasks = [
+			...tasks,
+			...getRoutineTasks(routine, day, {
+				checks: routineChecks,
+				moments: routineMoments,
+			}),
+		];
 	});
 
 	return tasks;

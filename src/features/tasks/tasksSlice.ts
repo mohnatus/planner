@@ -3,13 +3,17 @@ import { Selector } from 'react-redux';
 import * as db from '../../db';
 import { AppThunk, RootState } from '../../app/store';
 import { getDayTasks } from '../../domain/operations/getDayTasks';
-import { Moment, Task, TasksList } from '../../types';
+import { Moment, Task, TaskMoment, TasksList } from '../../types';
 import {
+	addMoment,
 	selectChecks,
+	selectMoments,
 	selectRoutines,
 	toggleCheck,
 } from '../routines/routinesSlice';
 import { isSameTask } from '../../utils/task/isSameTask';
+import { getTaskMoment } from '../../domain/operations/getTaskMoment';
+import { getRoutineById } from '../../domain/operations/routines';
 
 type TypedSelector<T> = Selector<RootState, T>;
 type SelectorCreator<K, V> = (item: K) => TypedSelector<V>;
@@ -31,8 +35,9 @@ export const selectDayTasks = SelectorWithCache<Moment, TasksList>(
 		return createSelector(
 			selectRoutines,
 			selectChecks,
-			(routines, checks) => {
-				const tasks = getDayTasks(routines, dayMoment, checks);
+			selectMoments,
+			(routines, checks, moments) => {
+			const tasks = getDayTasks(dayMoment, {routines, checks, moments});
 				return tasks;
 			}
 		);
@@ -89,3 +94,15 @@ export const toggleTaskChecked =
 			dispatch(toggleCheck({ task, checked: !checked }));
 		});
 	};
+
+export const moveTask = (task: Task, moment: Moment): AppThunk => (dispatch, getState) => {
+	const { routines } = getState();
+	const routine = getRoutineById(task.routineId, routines.routines)
+	if (!routine) return;
+
+	const taskMoment = getTaskMoment(task, moment, routine);
+	console.log('move task', { taskMoment })
+	db.saveTaskMoment(taskMoment).then(() => {
+		dispatch(addMoment(taskMoment))
+	})
+}

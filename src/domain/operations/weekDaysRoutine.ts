@@ -1,5 +1,5 @@
-import { Day, Routine, Task, TasksList } from "../../types";
+import { Day, PlannerData, Routine, RoutineData, Task, TaskMomentsList, TasksList } from "../../types";
 
-export function getWeekDaysRoutineTasks(routine: Routine, day: Day, checks: TasksList): Array<Task> {
+export function getWeekDaysRoutineTasks(routine: Routine, day: Day, routineData: RoutineData): Array<Task> {
 	return [];
 }

@@ -2,7 +2,7 @@ import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Selector } from 'react-redux';
 import { AppThunk, RootState } from '../../app/store';
 import * as db from '../../db';
-import { Moment, PlannerData, Routine, Task } from '../../types';
+import { Moment, PlannerData, Routine, Task, TaskMoment } from '../../types';
 import { TasksList } from '../../types';
 import { RoutineModel } from '../../domain/models/Routine';
 import { getDayTasks } from '../../domain/operations/getDayTasks';
@@ -22,6 +22,7 @@ const initialState: RoutinesState = {
 
 	routines: [],
 	checks: [],
+	moments: [],
 };
 
 export const routinesSlice = createSlice({
@@ -30,9 +31,10 @@ export const routinesSlice = createSlice({
 	reducers: {
 		init: (state, action: PayloadAction<PlannerData>) => {
 			console.log('init', action.payload);
-			const { routines, checks } = action.payload;
+			const { routines, checks, moments } = action.payload;
 			state.routines = routines;
 			state.checks = checks;
+			state.moments = moments;
 			state.status = Statuses.Idle;
 		},
 		addRoutine: (state, action: PayloadAction<Routine>) => {
@@ -71,6 +73,14 @@ export const routinesSlice = createSlice({
 
 			state.checks = newChecksList;
 		},
+		addMoment: (state, action: PayloadAction<TaskMoment>) => {
+			state.moments = [
+				...state.moments.filter(
+					(moment: TaskMoment) => moment.id !== action.payload.id
+				),
+				action.payload,
+			];
+		},
 	},
 });
 
@@ -80,11 +90,13 @@ const {
 	removeRoutine: _removeRoutine,
 	editRoutine: _editRoutine,
 	toggleCheck,
+	addMoment
 } = routinesSlice.actions;
-export { init, toggleCheck };
+export { init, toggleCheck, addMoment };
 
 export const selectRoutines = (state: RootState) => state.routines.routines;
 export const selectChecks = (state: RootState) => state.routines.checks;
+export const selectMoments = (state: RootState) => state.routines.moments;
 
 const routinesCache: {
 	[key: string]: Selector<RootState, Routine | undefined>;
@@ -102,8 +114,6 @@ export const selectRoutine = (id: string = '') => {
 	routinesCache[id] = selector;
 	return selector;
 };
-
-
 
 // Thunks
 
@@ -145,7 +155,5 @@ export const removeRoutine =
 			dispatch(_removeRoutine(routine.id));
 		});
 	};
-
-
 
 export default routinesSlice.reducer;

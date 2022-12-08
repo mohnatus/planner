@@ -1,23 +1,47 @@
-import { Day, Routine, SubRoutine, Task, TasksList, Time } from '../../types';
+import {
+	Day,
+	PlannerData,
+	Routine,
+	RoutineData,
+	SubRoutine,
+	Task,
+	TaskMomentId,
+	TaskMomentsList,
+	TasksList,
+	Time,
+} from '../../types';
 import { getTodayMoment } from '../../utils/date/today';
 import { isSameTask } from '../../utils/task/isSameTask';
 
 import { TaskModel } from '../models/Task';
 
+export function getNoRepeatTaskMomentId(task: Task): TaskMomentId {
+	return task.subRoutineId;
+}
+
+export function getNoRepeatTaskStartMoment(
+	routine: Routine,
+	task: Task,
+	moments: TaskMomentsList
+) {
+	const taskMomentId = getNoRepeatTaskMomentId(task);
+	const taskMoment = moments.find(moment => moment.id === taskMomentId);
+
+	if (taskMoment) return taskMoment.to;
+
+	return routine.startMoment;
+}
+
 export function getNoRepeatRoutineTasks(
 	routine: Routine,
 	day: Day,
-	checks: TasksList
+	routineData: RoutineData
 ): Array<Task> {
-	// ничего, если рутина началась позже указанного дня
-	if (day.moment < routine.startMoment) return [];
+	const { checks, moments } = routineData;
+
+	console.log('routine moments', { moments });
 
 	const todayMoment = getTodayMoment();
-
-	console.log({
-		day: new Date(day.moment),
-		routine,
-	});
 
 	// для каждого времени - свой таск
 	const { subRoutines = [] } = routine;
@@ -27,30 +51,48 @@ export function getNoRepeatRoutineTasks(
 	subRoutines.forEach((subRoutine: SubRoutine) => {
 		const task = TaskModel(routine, subRoutine, day);
 
-		let isTaskVisible = false;
+		const taskStartMoment = getNoRepeatTaskStartMoment(
+			routine,
+			task,
+			moments
+		);
+
+		if (!taskStartMoment) return;
+
+		// таск начинается после выбранного дня
+		if (taskStartMoment > day.moment) return;
+
+		// таск начинается в будущем
+		if (taskStartMoment > todayMoment) {
+			// показывать в день старта таска
+			if (day.moment === taskStartMoment) tasks.push(task);
+			return;
+		}
 
 		const check = checks.find((check) => {
 			return (
 				check.subRoutineId === subRoutine.id &&
-				check.moment <= todayMoment
+				check.moment <= todayMoment &&
+				check.moment >= taskStartMoment
 			);
 		});
 
-		if (day.moment > todayMoment) {
-			// день после сегодня, показывать в день планирования
-			isTaskVisible = day.moment === routine.startMoment;
-		} else if (check) {
-			// таск был выполнен, показывать в день выполнения
-			isTaskVisible = check.moment === day.moment;
-		} else if (routine.resheduleToNextDay) {
-			// при перепланировании, показывать сегодня
-			isTaskVisible = todayMoment === day.moment;
-		} else {
-			// показывать в день планирования
-			isTaskVisible = routine.startMoment === day.moment;
+		// таск был выполнен
+		if (check) {
+			// показывать в день выполнения
+			if (check.moment === day.moment) tasks.push(task);
+			return;
 		}
 
-		if (isTaskVisible) tasks.push(task);
+		// перепланирование на след. день включено
+		if (routine.resheduleToNextDay) {
+			// показывать сегодня
+			if (todayMoment === day.moment) tasks.push(task);
+			return;
+		}
+
+		// показывать в день планирования
+		if (taskStartMoment === day.moment) tasks.push(task);
 	});
 
 	return tasks;

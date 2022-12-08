@@ -3,6 +3,7 @@ export type MonthDay = number;
 export type Time = number;
 export type RoutineId = string;
 export type SubRoutineId = string;
+export type TaskMomentId = string;
 
 export enum WeekDays {
 	Sunday,
@@ -78,7 +79,7 @@ export interface SubRoutine {
 	time: Time | null;
 }
 
-export type SubRoutinesList = Array<SubRoutine>
+export type SubRoutinesList = Array<SubRoutine>;
 
 export interface IRoutine {
 	id: RoutineId;
@@ -109,25 +110,17 @@ export type Routine = IRoutine & INoRepeatRoutine & IRepeatRoutine;
 export type RoutinesList = Array<Routine>;
 
 /**
- * Routine Moments
- * настройки видимости рутины для конкретных дней
+ * Task Moments
+ * перемещение тасков
  */
 
-export type RoutineMoment = {
-	time: Time | null; // время
-	moment: Moment; // день
+export type TaskMoment = {
+	id: TaskMomentId;
+	subRoutineId: SubRoutineId;
+	to: Moment | null;
 };
 
-export type RoutineMoments = {
-	id: RoutineId;
-
-	exclude: Array<RoutineMoment>;
-	include: Array<RoutineMoment>;
-};
-
-export type RoutineMomentsList = {
-	[key: RoutineId]: RoutineMoments;
-};
+export type TaskMomentsList = Array<TaskMoment>;
 
 /**
  * Day Configuration
@@ -146,6 +139,12 @@ export type DaysConfiguration = {
 export interface PlannerData {
 	routines: RoutinesList;
 	checks: TasksList;
+	moments: TaskMomentsList;
+}
+
+export interface RoutineData {
+	checks: TasksList;
+	moments: TaskMomentsList;
 }
 
 /****************************
