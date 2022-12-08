@@ -21,11 +21,11 @@ const getMoment = (...dateParams: DateParams) => {
 	return +date;
 };
 
-const getRoutineData = (params: Partial<PlannerData>) => {
+const getRoutineData = (params?: Partial<PlannerData>) => {
 	return {
 		checks: [],
 		moments: [],
-		...params,
+		...(params || {}),
 	};
 };
 
@@ -47,27 +47,17 @@ describe('Неповторяющися задачи (все)', () => {
 		resheduleToNextDay: false,
 	});
 
+	const routineData = getRoutineData();
+
 	test('Не показывать раньше старта задачи', () => {
 		const day = DayModel(prevDayMoment);
-		const tasksList = getNoRepeatRoutineTasks(
-			routine,
-			day,
-			getRoutineData({
-				routines: [routine],
-			})
-		);
+		const tasksList = getNoRepeatRoutineTasks(routine, day, routineData);
 		expect(tasksList.length).toBe(0);
 	});
 
 	test('Не показывать после сегодня', () => {
 		const day = DayModel(tomorrowMoment);
-		const tasksList = getNoRepeatRoutineTasks(
-			routine,
-			day,
-			getRoutineData({
-				routines: [routine],
-			})
-		);
+		const tasksList = getNoRepeatRoutineTasks(routine, day, routineData);
 		expect(tasksList.length).toBe(0);
 	});
 
@@ -82,9 +72,7 @@ describe('Неповторяющися задачи (все)', () => {
 		const tasksList = getNoRepeatRoutineTasks(
 			futureRoutine,
 			day,
-			getRoutineData({
-				routines: [routine],
-			})
+			routineData
 		);
 		expect(tasksList.length).toBe(1);
 		expect(tasksList[0].subRoutineId).toBe(subRoutineId);
@@ -103,40 +91,24 @@ describe('Без перепланирования', () => {
 	const subRoutine = routine.subRoutines[0];
 	const subRoutineId = subRoutine.id;
 
+	const routineData = getRoutineData();
+
 	test('Показывать в день старта задачи', () => {
 		const day = DayModel(startMoment);
-		const tasksList = getNoRepeatRoutineTasks(
-			routine,
-			day,
-			getRoutineData({
-				routines: [routine],
-			})
-		);
+		const tasksList = getNoRepeatRoutineTasks(routine, day, routineData);
 		expect(tasksList.length).toBe(1);
 		expect(tasksList[0].subRoutineId).toBe(subRoutineId);
 	});
 
 	test('Не показывать на следующий день после старта задачи', () => {
 		const day = DayModel(nextDayMoment);
-		const tasksList = getNoRepeatRoutineTasks(
-			routine,
-			day,
-			getRoutineData({
-				routines: [routine],
-			})
-		);
+		const tasksList = getNoRepeatRoutineTasks(routine, day, routineData);
 		expect(tasksList.length).toBe(0);
 	});
 
 	test('Не показывать сегодня', () => {
 		const day = DayModel(todayMoment);
-		const tasksList = getNoRepeatRoutineTasks(
-			routine,
-			day,
-			getRoutineData({
-				routines: [routine],
-			})
-		);
+		const tasksList = getNoRepeatRoutineTasks(routine, day, routineData);
 		expect(tasksList.length).toBe(0);
 	});
 
@@ -145,16 +117,14 @@ describe('Без перепланирования', () => {
 		const checkDay = DayModel(checkMoment);
 
 		const checks: TasksList = [TaskModel(routine, subRoutine, checkDay)];
+		const routineData = getRoutineData({ checks });
 
 		test('Не показывать в день старта задачи', () => {
 			const day = DayModel(startMoment);
 			const tasksList = getNoRepeatRoutineTasks(
 				routine,
 				day,
-				getRoutineData({
-					checks,
-					routines: [routine],
-				})
+				routineData
 			);
 			expect(tasksList.length).toBe(0);
 		});
@@ -163,10 +133,7 @@ describe('Без перепланирования', () => {
 			const tasksList = getNoRepeatRoutineTasks(
 				routine,
 				checkDay,
-				getRoutineData({
-					checks,
-					routines: [routine],
-				})
+				routineData
 			);
 			expect(tasksList.length).toBe(1);
 			expect(tasksList[0].subRoutineId).toBe(subRoutineId);
@@ -191,9 +158,7 @@ describe('С перепланированием', () => {
 		const tasksList = getNoRepeatRoutineTasks(
 			routine,
 			day,
-			getRoutineData({
-				routines: [routine],
-			})
+			getRoutineData()
 		);
 		expect(tasksList.length).toBe(0);
 	});
@@ -203,9 +168,7 @@ describe('С перепланированием', () => {
 		const tasksList = getNoRepeatRoutineTasks(
 			routine,
 			day,
-			getRoutineData({
-				routines: [routine],
-			})
+			getRoutineData()
 		);
 		expect(tasksList.length).toBe(1);
 		expect(tasksList[0].subRoutineId).toBe(subRoutineId);
@@ -224,7 +187,6 @@ describe('С перепланированием', () => {
 				day,
 				getRoutineData({
 					checks,
-					routines: [routine],
 				})
 			);
 			expect(tasksList.length).toBe(0);
@@ -236,7 +198,6 @@ describe('С перепланированием', () => {
 				checkDay,
 				getRoutineData({
 					checks,
-					routines: [routine],
 				})
 			);
 			expect(tasksList.length).toBe(1);
@@ -250,7 +211,6 @@ describe('С перепланированием', () => {
 				day,
 				getRoutineData({
 					checks,
-					routines: [routine],
 				})
 			);
 			expect(tasksList.length).toBe(0);

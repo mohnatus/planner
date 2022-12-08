@@ -22,9 +22,10 @@ export interface DayTasksProps {}
 
 export interface TaskItemProps {
 	task: Task;
+	day: Moment;
 }
 
-export function TaskItem({ task }: TaskItemProps) {
+export function TaskItem({ task, day }: TaskItemProps) {
 	const dispatch = useAppDispatch();
 	const routines = useAppSelector(selectRoutines);
 	const checked = useAppSelector(isTaskChecked(task));
@@ -37,6 +38,10 @@ export function TaskItem({ task }: TaskItemProps) {
 	const moveToTomorrow = useCallback(() => {
 		dispatch(moveTask(task, getTodayMoment() + MS_IN_DAY));
 	}, [dispatch, task]);
+
+	const moveToNextDay = useCallback(() => {
+		dispatch(moveTask(task,  day + MS_IN_DAY));
+	}, [dispatch, task, day]);
 
 	if (!routine) return null;
 
@@ -51,6 +56,9 @@ export function TaskItem({ task }: TaskItemProps) {
 			<div>
 				<button type='button' onClick={moveToTomorrow}>
 					Перенести на завтра
+				</button>
+				<button type='button' onClick={moveToNextDay}>
+					Перенести на след. день
 				</button>
 			</div>
 			<hr />
@@ -93,7 +101,7 @@ export function DayTasks() {
 				{dayTasks.length === 0 && <ServiceText>Ничего не запланировано</ServiceText>}
 
 				{dayTasks.map((task) => (
-					<TaskItem key={getTaskId(task)} task={task} />
+					<TaskItem key={getTaskId(task)} task={task} day={dayMoment} />
 				))}
 			</Container>
 		</div>
