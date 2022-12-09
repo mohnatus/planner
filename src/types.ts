@@ -109,42 +109,28 @@ export type Routine = IRoutine & INoRepeatRoutine & IRepeatRoutine;
 
 export type RoutinesList = Array<Routine>;
 
-/**
- * Task Moments
- * перемещение тасков
- */
+/** Task Check (отметка о выполнении) */
 
-export type TaskMoment = {
+export type TaskCheck = {
 	id: TaskMomentId;
-	subRoutineId: SubRoutineId;
+	moment: Moment;
+}
+
+export type TaskChecksList = Array<TaskCheck>;
+
+/** Task Changes (перемещение) */
+
+export type TaskChange = {
+	id: TaskMomentId;
 	to: Moment | null;
 };
 
-export type TaskMomentsList = Array<TaskMoment>;
-
-/**
- * Day Configuration
- * настройки для конкретных дней
- */
-
-export type DayConfiguration = {
-	moment: Moment;
-	order: Array<number>;
-};
-
-export type DaysConfiguration = {
-	[key: Moment]: DayConfiguration;
-};
+export type TaskChangesList = Array<TaskChange>;
 
 export interface PlannerData {
 	routines: RoutinesList;
-	checks: TasksList;
-	moments: TaskMomentsList;
-}
-
-export interface RoutineData {
-	checks: TasksList;
-	moments: TaskMomentsList;
+	checks: TaskChecksList;
+	changes: TaskChangesList;
 }
 
 /****************************
@@ -165,7 +151,12 @@ export type DaysList = {
 
 /** Task - отдельный таск в конкретный день */
 
-export type Task = {
+export type TaskMoment = {
+	id: TaskMomentId;
+	period: [Moment, Moment | null];
+};
+
+export type Task = TaskMoment & {
 	routineId: RoutineId;
 	subRoutineId: SubRoutineId;
 	moment: Moment;

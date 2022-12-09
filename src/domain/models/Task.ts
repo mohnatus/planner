@@ -1,15 +1,23 @@
-
-import { Task, Routine, Day, Time, SubRoutine } from '../../types';
+import {
+	Task,
+	Routine,
+	Day,
+	SubRoutine,
+} from '../../types';
+import { getTaskMomentData } from '../utils/taskMoments';
 
 export function TaskModel(
 	routine: Routine,
 	subRoutine: SubRoutine,
-	day: Day,
+	day: Day
 ): Task {
-	const { id } = routine;
+	const { id, period } = getTaskMomentData(routine, subRoutine, day.moment);
 
 	return {
-		routineId: id,
+		id,
+		period,
+
+		routineId: routine.id,
 		subRoutineId: subRoutine.id,
 		moment: day.moment,
 	};

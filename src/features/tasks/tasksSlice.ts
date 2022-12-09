@@ -3,17 +3,14 @@ import { Selector } from 'react-redux';
 import * as db from '../../db';
 import { AppThunk, RootState } from '../../app/store';
 import { getDayTasks } from '../../domain/operations/getDayTasks';
-import { Moment, Task, TaskMoment, TasksList } from '../../types';
+import { Moment, Task, TaskChange, TaskCheck, TasksList } from '../../types';
 import {
-	addMoment,
+	addChange,
 	selectChecks,
-	selectMoments,
+	selectChanges,
 	selectRoutines,
 	toggleCheck,
 } from '../routines/routinesSlice';
-import { isSameTask } from '../../utils/task/isSameTask';
-import { getTaskMoment } from '../../domain/operations/getTaskMoment';
-import { getRoutineById } from '../../domain/operations/routines';
 
 type TypedSelector<T> = Selector<RootState, T>;
 type SelectorCreator<K, V> = (item: K) => TypedSelector<V>;
@@ -35,9 +32,13 @@ export const selectDayTasks = SelectorWithCache<Moment, TasksList>(
 		return createSelector(
 			selectRoutines,
 			selectChecks,
-			selectMoments,
-			(routines, checks, moments) => {
-			const tasks = getDayTasks(dayMoment, {routines, checks, moments});
+			selectChanges,
+			(routines, checks, changes) => {
+				const tasks = getDayTasks(dayMoment, {
+					routines,
+					checks,
+					changes,
+				});
 				return tasks;
 			}
 		);
@@ -58,7 +59,7 @@ export const selectDayActiveTasks = SelectorWithCache<Moment, TasksList>(
 
 		return createSelector(tasksSelector, selectChecks, (tasks, checks) => {
 			return tasks.filter((task) => {
-				return !checks.some((check) => isSameTask(task, check));
+				return !checks.some((check) => check.id === task.id);
 			});
 		});
 	}
@@ -75,7 +76,7 @@ export const selectDayActiveTasksCount = SelectorWithCache<Moment, number>(
 export const isTaskChecked = SelectorWithCache<Task, boolean>((task: Task) => {
 	return createSelector(selectChecks, (checks) => {
 		return checks.some((check) => {
-			return isSameTask(check, task)
+			return check.id === task.id;
 		});
 	});
 });
@@ -86,8 +87,8 @@ export const toggleTaskChecked =
 	(task: Task): AppThunk =>
 	(dispatch, getState) => {
 		const { routines } = getState();
-		const checked = routines.checks.some((check: Task) => {
-			return isSameTask(check, task);
+		const checked = routines.checks.some((check: TaskCheck) => {
+			return check.id === task.id;
 		});
 
 		db.toggleTaskCheck(task, !checked).then(() => {
@@ -95,14 +96,15 @@ export const toggleTaskChecked =
 		});
 	};
 
-export const moveTask = (task: Task, moment: Moment): AppThunk => (dispatch, getState) => {
-	const { routines } = getState();
-	const routine = getRoutineById(task.routineId, routines.routines)
-	if (!routine) return;
-
-	const taskMoment = getTaskMoment(task, moment, routine);
-	console.log('move task', { taskMoment })
-	db.saveTaskMoment(taskMoment).then(() => {
-		dispatch(addMoment(taskMoment))
-	})
-}
+export const moveTask =
+	(task: Task, moment: Moment): AppThunk =>
+	(dispatch, getState) => {
+		const taskChange = {
+			id: task.id,
+			to: moment,
+		};
+		console.log('move task', { taskChange });
+		db.saveTaskChange(taskChange).then(() => {
+			dispatch(addChange(taskChange));
+		});
+	};
