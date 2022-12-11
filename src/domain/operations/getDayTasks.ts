@@ -51,7 +51,8 @@ function getRoutineDayTasks(
 	const todayMoment = getTodayMoment();
 
 	subRoutines.forEach((subRoutine) => {
-		const task = TaskModel(routine, subRoutine, day);
+		const task = TaskModel(routine, subRoutine, day, checks);
+		console.log({task})
 
 		const taskChange = getTaskChange(task, changes);
 		if (!taskChange) {

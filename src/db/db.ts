@@ -14,6 +14,7 @@ export function initDb(db: IDBPDatabase<PlannerDB>) {
 		});
 	}
 
+
 	if (!objectStoreNames.contains(STORE_CHECKS)) {
 		db.createObjectStore(STORE_CHECKS, {
 			keyPath: 'id'

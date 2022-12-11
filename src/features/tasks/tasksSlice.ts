@@ -75,6 +75,7 @@ export const selectDayActiveTasksCount = SelectorWithCache<Moment, number>(
 
 export const isTaskChecked = SelectorWithCache<Task, boolean>((task: Task) => {
 	return createSelector(selectChecks, (checks) => {
+		console.log('is ttask checked', task, checks)
 		return checks.some((check) => {
 			return check.id === task.id;
 		});
