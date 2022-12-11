@@ -5,9 +5,6 @@ import { DB_NAME, DB_VERSION, STORE_CHECKS, STORE_CHANGES, STORE_ROUTINES } from
 export function initDb(db: IDBPDatabase<PlannerDB>) {
 	const { objectStoreNames } = db;
 
-	// TODO удалить старые базы
-	console.log({ objectStoreNames });
-
 	if (!objectStoreNames.contains(STORE_ROUTINES)) {
 		db.createObjectStore(STORE_ROUTINES, {
 			keyPath: 'id',

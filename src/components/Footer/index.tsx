@@ -5,6 +5,8 @@ import { COLORS } from '../../ui/colors';
 import { FOOTER_HEIGHT } from '../../ui/sizes';
 
 import { Container } from '../../containers/Container';
+import { useAppDispatch } from '../../app/hooks';
+import { clearDb } from '../../features/routines/routinesSlice';
 
 const WrapperView = styled.footer`
 	height: ${FOOTER_HEIGHT}px;
@@ -39,6 +41,10 @@ const MenuItemView = styled.li`
 `;
 
 function Footer() {
+	const dispatch = useAppDispatch();
+	const clearDatabase = () => {
+		dispatch(clearDb())
+	}
 	return (
 		<WrapperView>
 			<Container className='container'>
@@ -53,7 +59,7 @@ function Footer() {
 					<MenuItemView>
 						<Link to='/routines'>Routines List</Link>
 					</MenuItemView>
-					<MenuItemView></MenuItemView>
+					<button type='button' onClick={clearDatabase}>Clear</button>
 				</MenuView>
 			</Container>
 		</WrapperView>

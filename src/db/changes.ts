@@ -13,6 +13,12 @@ export async function getChangesTransaction(db: IDBPDatabase<PlannerDB>) {
 	return list;
 }
 
+export async function clearChangesTransaction(db: IDBPDatabase<PlannerDB>) {
+	const transaction = db.transaction(STORE_CHANGES, 'readwrite');
+	const store = transaction.objectStore(STORE_CHANGES);
+	await store.clear();
+}
+
 export async function saveTaskChangeTransaction(
 	db: IDBPDatabase<PlannerDB>,
 	taskChange: TaskChange

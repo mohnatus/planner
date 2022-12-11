@@ -15,6 +15,12 @@ export async function getRoutinesTransaction(db: IDBPDatabase<PlannerDB>) {
 	return list;
 }
 
+export async function clearRoutinesTransaction(db: IDBPDatabase<PlannerDB>) {
+	const transaction = db.transaction(STORE_ROUTINES, 'readwrite');
+	const store = transaction.objectStore(STORE_ROUTINES);
+	await store.clear();
+}
+
 export async function saveRoutineTransaction(
 	db: IDBPDatabase<PlannerDB>,
 	routine: Routine

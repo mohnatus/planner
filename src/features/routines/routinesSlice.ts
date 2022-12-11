@@ -2,13 +2,7 @@ import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Selector } from 'react-redux';
 import { AppThunk, RootState } from '../../app/store';
 import * as db from '../../db';
-import {
-	PlannerData,
-	Routine,
-	Task,
-	TaskChange,
-	TaskCheck,
-} from '../../types';
+import { PlannerData, Routine, Task, TaskChange, TaskCheck } from '../../types';
 import { RoutineModel } from '../../domain/models/Routine';
 
 export enum Statuses {
@@ -161,3 +155,15 @@ export const removeRoutine =
 	};
 
 export default routinesSlice.reducer;
+
+export const clearDb = (): AppThunk => (dispatch) => {
+	db.clearPlannerData().then(() => {
+		dispatch(
+			init({
+				routines: [],
+				checks: [],
+				changes: [],
+			})
+		);
+	});
+};

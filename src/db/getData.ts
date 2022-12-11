@@ -1,9 +1,9 @@
 import { PlannerData } from '../types';
 import { getDb } from './db';
 
-import { getRoutinesTransaction } from './routines';
-import { getChecksTransaction } from './checks';
-import { getChangesTransaction } from './changes';
+import { clearRoutinesTransaction, getRoutinesTransaction } from './routines';
+import { clearChecksTransaction, getChecksTransaction } from './checks';
+import { clearChangesTransaction, getChangesTransaction } from './changes';
 
 export async function readPlannerData(): Promise<PlannerData> {
 	const db = await getDb();
@@ -13,4 +13,11 @@ export async function readPlannerData(): Promise<PlannerData> {
 	const changes = await getChangesTransaction(db);
 
 	return { routines, checks, changes };
+}
+
+export async function clearPlannerData() {
+	const db = await getDb();
+	await clearRoutinesTransaction(db);
+	await clearChecksTransaction(db);
+	await clearChangesTransaction(db);
 }

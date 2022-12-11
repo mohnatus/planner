@@ -13,6 +13,12 @@ export async function getChecksTransaction(db: IDBPDatabase<PlannerDB>) {
 	return list;
 }
 
+export async function clearChecksTransaction(db: IDBPDatabase<PlannerDB>) {
+	const transaction = db.transaction(STORE_CHECKS, 'readwrite');
+	const store = transaction.objectStore(STORE_CHECKS);
+	await store.clear();
+}
+
 export async function setTaskCheckTransaction(
 	db: IDBPDatabase<PlannerDB>,
 	check: TaskCheck

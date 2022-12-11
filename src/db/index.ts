@@ -1,7 +1,7 @@
-import { readPlannerData } from './getData';
+import { readPlannerData, clearPlannerData } from './getData';
 import { createRoutine, updateRoutine, deleteRoutine } from './routines';
 import { toggleTaskCheck } from './checks';
-import { saveTaskChange} from './changes';
+import { saveTaskChange } from './changes';
 
 export {
 	readPlannerData,
@@ -9,5 +9,6 @@ export {
 	updateRoutine,
 	deleteRoutine,
 	toggleTaskCheck,
-	saveTaskChange
+	saveTaskChange,
+	clearPlannerData,
 };
