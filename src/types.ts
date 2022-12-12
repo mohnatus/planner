@@ -5,6 +5,7 @@ export type RoutineId = string;
 export type SubRoutineId = string;
 export type TaskMomentId = string;
 
+
 export enum WeekDays {
 	Sunday,
 	Monday,
@@ -29,6 +30,8 @@ export enum Months {
 	November,
 	December,
 }
+
+export type DayOfYear = `${MonthDay}-${Months}`;
 
 export type DateComponents = {
 	_dayOfMonth: MonthDay;
@@ -55,6 +58,7 @@ export enum PeriodUnits {
 export enum RepeatTypes {
 	WeekDays,
 	MonthDays,
+	YearDays,
 	Period,
 }
 
@@ -100,6 +104,7 @@ export interface IRepeatRoutine {
 	repeatType: RepeatTypes;
 	weekDays: Array<WeekDays>;
 	monthDays: Array<MonthDay>;
+	yearDays: Array<DayOfYear>;
 	startMoment: Moment;
 	periodUnit: PeriodUnits;
 	periodValue: number;

@@ -8,6 +8,7 @@ import {
 	PeriodUnits,
 	RepeatTypes,
 	SubRoutine,
+	DayOfYear,
 } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { addRoutine, editRoutine, selectRoutine } from './routinesSlice';
@@ -63,6 +64,7 @@ export function RoutineForm() {
 	const [repeatType, setRepeatType] = useState(RepeatTypes.WeekDays);
 	const [weekDays, setWeekDays] = useState<WeekDays[]>([]);
 	const [monthDays, setMonthDays] = useState<MonthDay[]>([]);
+	const [yearDays, setYearDays] = useState<DayOfYear[]>([]);
 	const [periodValue, setPeriodValue] = useState(1);
 	const [periodUnit, setPeriodUnit] = useState(PeriodUnits.Days);
 	const [subRoutines, setSubRoutines] = useState<SubRoutine[]>([
@@ -78,6 +80,9 @@ export function RoutineForm() {
 		}
 		if ('monthDays' in newParams) {
 			setMonthDays(newParams.monthDays || []);
+		}
+		if ('yearDays' in newParams) {
+			setYearDays(newParams.yearDays || []);
 		}
 		if ('periodUnit' in newParams) {
 			setPeriodUnit(newParams.periodUnit || PeriodUnits.Days);
@@ -102,6 +107,7 @@ export function RoutineForm() {
 			repeatType,
 			weekDays,
 			monthDays,
+			yearDays,
 			periodUnit,
 			periodValue,
 			subRoutines,
@@ -127,6 +133,7 @@ export function RoutineForm() {
 		setRepeatType(routine?.repeatType || RepeatTypes.WeekDays);
 		setWeekDays(routine?.weekDays || []);
 		setMonthDays(routine?.monthDays || []);
+		setYearDays(routine?.yearDays || []);
 		setPeriodUnit(routine?.periodUnit || PeriodUnits.Days);
 		setPeriodValue(routine?.periodValue || 1);
 		setSubRoutines(routine ? routine.subRoutines : [SubRoutineModel()]);
@@ -187,6 +194,7 @@ export function RoutineForm() {
 									repeatType={repeatType}
 									weekDays={weekDays}
 									monthDays={monthDays}
+									yearDays={yearDays}
 									startMoment={startMoment}
 									periodUnit={periodUnit}
 									periodValue={periodValue}

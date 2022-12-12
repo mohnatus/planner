@@ -28,6 +28,7 @@ export function RoutineModel(routineData?: Partial<Routine>): Routine {
 			repeatType: RepeatTypes.WeekDays,
 			weekDays: [],
 			monthDays: [],
+			yearDays: [],
 			startMoment: getTodayMoment(),
 			periodUnit: PeriodUnits.Days,
 			periodValue: 0,

@@ -8,6 +8,7 @@ import {
 	WeekDays,
 	PeriodUnits,
 	RepeatTypes,
+	DayOfYear,
 } from '../../types';
 import { COLORS } from '../../ui/colors';
 import { RADIUS_LG } from '../../ui/decor';
@@ -19,11 +20,13 @@ import { MonthDaysInput } from '../MonthDaysInput';
 import { NumberInput } from '../NumberInput';
 import { Toggler, TogglerOption } from '../Toggler';
 import { WeekDaysInput } from '../WeekDaysInput';
+import { YearDaysInput } from '../YearDaysInput';
 
 interface RepeatParams {
 	repeatType: RepeatTypes;
 	weekDays: Array<WeekDays>;
 	monthDays: Array<MonthDay>;
+	yearDays: Array<DayOfYear>;
 	startMoment: Moment;
 	periodValue: number;
 	periodUnit: PeriodUnits;
@@ -33,6 +36,7 @@ interface RepeatTypeTogglerProps {
 	repeatType: RepeatTypes;
 	weekDays: Array<WeekDays>;
 	monthDays: Array<MonthDay>;
+	yearDays: Array<DayOfYear>;
 	startMoment: Moment;
 	periodValue: number;
 	periodUnit: PeriodUnits;
@@ -81,6 +85,7 @@ function RepeatTypeToggler({
 	repeatType,
 	weekDays,
 	monthDays,
+	yearDays,
 	startMoment,
 	periodValue,
 	periodUnit,
@@ -151,6 +156,29 @@ function RepeatTypeToggler({
 
 			<BlockView>
 				<BlockHeaderView
+					active={repeatType === RepeatTypes.YearDays}
+					type='button'
+					onClick={() =>
+						handleChange({ repeatType: RepeatTypes.YearDays })
+					}
+				>
+					Дни года{' '}
+					{repeatType === RepeatTypes.YearDays && '(active)'}
+				</BlockHeaderView>
+				{repeatType === RepeatTypes.YearDays && (
+					<BlockContentView>
+						<YearDaysInput
+							value={yearDays}
+							onChange={(newValue) => {
+								handleChange({ yearDays: newValue });
+							}}
+						/>
+					</BlockContentView>
+				)}
+			</BlockView>
+
+			<BlockView>
+				<BlockHeaderView
 					active={repeatType === RepeatTypes.Period}
 					type='button'
 					onClick={() =>
@@ -179,7 +207,7 @@ function RepeatTypeToggler({
 									}}
 								></Toggler>
 							</div>
-							
+
 						</FormGroup>
 						<FormGroup>
 							<DateGroup

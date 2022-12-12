@@ -1,22 +1,28 @@
 import { useCallback, useState } from 'react';
-import { MonthDay } from '../../types';
+import { MONTHS } from '../../texts/Date';
 
+import { DayOfYear } from '../../types';
 import { ADD_ACTION } from '../../ui/actions';
 import { ActionButton, UIAction } from '../ActionButton';
 
-import { MonthDaysModal } from './MonthDaysModal';
+import { YearDaysModal } from './YearDaysModal';
 
-interface MonthDaysInputProps extends UIAction {
-	value: Array<MonthDay>;
-	onChange: (newValue: Array<MonthDay>) => void;
+interface YearDaysInputProps extends UIAction {
+	value: Array<DayOfYear>;
+	onChange: (newValue: Array<DayOfYear>) => void;
 }
 
-function MonthDaysInput({
+function formatDayOfYear(day: DayOfYear) {
+	const [date, month] = day.split('-');
+	return `${date} ${MONTHS[Number(month)]}`
+}
+
+function YearDaysInput({
 	value,
-	label = 'Выбрать дни месяца',
+	label = 'Выбрать дни года',
 	action = ADD_ACTION,
 	onChange,
-}: MonthDaysInputProps) {
+}: YearDaysInputProps) {
 	const [showModal, setShowModal] = useState(false);
 
 	const openModal = useCallback(() => {
@@ -33,11 +39,11 @@ function MonthDaysInput({
 
 			<div>
 				{value.map((day) => (
-					<span key={day}>{day}</span>
+					<span key={day}>{formatDayOfYear(day)}</span>
 				))}
 			</div>
 
-			<MonthDaysModal
+			<YearDaysModal
 				show={showModal}
 				value={value}
 				onChange={onChange}
@@ -47,5 +53,5 @@ function MonthDaysInput({
 	);
 }
 
-export type { MonthDaysInputProps };
-export { MonthDaysInput };
+export type { YearDaysInputProps };
+export { YearDaysInput };
