@@ -1,6 +1,6 @@
-import { MS_IN_DAY } from "./constants";
-import { getDate } from ".";
-import { DateVariants } from "./date.types";
+import { MS_IN_DAY } from './constants';
+import { getDate } from '.';
+import { DateVariants } from './date.types';
 
 export function getDiffInDays(
 	date1: DateVariants,
@@ -21,3 +21,4 @@ export function getDiffInMonths(
 	months += _date2.getMonth();
 	return months;
 }
+

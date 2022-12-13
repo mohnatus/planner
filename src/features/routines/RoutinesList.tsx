@@ -13,6 +13,7 @@ import { SPACING_LG } from '../../ui/spacing';
 import { PageHeader } from '../../components/PageHeader';
 import { Container } from '../../containers/Container';
 import { Card, CardContent, CardTitle } from '../../containers/Card';
+import { formatYearDay } from '../../utils/date/format';
 
 export interface RoutineProps {
 	routine: Routine;
@@ -35,6 +36,8 @@ export function RoutinePreview({ routine }: RoutineProps) {
 			days = routine.weekDays.map((d) => WEEK_DAYS[d]).join(', ');
 		} else if (routine.repeatType === RepeatTypes.MonthDays) {
 			days = routine.monthDays.join(', ') + ' числам месяца';
+		} else if (routine.repeatType === RepeatTypes.YearDays) {
+			days = routine.yearDays.map((d) => formatYearDay(d)).join(', ');
 		} else {
 			days = `Раз в ${routine.periodValue} ${routine.periodUnit}`;
 		}

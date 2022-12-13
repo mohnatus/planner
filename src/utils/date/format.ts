@@ -1,6 +1,7 @@
-import { DateComponents } from "../../types";
-import { getDate } from ".";
-import { DateVariants } from "./date.types";
+import { DateComponents, DayOfYear, Months } from '../../types';
+import { getDate } from '.';
+import { DateVariants } from './date.types';
+import { MONTHS } from '../../texts/Date';
 
 export function getDateComponents(date: DateVariants): DateComponents {
 	const _date = getDate(date);
@@ -22,4 +23,14 @@ export function getDateComponents(date: DateVariants): DateComponents {
 export function formatDate(date: DateVariants): string {
 	const { dayOfMonth, month, year } = getDateComponents(date);
 	return `${dayOfMonth}.${month}.${year}`;
+}
+
+export function getDayOfYearComponents(day: DayOfYear): [number, Months] {
+	const [date, month] = day.split('-');
+	return [Number(date), Number(month) as Months];
+}
+
+export function formatYearDay(day: DayOfYear) {
+	const [date, monthIndex] = getDayOfYearComponents(day);
+	return `${date} ${MONTHS[monthIndex]}`;
 }

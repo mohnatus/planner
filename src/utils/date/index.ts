@@ -1,4 +1,5 @@
 import {
+	DayOfYear,
 	Moment,
 	MonthDay,
 	Months,
@@ -50,4 +51,9 @@ export function getMonth(date: DateVariants): Months {
 
 export function getYear(date: DateVariants): number {
 	return getDate(date).getFullYear();
+}
+
+export function getDayOfYear(date: DateVariants): DayOfYear {
+	const _date = getDate(date);
+	return `${_date.getDate()}-${getMonth(_date)}`;
 }
