@@ -31,12 +31,12 @@ function getStablePeriodTaskPeriod(
 		preciseDate.setMonth(preciseDate.getMonth() + diff);
 		if (preciseDate > _date2) {
 			startDate = cloneDate(preciseDate);
-      startDate.setMonth(startDate.getMonth() - 1);
-      endDate = preciseDate;
+			startDate.setMonth(startDate.getMonth() - 1);
+			endDate = preciseDate;
 		} else {
 			startDate = preciseDate;
-      endDate = cloneDate(preciseDate);
-      endDate.setMonth(endDate.getMonth() + 1);
+			endDate = cloneDate(preciseDate);
+			endDate.setMonth(endDate.getMonth() + 1);
 		}
 	}
 
@@ -63,6 +63,7 @@ function getUnstablePeriodTaskPeriod(
 		lastCheckIndex++;
 	}
 	const lastCheck = subRoutineChecks[lastCheckIndex];
+
 	if (!lastCheck) {
 		startMoment = routine.startMoment;
 	} else {
@@ -70,8 +71,11 @@ function getUnstablePeriodTaskPeriod(
 
 		const { periodUnit, periodValue } = routine;
 
+    console.log({ startMoment: new Date(startMoment ), periodUnit, periodValue },)
+
 		if (periodUnit === PeriodUnits.Days) {
 			startMoment += MS_IN_DAY * periodValue;
+      console.log(1, { startMoment })
 		} else {
 			const date = getDate(startMoment);
 			date.setMonth(date.getMonth() + periodValue);
@@ -82,9 +86,10 @@ function getUnstablePeriodTaskPeriod(
 	let nextCheckIndex = 0;
 	while (nextCheckIndex < subRoutineChecks.length) {
 		const check = subRoutineChecks[nextCheckIndex];
-		if (check.moment === dayMoment) break;
-		nextCheckIndex++;
-		if (check.moment > dayMoment) break;
+		if (check.moment >= dayMoment) {
+			break;
+		}
+    nextCheckIndex++;
 	}
 	const nextCheck = subRoutineChecks[nextCheckIndex];
 	if (!nextCheck) {
@@ -92,6 +97,8 @@ function getUnstablePeriodTaskPeriod(
 	} else {
 		endMoment = nextCheck.moment + MS_IN_DAY;
 	}
+
+  console.log({ lastCheck, nextCheck, startMoment, endMoment, subRoutineChecks})
 
 	return [startMoment, endMoment];
 }

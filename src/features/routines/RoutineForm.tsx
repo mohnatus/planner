@@ -90,9 +90,6 @@ export function RoutineForm() {
 		if ('periodValue' in newParams) {
 			setPeriodValue(newParams.periodValue || 1);
 		}
-		if ('startMoment' in newParams) {
-			setStartMoment(newParams.startMoment || getTodayMoment());
-		}
 	};
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -176,17 +173,7 @@ export function RoutineForm() {
 							></Toggler>
 						</FormGroup>
 
-						{repeat === NO_REPEAT && (
-							<>
-								<FormGroup>
-									<DateGroup
-										label='Начиная с'
-										value={startMoment}
-										onChange={setStartMoment}
-									/>
-								</FormGroup>
-							</>
-						)}
+
 
 						{repeat === REPEAT && (
 							<FormGroup>
@@ -195,13 +182,20 @@ export function RoutineForm() {
 									weekDays={weekDays}
 									monthDays={monthDays}
 									yearDays={yearDays}
-									startMoment={startMoment}
 									periodUnit={periodUnit}
 									periodValue={periodValue}
 									onChange={onChangeRepeatParams}
 								/>
 							</FormGroup>
 						)}
+
+						<FormGroup>
+							<DateGroup
+								label='Начиная с'
+								value={startMoment}
+								onChange={setStartMoment}
+							/>
+						</FormGroup>
 
 						<FormGroup>
 							<Checkbox

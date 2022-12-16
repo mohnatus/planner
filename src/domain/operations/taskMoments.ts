@@ -7,10 +7,10 @@ import {
 	TaskMoment,
 } from '../../types';
 
-import { getMonthDaysTaskPeriod } from './monthDaysTaskPeriod';
-import { getPeriodTaskPeriod } from './periodTaskPeriod';
-import { getWeekDaysTaskPeriod } from './weekDaysTaskPeriod';
-import { getYearDaysTaskPeriod } from './yearDaysTaskPeriod';
+import { getMonthDaysTaskPeriod } from './monthDaysTask';
+import { getPeriodTaskPeriod } from './periodTask';
+import { getWeekDaysTaskPeriod } from './weekDaysTask';
+import { getYearDaysTaskPeriod } from './yearDaysTask';
 
 export function getTaskMomentData(
 	routine: Routine,
@@ -18,12 +18,16 @@ export function getTaskMomentData(
 	moment: Moment,
 	checks: TaskChecksList
 ): TaskMoment {
+
+
 	if (!routine.repeat) {
 		return {
 			id: subRoutine.id,
 			period: [routine.startMoment, null],
 		};
 	}
+
+
 
 	let from = routine.startMoment;
 	let to = null;

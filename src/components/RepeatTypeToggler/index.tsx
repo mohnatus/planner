@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { DateGroup } from '../../containers/DateGroup';
-import { FormGroup } from '../../containers/FormGroup';
+
 
 import {
 	Moment,
@@ -15,19 +14,18 @@ import { RADIUS_LG } from '../../ui/decor';
 import { CONTROL_HEIGHT } from '../../ui/sizes';
 import { SPACING_SM, SPACING_XS, SPACING_XXS } from '../../ui/spacing';
 
-import { DateInput } from '../DateInput';
 import { MonthDaysInput } from '../MonthDaysInput';
 import { NumberInput } from '../NumberInput';
 import { Toggler, TogglerOption } from '../Toggler';
 import { WeekDaysInput } from '../WeekDaysInput';
 import { YearDaysInput } from '../YearDaysInput';
+import { FormGroup } from '../../containers/FormGroup';
 
 interface RepeatParams {
 	repeatType: RepeatTypes;
 	weekDays: Array<WeekDays>;
 	monthDays: Array<MonthDay>;
 	yearDays: Array<DayOfYear>;
-	startMoment: Moment;
 	periodValue: number;
 	periodUnit: PeriodUnits;
 }
@@ -37,7 +35,6 @@ interface RepeatTypeTogglerProps {
 	weekDays: Array<WeekDays>;
 	monthDays: Array<MonthDay>;
 	yearDays: Array<DayOfYear>;
-	startMoment: Moment;
 	periodValue: number;
 	periodUnit: PeriodUnits;
 	onChange: (params: Partial<RepeatParams>) => void;
@@ -86,7 +83,6 @@ function RepeatTypeToggler({
 	weekDays,
 	monthDays,
 	yearDays,
-	startMoment,
 	periodValue,
 	periodUnit,
 	onChange,
@@ -209,15 +205,7 @@ function RepeatTypeToggler({
 							</div>
 
 						</FormGroup>
-						<FormGroup>
-							<DateGroup
-								label='Начиная с'
-								value={startMoment}
-								onChange={(newValue) => {
-									handleChange({ startMoment: newValue });
-								}}
-							/>
-						</FormGroup>
+
 					</BlockContentView>
 				)}
 			</BlockView>

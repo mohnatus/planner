@@ -27,7 +27,10 @@ function getTaskChange(
 	return changes.find((change) => change.id === task.id);
 }
 
-function getTaskPeriod(task: Task, change: TaskChange | undefined): [Moment | null, Moment | null] {
+function getTaskPeriod(
+	task: Task,
+	change: TaskChange | undefined
+): [Moment | null, Moment | null] {
 	const [from, to] = task.period;
 	let _from: Moment | null = from;
 	if (change) {
@@ -36,7 +39,12 @@ function getTaskPeriod(task: Task, change: TaskChange | undefined): [Moment | nu
 	return [_from, to];
 }
 
-function getTaskCheck(task: Task, checks: TasksList) {}
+/**
+ * Для каждой субрутины (повторение в течение дня)
+ * создаем модель таска для текущего дня,
+ * смотрим его период активности
+ * и определяем, нужно ли его показывать в указанный день
+ */
 
 function getRoutineDayTasks(
 	routine: Routine,
@@ -46,15 +54,16 @@ function getRoutineDayTasks(
 ): Array<Task> {
 	const tasks: TasksList = [];
 
+
 	const { subRoutines = [] } = routine;
 
 	const todayMoment = getTodayMoment();
 
 	subRoutines.forEach((subRoutine) => {
 		const task = TaskModel(routine, subRoutine, day, checks);
-		console.log({task})
 
 		const taskChange = getTaskChange(task, changes);
+
 		if (!taskChange) {
 			// нет изменений, не показывать до старта рутины
 			if (routine.startMoment > day.moment) return;
